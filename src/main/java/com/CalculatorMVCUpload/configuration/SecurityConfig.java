@@ -32,10 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/uploadFile", "/downloadFile/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated().and().formLogin().permitAll();
+                .antMatchers("/index.html", "/uploadFile", "/downloadFile/**")
+                .hasRole("ADMIN")
+                .and().formLogin().permitAll();
         http.csrf().disable();
     }
 }
