@@ -4,6 +4,7 @@ import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.exception.MyFileNotFoundException;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -27,13 +28,15 @@ public class FileStorageService {
 
     @Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) {
-//        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+        //this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+        //this.fileStorageLocation = Paths.get("Upload");
 
-        this.fileStorageLocation = Paths.get("Upload");
+        String fileUploadDir = new File("").getAbsolutePath() + fileStorageProperties.getUploadDir();
+        this.fileStorageLocation = Paths.get(fileUploadDir);
 
         try {
             Files.createDirectories(this.fileStorageLocation);
-            System.out.println("Files will be stored in directory: " + fileStorageLocation);
+            System.out.println("Files will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
@@ -43,7 +46,7 @@ public class FileStorageService {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
-            if(fileName.contains("..")) {
+            if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
@@ -60,7 +63,7 @@ public class FileStorageService {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists()) {
                 return resource;
             } else {
                 throw new MyFileNotFoundException("File not found " + fileName);
