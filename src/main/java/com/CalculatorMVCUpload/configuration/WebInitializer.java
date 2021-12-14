@@ -17,7 +17,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/main"};
+        return new String[]{"/index.html"};
     }
 }
 */

@@ -1,7 +1,9 @@
 package com.CalculatorMVCUpload.controller;
 
+import com.CalculatorMVCUpload.entity.UploadedFile;
 import com.CalculatorMVCUpload.payload.UploadFileResponse;
 import com.CalculatorMVCUpload.service.FileStorageService;
+import com.CalculatorMVCUpload.service.UploadFileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +31,16 @@ public class FileController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private UploadFileService uploadFileService;
+
+    @GetMapping("/allFiles")
+    public List<UploadedFile> getAllFiles() {
+        List<UploadedFile> allFiles = uploadFileService.getAllFiles();
+        return allFiles;
+    }
+
+
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
@@ -35,6 +49,17 @@ public class FileController {
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
+
+        Date dateNow = new Date();
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        UploadedFile uploadedFile = new UploadedFile(
+                fileName,
+                fileStorageService.getFileStorageLocation().toAbsolutePath().normalize() + "\\" + fileName,
+                fileDownloadUri,
+                dateNow);
+
+        uploadFileService.addNewFile(uploadedFile);
 
         return new UploadFileResponse(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());
@@ -68,5 +93,11 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
+
+    /*@GetMapping("/lastFile")
+    public UploadedFile getLastUploadedFile(){
+        return uploadFileService.getLastFile();
+    }*/
 
 }

@@ -16,8 +16,12 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /*@Autowired
-    DataSource dataSource;*/
+    DataSource dataSource;
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(dataSource);
+    }*/
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         User.UserBuilder userBuilder = User.withDefaultPasswordEncoder();
@@ -25,11 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser(userBuilder.username("admin").password("admin").roles("ADMIN"))
                 .withUser(userBuilder.username("user").password("user").roles("USER"));
     }
-
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource);
-    }*/
 
     /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

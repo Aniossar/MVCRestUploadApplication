@@ -1,4 +1,3 @@
-/*
 package com.CalculatorMVCUpload.configuration;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -6,35 +5,35 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan
-@EnableWebMvc
+@EnableTransactionManagement
 public class Config implements WebMvcConfigurer {
 
-    @Value("${database.auth.url}")
+    @Value("${postgres.datasource.url}")
     private String databaseUrl;
 
-    @Value("${database.auth.login}")
+    @Value("${postgres.datasource.username}")
     private String databaseLogin;
 
-    @Value("${database.auth.password}")
+    @Value("${postgres.datasource.password}")
     private String databasePassword;
 
     @Bean
     public DataSource dataSource(){
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try{
-            dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
+            dataSource.setDriverClass("org.postgresql.Driver");
             dataSource.setJdbcUrl(databaseUrl);
             dataSource.setUser(databaseLogin);
             dataSource.setPassword(databasePassword);
@@ -43,5 +42,25 @@ public class Config implements WebMvcConfigurer {
         }
         return dataSource;
     }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory(){
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("com.CalculatorMVCUpload.entity");
+
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        hibernateProperties.setProperty("hibernate.show_sql", "true");
+        sessionFactory.setHibernateProperties(hibernateProperties);
+
+        return sessionFactory;
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager(){
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
+    }
 }
-*/
