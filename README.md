@@ -1,4 +1,5 @@
 1. Add directory Upload and update the path in application.properties
+2. 2
 
 REST EndPoints:
 GET /lastFile — get the last uploaded file in JSON
