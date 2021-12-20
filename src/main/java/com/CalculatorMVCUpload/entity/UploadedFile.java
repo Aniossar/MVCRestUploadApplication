@@ -25,14 +25,22 @@ public class UploadedFile {
     @Column(name = "uploaddate")
     private Date uploadDate;
 
+    @Column(name = "size")
+    private long size;
+
+    @Column(name = "hashcode")
+    private int hashCode;
+
     public UploadedFile() {
     }
 
-    public UploadedFile(String name, String path, String url, Date uploadDate) {
+    public UploadedFile(String name, String path, String url, Date uploadDate, long size, int hashCode) {
         this.name = name;
         this.path = path;
         this.url = url;
         this.uploadDate = uploadDate;
+        this.size = size;
+        this.hashCode = hashCode;
     }
 
     public int getId() {
@@ -73,5 +81,21 @@ public class UploadedFile {
 
     public void setUploadDate(Date uploadDate) {
         this.uploadDate = uploadDate;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
+    public int getHashCode() {
+        return hashCode;
+    }
+
+    public void setHashCode(int hashCode) {
+        this.hashCode = hashCode;
     }
 }

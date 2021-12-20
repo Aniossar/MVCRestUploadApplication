@@ -1,8 +1,12 @@
 package com.CalculatorMVCUpload.repository;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
+import com.CalculatorMVCUpload.exception.MyFileNotFoundException;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +20,7 @@ public class UploadFileRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Transactional
     public List<UploadedFile> getAllFiles() {
         Session session = sessionFactory.getCurrentSession();
         Query<UploadedFile> query = session.createQuery("from UploadedFile", UploadedFile.class);
@@ -24,18 +29,36 @@ public class UploadFileRepository {
         return allUploadedFiles;
     }
 
+    @Transactional
+    public UploadedFile getFileViaId(int id) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            UploadedFile uploadedFile = session.get(UploadedFile.class, id);
+            return uploadedFile;
+        } catch (Exception e) {
+            throw new MyFileNotFoundException("File not found with id " + id);
+        }
+    }
+
+    @Transactional
     public void addNewFile(UploadedFile uploadedFile) {
         Session session = sessionFactory.getCurrentSession();
         session.save(uploadedFile);
     }
 
+    @Transactional
     public UploadedFile getLastFile() {
         Session session = sessionFactory.getCurrentSession();
-        UploadedFile lastUploadedFile = (UploadedFile)session.createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult();
-        return lastUploadedFile;
+        Criteria criteria = session.createCriteria(UploadedFile.class).setProjection(Projections.max("id"));
+        int id = (int) criteria.uniqueResult();
+        UploadedFile uploadedFile = getFileViaId(id);
+        return uploadedFile;
     }
 
-    public void deleteFile() {
-
+    @Transactional
+    public void deleteFile(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<UploadedFile> query = session.createQuery("delete from UploadedFile " + "where id=" + id);
+        query.executeUpdate();
     }
 }

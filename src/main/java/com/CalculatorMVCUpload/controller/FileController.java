@@ -1,6 +1,7 @@
 package com.CalculatorMVCUpload.controller;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
+import com.CalculatorMVCUpload.exception.MyFileNotFoundException;
 import com.CalculatorMVCUpload.payload.UploadFileResponse;
 import com.CalculatorMVCUpload.service.FileStorageService;
 import com.CalculatorMVCUpload.service.UploadFileService;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -40,6 +43,11 @@ public class FileController {
         return allFiles;
     }
 
+    @GetMapping("/getFile/{id}")
+    public UploadedFile getFileViaId(@PathVariable int id) {
+        UploadedFile uploadedFile = uploadFileService.getFileViaId(id);
+        return uploadedFile;
+    }
 
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
@@ -51,13 +59,14 @@ public class FileController {
                 .toUriString();
 
         Date dateNow = new Date();
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         UploadedFile uploadedFile = new UploadedFile(
                 fileName,
                 fileStorageService.getFileStorageLocation().toAbsolutePath().normalize() + "\\" + fileName,
                 fileDownloadUri,
-                dateNow);
+                dateNow,
+                file.getSize(),
+                file.hashCode());
 
         uploadFileService.addNewFile(uploadedFile);
 
@@ -94,10 +103,24 @@ public class FileController {
                 .body(resource);
     }
 
+    @DeleteMapping("/deleteFile/{id}")
+    public void deleteFile(@PathVariable int id) {
+        UploadedFile uploadedFile = uploadFileService.getFileViaId(id);
+        Resource resource = fileStorageService.loadFileAsResource(uploadedFile.getName());
+        try {
+            boolean deleteResult = Files.deleteIfExists(Paths.get(resource.getFile().getAbsolutePath()));
+            if (deleteResult) {
+                uploadFileService.deleteFile(id);
+            }
+        } catch (Exception e) {
+            throw new MyFileNotFoundException("File not found " + uploadedFile.getName());
+        }
+    }
 
-    /*@GetMapping("/lastFile")
+
+    @GetMapping("/lastFile")
     public UploadedFile getLastUploadedFile(){
         return uploadFileService.getLastFile();
-    }*/
+    }
 
 }

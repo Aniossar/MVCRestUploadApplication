@@ -18,6 +18,10 @@ public class UploadFileService {
         return uploadFileRepository.getAllFiles();
     }
 
+    public UploadedFile getFileViaId(int id){
+        return uploadFileRepository.getFileViaId(id);
+    }
+
 
     public void addNewFile(UploadedFile uploadedFile) {
         uploadFileRepository.addNewFile(uploadedFile);
@@ -28,7 +32,7 @@ public class UploadFileService {
     }
 
 
-    public void deleteFile() {
-
+    public void deleteFile(int id) {
+        uploadFileRepository.deleteFile(id);
     }
 }

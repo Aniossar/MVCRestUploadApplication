@@ -44,7 +44,7 @@ public class FileStorageService {
     }
 
     public String storeFile(MultipartFile file) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(file.hashCode() + "_" + file.getOriginalFilename());
 
         try {
             if (fileName.contains("..")) {
