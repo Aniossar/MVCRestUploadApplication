@@ -119,8 +119,13 @@ public class FileController {
 
 
     @GetMapping("/lastFile")
-    public UploadedFile getLastUploadedFile(){
-        return uploadFileService.getLastFile();
+    public UploadedFile getLastUploadedFile() {
+        try {
+            UploadedFile lastFile = uploadFileService.getLastFile();
+            return lastFile;
+        } catch (Exception e) {
+            throw new MyFileNotFoundException("No files uploaded");
+        }
     }
 
 }
