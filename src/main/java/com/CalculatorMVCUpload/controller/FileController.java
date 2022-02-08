@@ -1,7 +1,7 @@
 package com.CalculatorMVCUpload.controller;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
-import com.CalculatorMVCUpload.exception.MyFileNotFoundException;
+import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.payload.UploadFileResponse;
 import com.CalculatorMVCUpload.service.FileStorageService;
 import com.CalculatorMVCUpload.service.UploadFileService;
@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -113,7 +112,7 @@ public class FileController {
                 uploadFileService.deleteFile(id);
             }
         } catch (Exception e) {
-            throw new MyFileNotFoundException("File not found " + uploadedFile.getName());
+            throw new FileNotFoundException("File not found " + uploadedFile.getName());
         }
     }
 
@@ -124,7 +123,7 @@ public class FileController {
             UploadedFile lastFile = uploadFileService.getLastFile();
             return lastFile;
         } catch (Exception e) {
-            throw new MyFileNotFoundException("No files uploaded");
+            throw new FileNotFoundException("No files uploaded");
         }
     }
 

@@ -20,22 +20,16 @@
                         <input id="singleFileUploadInput" type="file" name="file" class="file-input" required />
                         <button type="submit" class="primary submit-btn">Upload</button>
                     </form>
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-bar-fill">
+                            <span class="progress-bar-text"></span>
+                        </div>
+                    </div>
                     <div class="upload-response">
                         <div id="singleFileUploadError"></div>
                         <div id="singleFileUploadSuccess"></div>
                     </div>
                 </div>
-                <!--<div class="multiple-upload">
-                    <h3>Upload Multiple Files</h3>
-                    <form id="multipleUploadForm" name="multipleUploadForm">
-                        <input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />
-                        <button type="submit" class="primary submit-btn">Submit</button>
-                    </form>
-                    <div class="upload-response">
-                        <div id="multipleFileUploadError"></div>
-                        <div id="multipleFileUploadSuccess"></div>
-                    </div>
-                </div>-->
             </div>
             <br>
             <div class="storage-block">

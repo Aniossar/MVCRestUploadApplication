@@ -1,7 +1,8 @@
 package com.CalculatorMVCUpload.service;
 
+import com.CalculatorMVCUpload.exception.BadNamingException;
 import com.CalculatorMVCUpload.exception.FileStorageException;
-import com.CalculatorMVCUpload.exception.MyFileNotFoundException;
+import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -21,6 +22,9 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileStorageService {
 
+    private String fileNamePrefix = "KPD_";
+    private String fileNameSuffix = "zip";
+
     private Path fileStorageLocation;
 
     public Path getFileStorageLocation() {
@@ -29,8 +33,6 @@ public class FileStorageService {
 
     @Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) {
-        //this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
-        //this.fileStorageLocation = Paths.get("Upload");
 
         String fileUploadDir = new File("").getAbsolutePath() + fileStorageProperties.getUploadDir();
         this.fileStorageLocation = Paths.get(fileUploadDir);
@@ -44,12 +46,19 @@ public class FileStorageService {
     }
 
     public String storeFile(MultipartFile file) {
-        String fileName = StringUtils.cleanPath(file.hashCode() + "_" + file.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
             if (fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+                throw new BadNamingException("Filename contains invalid path sequence " + fileName);
             }
+
+            if (!fileName.substring(0,4).equals(fileNamePrefix)||
+                    !fileName.substring(fileName.length()-3).equals(fileNameSuffix)){
+                throw new BadNamingException("Filename should be like 'KPD_*.zip'. Rename the file " + fileName);
+            }
+
+            fileName = StringUtils.cleanPath(file.hashCode() + "_" + file.getOriginalFilename());
 
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -67,10 +76,10 @@ public class FileStorageService {
             if (resource.exists()) {
                 return resource;
             } else {
-                throw new MyFileNotFoundException("File not found " + fileName);
+                throw new FileNotFoundException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
+            throw new FileNotFoundException("File not found " + fileName, ex);
         }
     }
 }

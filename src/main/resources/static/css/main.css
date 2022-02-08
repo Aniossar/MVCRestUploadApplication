@@ -100,7 +100,6 @@ input[type="file"] {
     }
 }
 
-
 .upload-container {
     max-width: 750px;
     margin-left: auto;
@@ -130,4 +129,21 @@ input[type="file"] {
 .upload-response {
     overflow-x: hidden;
     word-break: break-all;
+}
+
+.progress-bar{
+    height: 30px;
+    width: 100%;
+}
+
+.progress-bar-fill{
+    height: 100%;
+    width: 0%;
+    background: #c5d4d0;
+    transition: width 0.25s;
+}
+
+.progress-bar-text{
+    position: center;
+    font-weight: bold;
 }

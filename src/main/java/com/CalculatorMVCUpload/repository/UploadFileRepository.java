@@ -1,11 +1,10 @@
 package com.CalculatorMVCUpload.repository;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
-import com.CalculatorMVCUpload.exception.MyFileNotFoundException;
+import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class UploadFileRepository {
             UploadedFile uploadedFile = session.get(UploadedFile.class, id);
             return uploadedFile;
         } catch (Exception e) {
-            throw new MyFileNotFoundException("File not found with id " + id);
+            throw new FileNotFoundException("File not found with id " + id);
         }
     }
 
