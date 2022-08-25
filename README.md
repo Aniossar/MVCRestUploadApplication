@@ -7,3 +7,13 @@ REST EndPoints:
 4. POST /uploadFile — upload file; put file in body request
 5. GET /downloadFile/{fileName} — download file with {filename}
 6. DELETE /deleteFile/{id} — delete file with {id}
+
+
+Docker:
+
+1. Dockerfile - template for app image
+2. docker-compose_dev.yml, docker-compose_test.yml, 
+docker-compose_production.yml - make images for 3 
+different pack of containers, for dev, test and production.
+3. for deploy this on server:
+   1. 

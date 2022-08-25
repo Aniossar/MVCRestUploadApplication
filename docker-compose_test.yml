@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  postgres_test:
+    image: 'postgres:14'
+    container_name: 'postgres-db-test'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_DB=testDb'
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - ./db_test:/var/lib/postgresql/data
+
+  app_test:
+    image: 'florence76/koreanikaserverapp:latest'
+    container_name: 'backend-app-test'
+    ports:
+      - 8081:8080
+    environment:
+      - 'POSTGRES_URL=jdbc:postgresql://postgres-db-test:5432/testDb?useSSL=false'
+    volumes:
+      - ./Upload_test:/Upload

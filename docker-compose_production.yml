@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  postgres_prod:
+    image: 'postgres:14'
+    container_name: 'postgres-db-production'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_DB=productionDb'
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - ./db_production:/var/lib/postgresql/data
+
+  app_prod:
+    image: 'florence76/koreanikaserverapp:latest'
+    container_name: 'backend-app-production'
+    ports:
+      - 8080:8080
+    environment:
+      - 'POSTGRES_URL=jdbc:postgresql://postgres-db-production:5432/productionDb?useSSL=false'
+    volumes:
+      - ./Upload_prod:/Upload
