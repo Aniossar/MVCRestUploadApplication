@@ -8,6 +8,10 @@ keykore.p12
 /src/main/resources/application.properties
 CalculatorMVCServer.jar
 
+#db
+db_dev/
+Upload_dev/
+
 ### STS ###
 .apt_generated
 .classpath

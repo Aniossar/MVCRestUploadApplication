@@ -31,6 +31,9 @@ public class Config implements WebMvcConfigurer {
 
     @Bean
     public DataSource dataSource(){
+
+        System.out.println("POSTGRES_URL = " + System.getenv("POSTGRES_URL"));
+
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try{
             dataSource.setDriverClass("org.postgresql.Driver");

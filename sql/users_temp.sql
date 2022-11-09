@@ -9,4 +9,4 @@ CREATE TABLE public.users (
 
 INSERT INTO public.users (username, password, enabled, authority)
 VALUES
-	('admin', '{noop}password', true, 'ADMIN');
+	('admin', '{noop}Fafwt34q7j', true, 'ADMIN');

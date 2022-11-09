@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  postgres_dev:
+    image: 'postgres:14'
+    container_name: 'postgres-db-dev'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_DB=devDb'
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - ./db_dev:/var/lib/postgresql/data
+
+  app_dev:
+    image: 'florence76/koreanikaserverapp:latest'
+    container_name: 'backend-app-dev'
+    ports:
+      - 8082:8080
+    environment:
+      - 'POSTGRES_URL=jdbc:postgresql://postgres-db-dev:5432/devDb?useSSL=false'
+    volumes:
+      - ./Upload_dev:/Upload
