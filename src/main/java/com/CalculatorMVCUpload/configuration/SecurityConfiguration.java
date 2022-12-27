@@ -24,14 +24,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/user/*").hasRole("USER")
-                .antMatchers("/moderator/*").hasRole("MODERATOR")
-                .antMatchers("/supplier/*").hasRole("SUPPLIER")
-                .antMatchers("/shop/*").hasRole("SHOP")
                 .antMatchers("/register", "/auth").permitAll()
                 .and()
+                .authorizeRequests().anyRequest().authenticated()
+                .and().formLogin().permitAll()
+                .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.formLogin().loginPage("/login_window");
     }
 
 

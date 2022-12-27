@@ -7,9 +7,11 @@ import com.CalculatorMVCUpload.payload.RegistrationRequest;
 import com.CalculatorMVCUpload.entity.UserEntity;
 import com.CalculatorMVCUpload.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -41,4 +43,5 @@ public class AuthController {
         String token = jwtProvider.generateToken(userEntity.getLogin());
         return new AuthentificationResponce(token);
     }
+
 }
