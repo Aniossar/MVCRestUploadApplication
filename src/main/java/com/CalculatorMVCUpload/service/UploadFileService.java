@@ -1,38 +1,41 @@
 package com.CalculatorMVCUpload.service;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
-import com.CalculatorMVCUpload.repository.UploadFileRepository;
+import com.CalculatorMVCUpload.repository.UploadedFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 public class UploadFileService {
 
     @Autowired
-    private UploadFileRepository uploadFileRepository;
+    private UploadedFileRepository uploadedFileRepository;
 
+    @Transactional
     public List<UploadedFile> getAllFiles() {
-        return uploadFileRepository.getAllFiles();
+        return uploadedFileRepository.findAll();
     }
 
+    @Transactional
     public UploadedFile getFileViaId(int id){
-        return uploadFileRepository.getFileViaId(id);
+        return uploadedFileRepository.getById(id);
     }
 
-
-    public void addNewFile(UploadedFile uploadedFile) {
-        uploadFileRepository.addNewFile(uploadedFile);
+    @Transactional
+    public void addNewFile(UploadedFile uploadedFile){
+        uploadedFileRepository.saveAndFlush(uploadedFile);
     }
 
-    public UploadedFile getLastFile() {
-        return uploadFileRepository.getLastFile();
+    @Transactional
+    public void deleteFile(int id){
+        uploadedFileRepository.deleteById(id);
     }
 
-
-    public void deleteFile(int id) {
-        uploadFileRepository.deleteFile(id);
+    @Transactional
+    public UploadedFile getLastFile(){
+        return uploadedFileRepository.findTopByOrderByIdDesc();
     }
 }

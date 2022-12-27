@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -103,6 +104,7 @@ public class FileController {
     }
 
     @DeleteMapping("/deleteFile/{id}")
+    @RolesAllowed("ROLE_ADMIN")
     public void deleteFile(@PathVariable int id) {
         UploadedFile uploadedFile = uploadFileService.getFileViaId(id);
         Resource resource = fileStorageService.loadFileAsResource(uploadedFile.getName());

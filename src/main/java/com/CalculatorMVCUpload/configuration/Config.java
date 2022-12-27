@@ -5,15 +5,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.util.Properties;
 
 @Configuration
 @ComponentScan
@@ -32,7 +32,8 @@ public class Config implements WebMvcConfigurer {
     @Bean
     public DataSource dataSource(){
 
-        System.out.println("POSTGRES_URL = " + System.getenv("POSTGRES_URL"));
+        System.out.println("POSTGRES_URL in System.getEnv= " + System.getenv("POSTGRES_URL"));
+        System.out.println("POSTGRES_URL in the class= " + databaseUrl);
 
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try{
@@ -46,24 +47,45 @@ public class Config implements WebMvcConfigurer {
         return dataSource;
     }
 
+//    @Bean
+//    public LocalSessionFactoryBean sessionFactory(){
+//        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//        sessionFactory.setDataSource(dataSource());
+//        sessionFactory.setPackagesToScan("com.CalculatorMVCUpload.entity");
+//
+//        Properties hibernateProperties = new Properties();
+//        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+//        hibernateProperties.setProperty("hibernate.show_sql", "true");
+//        sessionFactory.setHibernateProperties(hibernateProperties);
+//
+//        return sessionFactory;
+//    }
+
+//    @Bean
+//    public HibernateTransactionManager transactionManager(){
+//        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+//        transactionManager.setSessionFactory(sessionFactory().getObject());
+//        return transactionManager;
+//    }
+
     @Bean
-    public LocalSessionFactoryBean sessionFactory(){
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.CalculatorMVCUpload.entity");
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
-        Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        hibernateProperties.setProperty("hibernate.show_sql", "true");
-        sessionFactory.setHibernateProperties(hibernateProperties);
-
-        return sessionFactory;
-    }
-
-    @Bean
-    public HibernateTransactionManager transactionManager(){
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
         return transactionManager;
     }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setGenerateDdl(false);
+
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan("com.CalculatorMVCUpload.entity");
+        factory.setDataSource(dataSource());
+        return factory;
+    }
+
 }

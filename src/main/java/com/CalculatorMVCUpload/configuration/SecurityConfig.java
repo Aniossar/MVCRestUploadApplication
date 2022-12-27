@@ -1,3 +1,4 @@
+/*
 package com.CalculatorMVCUpload.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin().permitAll()
                 .and().csrf().disable();
     }
-}
+}*/

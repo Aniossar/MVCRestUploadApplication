@@ -1,11 +1,14 @@
 package com.CalculatorMVCUpload.entity;
 
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "uploadedfiles")
+@Proxy(lazy = false)
 public class UploadedFile {
 
     @Id
