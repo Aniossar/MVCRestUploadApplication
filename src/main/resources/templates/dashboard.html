@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koreanika Portal</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
+    <link rel="stylesheet" href="css/main_style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://kit.fontawesome.com/ac37b1b49c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="menu_container">
+        <div class="menu_container_inner">
+            <div class="menu_container_content">
+                <div class="menu_user_info">
+                    <img src="images/user_no_logo.png" alt="">
+                    <div class="menu_user_info_2">
+                        <p class="user_name">USER NAME SURNAME</p>
+                        <p class="user_info">COMPANY/ROLE(ADMIN)</p>
+                        <a class="user_logout" href="#">logout</a>
+                    </div>
+                </div>
+
+                <div class="menu_items">
+                    <ul>
+                        <li><a href="#">Информация</a></li>
+                        <li><a href="#">Пользователи</a></li>
+                        <li><a href="#">Статистика</a></li>
+                        <li><a href="#">Обновления</a></li>
+                        <li><a href="#">Цены</a></li>
+                        <li><a href="#">Новости</a></li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <h2 class="header">Информация</h2>
+
+    <div class="system_info_conteiner_external">
+        <div class="system_info_container">
+            <div class="system_info_element">
+                <p class="info_header"> О системе</p>
+                <div class="info_data">
+                    <p>Дата запуска:</p>
+                    <p>ДАТА</p>
+                </div>
+                <div class="info_data">
+                    <p>Время работы сервера:</p>
+                    <p>ДАТА</p>
+                </div>
+                <div class="info_data">
+                    <p>Память:</p>
+                    <p>ДВСЕГО/ИСП</p>
+                </div>
+
+            </div>
+
+            <div class="users_info_element">
+                <p class="info_header"> О пользователях</p>
+                <div class="info_data">
+                    <p>Всего :</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Онлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Оффлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+            </div>
+
+            <div class="users_info_element">
+                <p class="info_header"> О пользователях</p>
+                <div class="info_data">
+                    <p>Всего :</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Онлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Оффлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+            </div>
+
+            <div class="users_info_element">
+                <p class="info_header"> О пользователях</p>
+                <div class="info_data">
+                    <p>Всего :</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Онлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Оффлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+            </div>
+
+            <div class="users_info_element">
+                <p class="info_header"> О пользователях</p>
+                <div class="info_data">
+                    <p>Всего :</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Онлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+                <div class="info_data">
+                    <p>Оффлайн:</p>
+                    <p>КОЛИЧЕСТВО</p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="users_events_container_header_ext">
+        <div class="users_events_container_header">
+            <table class="event_table_header">
+                <caption>События пользователей</caption>
+                <tr>            
+                    <th>Дата</th>
+                    <th>Пользователь</th>
+                    <th>Операция</th>
+                    <th>Дополнительно</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="users_events_container_ext">
+        <div class="users_events_container">
+            <table id="event_table" class="event_table">
+                
+
+                <tr>            
+                    <td>Дата</td>
+                    <td>Пользователь</td>
+                    <td>Операция</td>
+                    <td>Дополнительно</td>
+                </tr>
+                <tr>            
+                    <td>Дата</td>
+                    <td>Пользователь</td>
+                    <td>Операция</td>
+                    <td>Дополнительно</td>
+                </tr>
+                <tr>            
+                    <td>Дата</td>
+                    <td>Пользователь</td>
+                    <td>Операция</td>
+                    <td>Дополнительно</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        for(let i=0;i<25;i++){
+            event_table.innerHTML = event_table.innerHTML + `<tr>            
+                <td>Дата</td>
+                <td>Пользователь</td>
+                <td>Операция</td>
+                <td>Дополнительно</td>
+            </tr>`
+            
+        }
+
+    </script>
+    
+</body>
+</html>

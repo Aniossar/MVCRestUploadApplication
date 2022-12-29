@@ -10,5 +10,8 @@
 }
 
 :root {
+    --min-page-width: 1270px;
     --color-primary: #505F56;
+    --color-dark: #363f3a;
+    --color-text-1: white;
   }

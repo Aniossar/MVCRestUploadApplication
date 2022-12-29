@@ -18,7 +18,7 @@
 
         @font-face {
             font-family: "PlayfairDisplay";
-            src: url(../fonts/PlayfairDisplay-Regular.ttf);
+            /*src: url(../fonts/PlayfairDisplay-Regular.ttf);*/
         }
 
         :root {
@@ -152,7 +152,7 @@
         <div class="form_auth_block_content">
             <p class="form_auth_block_logo">Koreanika</p>
             <p class="form_auth_block_header">Авторизация</p>
-            <form class="form_auth_style" action="#" method="post">
+            <form id="auth_form" class="form_auth_style" method="post">
                 <div class="form_auth_login_block">
                     <div class="auth_icon_block"><i class="fa-solid fa-user"></i></div>
                     <input class="textfield" type="text" name="auth_login" placeholder="Логин или email" required>
@@ -172,6 +172,47 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    let loginInput = document.querySelector('form input[name="auth_login"]')
+    let passwordInput = document.querySelector('form input[name="auth_password"]')
+
+    auth_form.addEventListener("submit", (e)=>{
+        e.preventDefault();
+
+        let login = loginInput.value
+        let password = passwordInput.value
+        auth(login, password)
+    })
+
+    async function auth(login, password){
+
+        let loginData = {
+            "login": login,
+            "password":password
+        }
+         let response = await fetch('/auth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(loginData)
+        });
+        let content = await response.json()
+        let token = content['token']
+
+        console.log(content)
+        console.log(content['token'])
+        console.log(`login = ${login} password = ${password}`)
+
+        localStorage.setItem('token', token)
+
+        console.log(`token from localStorage = ${localStorage.getItem('token')}`)
+    }
+
+
+</script>
 
 </body>
 </html>
