@@ -5,6 +5,7 @@ import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.payload.UploadFileResponse;
 import com.CalculatorMVCUpload.service.FileStorageService;
 import com.CalculatorMVCUpload.service.UploadFileService;
+import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Log
 public class FileController {
-
-    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     @Autowired
     private FileStorageService fileStorageService;
@@ -90,7 +90,7 @@ public class FileController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            logger.info("Could not determine file type.");
+            log.info("Could not determine file type.");
         }
 
         if (contentType == null) {
