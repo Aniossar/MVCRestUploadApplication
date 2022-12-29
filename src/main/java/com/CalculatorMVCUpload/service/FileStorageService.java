@@ -4,6 +4,7 @@ import com.CalculatorMVCUpload.exception.BadNamingException;
 import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -20,10 +21,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
+@Log
 public class FileStorageService {
 
-    private String fileNamePrefix = "KPD_";
-    private String fileNameSuffix = "zip";
+    private final String fileNamePrefix = "KPD_";
+    private final String fileNameSuffix = "zip";
 
     private Path fileStorageLocation;
 
@@ -39,7 +41,7 @@ public class FileStorageService {
 
         try {
             Files.createDirectories(this.fileStorageLocation);
-            System.out.println("Files will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
+            log.info("Files will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }

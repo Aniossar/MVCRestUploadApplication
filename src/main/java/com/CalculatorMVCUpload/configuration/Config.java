@@ -1,6 +1,7 @@
 package com.CalculatorMVCUpload.configuration;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,6 +19,7 @@ import java.beans.PropertyVetoException;
 @Configuration
 @ComponentScan
 @EnableTransactionManagement
+@Log
 public class Config implements WebMvcConfigurer {
 
     @Value("${postgres.datasource.url}")
@@ -30,13 +32,13 @@ public class Config implements WebMvcConfigurer {
     private String databasePassword;
 
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
 
-        System.out.println("POSTGRES_URL in System.getEnv= " + System.getenv("POSTGRES_URL"));
-        System.out.println("POSTGRES_URL in the class= " + databaseUrl);
+        log.info("POSTGRES_URL in System.getEnv= " + System.getenv("POSTGRES_URL"));
+        log.info("POSTGRES_URL in the class= " + databaseUrl);
 
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        try{
+        try {
             dataSource.setDriverClass("org.postgresql.Driver");
             dataSource.setJdbcUrl(databaseUrl);
             dataSource.setUser(databaseLogin);
@@ -46,27 +48,6 @@ public class Config implements WebMvcConfigurer {
         }
         return dataSource;
     }
-
-//    @Bean
-//    public LocalSessionFactoryBean sessionFactory(){
-//        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-//        sessionFactory.setDataSource(dataSource());
-//        sessionFactory.setPackagesToScan("com.CalculatorMVCUpload.entity");
-//
-//        Properties hibernateProperties = new Properties();
-//        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-//        hibernateProperties.setProperty("hibernate.show_sql", "true");
-//        sessionFactory.setHibernateProperties(hibernateProperties);
-//
-//        return sessionFactory;
-//    }
-
-//    @Bean
-//    public HibernateTransactionManager transactionManager(){
-//        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-//        transactionManager.setSessionFactory(sessionFactory().getObject());
-//        return transactionManager;
-//    }
 
     @Bean
     public PlatformTransactionManager transactionManager() {

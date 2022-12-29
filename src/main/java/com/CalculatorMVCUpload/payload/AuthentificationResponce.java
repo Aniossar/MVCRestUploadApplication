@@ -1,18 +1,14 @@
 package com.CalculatorMVCUpload.payload;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class AuthentificationResponce {
 
     private String token;
 
-    public AuthentificationResponce(String token) {
-        this.token = token;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

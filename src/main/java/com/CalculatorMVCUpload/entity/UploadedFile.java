@@ -1,6 +1,9 @@
 package com.CalculatorMVCUpload.entity;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -9,6 +12,9 @@ import java.util.Date;
 @Entity
 @Table(name = "uploadedfiles")
 @Proxy(lazy = false)
+@Getter
+@Setter
+@NoArgsConstructor
 public class UploadedFile {
 
     @Id
@@ -34,8 +40,6 @@ public class UploadedFile {
     @Column(name = "hashcode")
     private int hashCode;
 
-    public UploadedFile() {
-    }
 
     public UploadedFile(String name, String path, String url, Date uploadDate, long size, int hashCode) {
         this.name = name;
@@ -46,59 +50,4 @@ public class UploadedFile {
         this.hashCode = hashCode;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Date getUploadDate() {
-        return uploadDate;
-    }
-
-    public void setUploadDate(Date uploadDate) {
-        this.uploadDate = uploadDate;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public int getHashCode() {
-        return hashCode;
-    }
-
-    public void setHashCode(int hashCode) {
-        this.hashCode = hashCode;
-    }
 }
