@@ -8,6 +8,11 @@ public class ViewController {
 
     @GetMapping("/login_window")
     public String myLogin() {
-        return "auth";
+        return "login_window";
+    }
+
+    @GetMapping("/dashboard")
+    public String myDashboard() {
+        return "dashboard";
     }
 }
