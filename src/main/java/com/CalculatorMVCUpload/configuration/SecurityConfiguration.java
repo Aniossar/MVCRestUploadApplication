@@ -23,12 +23,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/","/css/**","/images/**","/js/**","/fonts/**", "/login",
+//                        "/registration", "/admin/**", "/user/**", "/auth", "/register").permitAll()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/","/css/**","/images/**","/js/**","/fonts/**", "/login_window",
-                        "/fileUploader", "/dashboard").permitAll()
-                .and()
-                .authorizeRequests().anyRequest().authenticated()
+//                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests().antMatchers("/api/**").authenticated()
                 .and().formLogin().permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

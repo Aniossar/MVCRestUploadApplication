@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
+    <script src="https://kit.fontawesome.com/ac37b1b49c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/main_style.css">
+    <link rel="stylesheet" href="/css/registration.css">
+</head>
+<body>
+
+    <div class="reg_container">
+        <div class="form_reg_block">
+            <div class="form_reg_block_content">
+                <p class="form_reg_block_logo">Koreanika</p>
+                <p class="form_reg_block_header">Регистрация</p>
+                <form id="reg_form" class="form_reg_style" method="post">
+
+
+                    <div class="form_reg_role_block">
+                        <select class="role_selector" name="reg_role">
+                            <option value="SHOP">Салон</option>
+                            <option value="SUPPLIER">Поставщик материала</option>
+                          </select>
+                    </div>
+
+                    <div class="form_reg_login_block">
+                        <div class="reg_icon_block"><i class="fa-solid fa-user"></i></div>
+                        <input class="textfield" type="text" name="reg_login" placeholder="Введите логин" required>
+                    </div>
+                    <div class="form_reg_email_block">
+                        <div class="reg_icon_block"><i class="fa-solid fa-envelope"></i></div>
+                        <input class="textfield" type="email" name="reg_email" placeholder="Введите email" required>
+                    </div>
+    
+                    <div class="form_reg_password_block">
+                        <div class="reg_icon_block"><i class="fa-solid fa-lock"></i></div>
+                        <input class="textfield" type="password" name="reg_password" oninput="checkPassword()" placeholder="Введите пароль" required>
+                    </div>
+                    <div class="form_reg_password_block">
+                        <div class="reg_icon_block"><i class="fa-solid fa-lock"></i></div>
+                        <input class="textfield" type="password" name="reg_password_repeat" oninput="checkPassword()"  placeholder="Повторите пароль" required>
+                    </div>
+       
+                    <button class="form_reg_button" type="submit" name="form_reg_submit">Зарегистрироваться</button>
+                </form>
+                <div class="fogot_link"><a href="/login"> Уже зарегистрированы?</a></div>
+    
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/register.js"></script>
+    
+</body>
+</html>

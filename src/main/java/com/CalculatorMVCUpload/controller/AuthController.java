@@ -37,7 +37,7 @@ public class AuthController {
     private JwtProvider jwtProvider;
 
 
-    @PostMapping("/register")
+    @PostMapping("/api/register")
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         UserEntity userEntity = new UserEntity();
         userEntity.setPassword(registrationRequest.getPassword());
@@ -47,14 +47,14 @@ public class AuthController {
         return "OK";
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/api/auth")
     public AuthentificationResponse auth(@RequestBody AuthentificationRequest request) {
         UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         String token = jwtProvider.generateToken(userEntity.getLogin());
         return new AuthentificationResponse(token);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/api/me")
     public MeResponse checkUserAuth(@RequestHeader(name = "Authorization") String bearer) {
         String token = null;
         if (hasText(bearer) && bearer.startsWith("Bearer ")) {

@@ -23,12 +23,12 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
-    @GetMapping("/allActivities")
+    @GetMapping("/api/allActivities")
     public List<ActivityEntity> getAllActivities() {
         return activityService.getAllActivities();
     }
 
-    @PostMapping("/saveCalculatorActivity")
+    @PostMapping("/api/saveCalculatorActivity")
     private String saveExternalActivity(@RequestBody ExternalActivityPayload payload){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         try{
