@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/main_style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <script src="https://kit.fontawesome.com/ac37b1b49c.js" crossorigin="anonymous"></script>
+    <script src="/js/checkAuth.js"></script>
+
 </head>
 <body>
 
@@ -129,7 +131,7 @@
         </div>
     </div>
 
-    <div class="users_events_container_header_ext">
+    <div class="users_events_container_ext">
         <div class="users_events_container_header">
             <table class="event_table_header">
                 <caption>События пользователей</caption>
@@ -141,48 +143,13 @@
                 </tr>
             </table>
         </div>
-    </div>
-
-    <div class="users_events_container_ext">
         <div class="users_events_container">
             <table id="event_table" class="event_table">
                 
-
-                <tr>            
-                    <td>Дата</td>
-                    <td>Пользователь</td>
-                    <td>Операция</td>
-                    <td>Дополнительно</td>
-                </tr>
-                <tr>            
-                    <td>Дата</td>
-                    <td>Пользователь</td>
-                    <td>Операция</td>
-                    <td>Дополнительно</td>
-                </tr>
-                <tr>            
-                    <td>Дата</td>
-                    <td>Пользователь</td>
-                    <td>Операция</td>
-                    <td>Дополнительно</td>
-                </tr>
-
             </table>
         </div>
     </div>
-    
-    <script>
-        for(let i=0;i<25;i++){
-            event_table.innerHTML = event_table.innerHTML + `<tr>            
-                <td>Дата</td>
-                <td>Пользователь</td>
-                <td>Операция</td>
-                <td>Дополнительно</td>
-            </tr>`
-            
-        }
 
-    </script>
-    
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>
