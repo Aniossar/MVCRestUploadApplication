@@ -59,15 +59,15 @@
             "login": login,
             "password":password
         }
-         let response = await fetch('/auth', {
+         let response = await fetch('/api/auth', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify(loginData)
         });
-
-        if(!response.ok) return;
+        console.log(response)
+        //if(!response.ok) return;
 
         if(response.headers.get('Content-Type') == 'application/json'){
             let content = await response.json()

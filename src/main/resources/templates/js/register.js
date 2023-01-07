@@ -37,7 +37,7 @@ async function register(login, password, email, role){
         "email":email,
         "desiredRole":role
     }
-     let response = await fetch('/register', {
+     let response = await fetch('/api/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

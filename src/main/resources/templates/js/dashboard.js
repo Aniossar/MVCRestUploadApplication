@@ -1,11 +1,15 @@
 
 
-setTimeout(()=>{
+authStatus.then(()=>{
+
+    //onFulfilled
     document.querySelector('.user_name').innerHTML = userLogin
     document.querySelector('.user_info').innerHTML = userRole
     getUserActivities()
-}, 500)
 
+}, ()=>{
+    //onRejected
+})
 
 setInterval(()=>{
     document.querySelector('.user_name').innerHTML = userLogin
@@ -19,7 +23,7 @@ async function getUserActivities(){
 
     let jwtToken = localStorage.getItem('jwt-token');
 
-    let response = await fetch('api/allActivities', {
+    let response = await fetch('/api/allActivities', {
         method:'GET',
         headers:{
             'Authorization': 'Bearer ' + jwtToken
