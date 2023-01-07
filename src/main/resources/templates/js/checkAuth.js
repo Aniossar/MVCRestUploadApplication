@@ -19,13 +19,17 @@ async function checkAuth(){
         window.location.replace("/login");
         return 0;
     }else{
-        let response = await fetch('/me', {
+        let response = await fetch(ME_URL, {
             method:'GET',
             headers:{
                 'Authorization': 'Bearer ' + jwtToken
             }
 
         });
+
+        if(!response.ok){
+            window.location.replace("/login");
+        }
         if(response.headers.has('Content-Type')){
             console.log(response.headers.get('Content-Type'))
             if(response.headers.get('Content-Type') == 'application/json'){
@@ -53,6 +57,7 @@ async function checkAuth(){
                 return 0;
             }
         }else{
+            window.location.replace("/login");
             return 0;
         }
     }
