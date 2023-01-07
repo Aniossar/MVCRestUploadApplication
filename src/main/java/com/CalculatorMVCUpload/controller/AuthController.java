@@ -2,24 +2,18 @@ package com.CalculatorMVCUpload.controller;
 
 import com.CalculatorMVCUpload.configuration.CustomUserDetails;
 import com.CalculatorMVCUpload.configuration.CustomUserDetailsService;
-import com.CalculatorMVCUpload.configuration.jwt.JwtFilter;
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
+import com.CalculatorMVCUpload.entity.UserEntity;
 import com.CalculatorMVCUpload.payload.AuthentificationRequest;
 import com.CalculatorMVCUpload.payload.AuthentificationResponse;
 import com.CalculatorMVCUpload.payload.MeResponse;
 import com.CalculatorMVCUpload.payload.RegistrationRequest;
-import com.CalculatorMVCUpload.entity.UserEntity;
 import com.CalculatorMVCUpload.service.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import java.util.Collection;
 
 import static org.springframework.util.StringUtils.hasText;
 
