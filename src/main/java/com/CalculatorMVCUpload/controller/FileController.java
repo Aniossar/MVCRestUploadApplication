@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Log
+@RequestMapping("/api")
 public class FileController {
 
     @Autowired
