@@ -19,7 +19,7 @@ async function checkAuth(){
         window.location.replace("/login");
         return 0;
     }else{
-        let response = await fetch('/api/me', {
+        let response = await fetch('/me', {
             method:'GET',
             headers:{
                 'Authorization': 'Bearer ' + jwtToken
