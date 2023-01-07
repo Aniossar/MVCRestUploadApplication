@@ -8,27 +8,25 @@ import com.CalculatorMVCUpload.service.ActivityService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 @Log
 public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
 
-    @GetMapping("/api/allActivities")
+    @GetMapping("/allActivities")
     public List<ActivityEntity> getAllActivities() {
         return activityService.getAllActivities();
     }
 
-    @PostMapping("/api/saveCalculatorActivity")
+    @PostMapping("/saveCalculatorActivity")
     private String saveExternalActivity(@RequestBody ExternalActivityPayload payload){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         try{
