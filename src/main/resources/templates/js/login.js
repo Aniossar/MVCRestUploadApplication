@@ -23,7 +23,17 @@ async function auth(login, password){
         body: JSON.stringify(loginData)
     });
     console.log(response)
-    //if(!response.ok) return;
+    if(response.status != 200){
+        console.log("wrong data")
+        let div = document.querySelector('.form_auth_block_content')
+        div.innerHTML +='<div class="wrong_data"><p>Не верный логин или пароль</p></div>'
+
+
+        setTimeout(()=>{
+            document.querySelector('.wrong_data').remove()
+        }, 4000);
+        //return;
+    }
 
     if(response.headers.get('Content-Type') == 'application/json'){
         let content = await response.json()
