@@ -25,4 +25,9 @@ public class ViewController {
     public String userPage() {
         return "userPage";
     }
+
+    @GetMapping("/statistics")
+    public String statistics() {
+        return "statistics";
+    }
 }

@@ -62,3 +62,7 @@ async function checkAuth(){
         }
     }
 }
+
+function logout(){
+    localStorage.removeItem("jwt-token")
+}

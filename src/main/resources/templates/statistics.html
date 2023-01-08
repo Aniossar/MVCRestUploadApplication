@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
+    <link rel="stylesheet" href="css/main_style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/statistics.css">
+
+    <script src="js/constants.js"></script>
+<!--    <script src="js/checkAuth.js"></script>-->
+</head>
+<body>
+
+    <div class="menu_container">
+        <div class="menu_container_inner">
+            <div class="menu_container_content">
+                <div class="menu_user_info">
+                    <img src="images/user_no_logo.png" alt="">
+                    <div class="menu_user_info_2">
+                        <p class="user_name">USER NAME SURNAME</p>
+                        <p class="user_info">COMPANY/ROLE(ADMIN)</p>
+                        <a class="user_logout" onclick="logout()" href="/login">logout</a>
+                    </div>
+                </div>
+
+                <div class="menu_items">
+                    <ul>
+                        <li><a class="menu_link" href="/dashboard">Информация</a></li>
+                        <li><a class="menu_link"href="#">Пользователи</a></li>
+                        <li   ><a class="menu_link highlight" href="/statistics">Статистика</a></li>
+                        <li><a class="menu_link" href="#">Обновления</a></li>
+                        <li><a class="menu_link" href="#">Цены</a></li>
+                        <li><a class="menu_link" href="#">Новости</a></li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <h2 class="header">Статистика</h2>
+
+
+
+
+
+    <div class="container">
+        <div class="container_inner">
+
+            <div class="filter_onoff">
+                <div>
+                    <input type="checkbox"/>
+                    <span>Использовать фильтр</span>
+                </div>
+                <div>
+                    <input type="button" value="Download .xls"/>
+                </div>
+            </div>
+
+            <div class="container_filter">
+                <div class="filter">
+                    <div class="filter_column1">
+                        <div class="filter_row">
+                            <input type="checkbox"/>
+                            <span >Дата</span>
+                            <input type="date"/>
+                            <span class="sdd">-</span>
+                            <input type="date"/>
+
+                        </div>
+                        <div class="filter_row">
+                            <input type="checkbox"/>
+                            <span>Камень</span>
+                            <input type="text"/>
+
+                        </div>
+                        <div class="filter_row">
+                            <input type="checkbox"/>
+                            <span>Салон</span>
+                            <input type="text"/>
+
+                        </div>
+                        <div class="filter_row">
+                            <input type="checkbox"/>
+                            <span>Магазин</span>
+                            <input type="text"/>
+
+                        </div>
+                    </div>
+                    <div class="filter_column2">
+                        <div class="filter_row">
+                            <input type="checkbox"/>
+                            <span>Цена материала</span>
+                            <span>от</span>
+                            <input type="text"/>
+                            <span>до</span>
+                            <input type="text"/>
+                            <span>руб.</span>
+
+                        </div>
+                        <div class="filter_row">
+                            <input type="checkbox"/>
+                            <span>Цена доп. работ</span>
+                            <span>от</span>
+                            <input type="text"/>
+                            <span>до</span>
+                            <input type="text"/>
+                            <span>руб.</span>
+
+                        </div>
+                        <div class="filter_row">
+                            <input type="checkbox"/>
+                            <span>Цена общая</span>
+                            <span>от</span>
+                            <input type="text"/>
+                            <span>до</span>
+                            <input type="text"/>
+                            <span>руб.</span>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div class="table_container">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Салон</th>
+                            <th>Пользователь</th>
+                            <th>Тип события</th>
+                            <th>Материал</th>
+                            <th>Кол-во слэбов</th>
+                            <th>Площадь изделия</th>
+                            <th>Сумма материала</th>
+                            <th>Сумма доп. работ</th>
+                            <th>Сумма счета</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Date</td>
+                            <td>Салон</td>
+                            <td>Пользователь</td>
+                            <td>Тип события</td>
+                            <td>Материал</td>
+                            <td>Кол-во слэбов</td>
+                            <td>Площадь изделия</td>
+                            <td>Сумма материала</td>
+                            <td>Сумма доп. работ</td>
+                            <td>Сумма счета</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/statistics.js"></script>
+
+</body>
+</html>
