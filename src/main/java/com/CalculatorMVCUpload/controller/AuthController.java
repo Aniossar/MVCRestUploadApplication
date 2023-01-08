@@ -39,7 +39,7 @@ public class AuthController {
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         UserEntity userEntity = new UserEntity();
         if (userService.findByLogin(registrationRequest.getLogin()) != null
-                || userService.findByEmail(registrationRequest.getEmail()) != null){
+                || userService.findByEmail(registrationRequest.getEmail()) != null) {
             throw new ExistingLoginEmailRegister("This login or email is already registered");
         }
         userEntity.setPassword(registrationRequest.getPassword());
@@ -58,7 +58,7 @@ public class AuthController {
     public AuthentificationResponse auth(@RequestBody AuthentificationRequest request) {
         try {
             UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
-            String token = jwtProvider.generateToken(userEntity.getLogin());
+            String token = jwtProvider.generateToken(userEntity.getLogin(), userEntity.getRoleEntity());
             return new AuthentificationResponse(token);
         } catch (NullPointerException nullPointerException) {
             log.warning("Failed auth with login: " + request.getLogin());
@@ -74,11 +74,9 @@ public class AuthController {
         }
         if (token != null && jwtProvider.validateToken(token)) {
             String userLogin = jwtProvider.getLoginFromToken(token);
-            CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
-
-            //добавить нормальный getRole
-            MeResponse meResponse = new MeResponse(userLogin, "USER");
+            String roleFromToken = jwtProvider.getRoleFromToken(token);
+            MeResponse meResponse = new MeResponse(userLogin, roleFromToken);
             return meResponse;
-        } else return null;
+        } else throw new BadAuthException("No user is authorized");
     }
 }
