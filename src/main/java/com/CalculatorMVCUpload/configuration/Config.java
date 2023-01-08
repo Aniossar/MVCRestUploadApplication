@@ -25,15 +25,6 @@ public class Config implements WebMvcConfigurer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/templates/" };
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        if (!registry.hasMappingForPattern("/**")) {
-            registry.addResourceHandler("/**").addResourceLocations(
-                    CLASSPATH_RESOURCE_LOCATIONS);
-        }
-    }
-
     @Value("${postgres.datasource.url}")
     private String databaseUrl;
 
@@ -79,6 +70,15 @@ public class Config implements WebMvcConfigurer {
         factory.setPackagesToScan("com.CalculatorMVCUpload.entity");
         factory.setDataSource(dataSource());
         return factory;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        if (!registry.hasMappingForPattern("/**")) {
+            registry.addResourceHandler("/**").addResourceLocations(
+                    CLASSPATH_RESOURCE_LOCATIONS);
+        }
     }
 
 }

@@ -28,6 +28,21 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "full_name")
+    private String fullName;
+
+    @Column(name = "company_name")
+    private String companyName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "certain_place_address")
+    private String certainPlaceAddress;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;

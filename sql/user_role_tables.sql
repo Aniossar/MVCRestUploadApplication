@@ -30,7 +30,12 @@ CREATE TABLE public.user_table
 --         constraint user_table_activity_table_login_fk
 --             references activity_table,
     password varchar(500) NOT NULL,
-    email varchar(100) NOT NULL,
+    email varchar(100),
+    full_name varchar(100),
+    company_name varchar(100),
+    phone_number varchar(100),
+    address varchar(500),
+    certain_place_address varchar(500),
     role_id  integer
         constraint user_table_role_table_id_fk
             references role_table

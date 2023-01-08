@@ -35,6 +35,10 @@ public class UserService {
         return userEntityRepository.findByLogin(login);
     }
 
+    public UserEntity findByEmail(String email) {
+        return userEntityRepository.findByEmail(email);
+    }
+
     public UserEntity findByLoginAndPassword(String login, String password) {
         UserEntity userEntity = findByLogin(login);
         if (userEntity != null) {
