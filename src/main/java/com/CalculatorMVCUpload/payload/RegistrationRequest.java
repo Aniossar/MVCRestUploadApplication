@@ -21,7 +21,16 @@ public class RegistrationRequest {
 
     private String email;
 
-    private DesiredRole desiredRole;
+    private String fullName;
 
+    private String companyName;
+
+    private String phoneNumber;
+
+    private String address;
+
+    private String certainPlaceAddress;
+
+    private DesiredRole desiredRole;
 
 }
