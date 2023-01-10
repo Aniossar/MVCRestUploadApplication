@@ -2,7 +2,7 @@ package com.CalculatorMVCUpload.service;
 
 import com.CalculatorMVCUpload.entity.RoleEntity;
 import com.CalculatorMVCUpload.entity.UserEntity;
-import com.CalculatorMVCUpload.payload.RegistrationRequest;
+import com.CalculatorMVCUpload.payload.request.RegistrationRequest;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.repository.UserEntityRepository;
 import lombok.extern.java.Log;
@@ -27,6 +27,11 @@ public class UserService {
         log.info("Saving new user to database " + userEntity.getLogin());
         RoleEntity userRole = roleEntityRepository.findByName("ROLE_" + desiredRole);
         userEntity.setRoleEntity(userRole);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        return userEntityRepository.save(userEntity);
+    }
+
+    public UserEntity updateUser(UserEntity userEntity){
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         return userEntityRepository.save(userEntity);
     }

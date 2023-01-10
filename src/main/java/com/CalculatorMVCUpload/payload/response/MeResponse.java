@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.payload;
+package com.CalculatorMVCUpload.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ExternalActivityPayload {
+public class MeResponse {
 
-    private String activityMessage;
-
+    private String login;
+    private String roleName;
 }

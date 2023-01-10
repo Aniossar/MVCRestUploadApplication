@@ -1,6 +1,5 @@
 package com.CalculatorMVCUpload.entity;
 
-import com.CalculatorMVCUpload.payload.RegistrationRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

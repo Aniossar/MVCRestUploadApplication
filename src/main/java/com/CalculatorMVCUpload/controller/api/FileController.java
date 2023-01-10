@@ -1,13 +1,11 @@
-package com.CalculatorMVCUpload.controller;
+package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
-import com.CalculatorMVCUpload.payload.UploadFileResponse;
+import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.FileStorageService;
 import com.CalculatorMVCUpload.service.UploadFileService;
 import lombok.extern.java.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

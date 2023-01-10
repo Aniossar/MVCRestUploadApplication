@@ -1,9 +1,7 @@
-package com.CalculatorMVCUpload.controller;
+package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.ActivityEntity;
-import com.CalculatorMVCUpload.entity.UploadedFile;
-import com.CalculatorMVCUpload.payload.AuthentificationRequest;
-import com.CalculatorMVCUpload.payload.ExternalActivityPayload;
+import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
 import com.CalculatorMVCUpload.service.ActivityService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +25,11 @@ public class ActivityController {
     }
 
     @PostMapping("/saveCalculatorActivity")
-    private String saveExternalActivity(@RequestBody ExternalActivityPayload payload){
+    private String saveExternalActivity(@RequestBody SingleMessageRequest payload){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         try{
             ActivityEntity activityEntity = new ActivityEntity(Instant.now(), "Calculator", userName,
-                    payload.getActivityMessage());
+                    payload.getMessage());
             activityService.saveActivity(activityEntity);
             return "OK";
         } catch (Exception e){
