@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.payload;
+package com.CalculatorMVCUpload.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MeResponse {
+public class SingleMessageRequest {
 
-    private String login;
-    private String roleName;
+    private String message;
+
 }

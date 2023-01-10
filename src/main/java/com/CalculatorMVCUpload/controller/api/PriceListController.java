@@ -1,8 +1,8 @@
-package com.CalculatorMVCUpload.controller;
+package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.PriceListEntity;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
-import com.CalculatorMVCUpload.payload.UploadFileResponse;
+import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.PriceListStorageService;
 import com.CalculatorMVCUpload.service.PriceListUploadService;
 import lombok.extern.java.Log;

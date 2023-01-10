@@ -18,12 +18,19 @@ REST EndPoints for working with price list files:
 
 REST Endpoints for authorization:
 1. POST /register - register user
-2. POST /auth - login user; return token
-3. GET /me - check user auth; return role
+2. POST /auth - login user; return access token + refresh token
+3. POST /token - return new access token using refresh token
+4. GET /me - check user auth; return role
+5. POST /api/refreshToken - return new refresh token using old refresh token
+6. PUT /api/changeOwnPassword - change password of authenticated user
 
 REST Endpoints for activity:
 1. GET /api/allActivities - get all user activities
 2. POST /api/saveCalculatorActivity - saves activity from calculator app
+
+REST Endpoints for system information:
+1. GET /api/getApplicationStart - get time the app started
+2. GET /api/getApplicationWorkingTime - calculates the period the app is working
 
 Docker:
 

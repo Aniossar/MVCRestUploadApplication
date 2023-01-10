@@ -4,11 +4,13 @@ import com.CalculatorMVCUpload.entity.RoleEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -16,23 +18,45 @@ import java.util.Date;
 @Log
 public class JwtProvider {
 
-    @Value("$(jwt.secret)")
-    private String jwtSecret;
+    @Value("$(jwt.access.secret)")
+    private String jwtAccessSecret;
+    @Value("$(jwt.refresh.secret)")
+    private String jwtRefreshSecret;
 
-    public String generateToken(String login, RoleEntity roleEntity) {
-        log.info("Generating token for " + login);
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public String generateAccessToken(@NonNull String login, RoleEntity roleEntity) {
+        final LocalDateTime now = LocalDateTime.now();
+        final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
+        final Date accessExpiration = Date.from(accessExpirationInstant);
         return Jwts.builder()
                 .setSubject(login)
                 .claim("roles", roleEntity.getName())
-                .setExpiration(date)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(accessExpiration)
+                .signWith(SignatureAlgorithm.HS512, jwtAccessSecret)
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public String generateRefreshToken(@NonNull String login) {
+        final LocalDateTime now = LocalDateTime.now();
+        final Instant refreshExpirationInstant = now.plusDays(40).atZone(ZoneId.systemDefault()).toInstant();
+        final Date refreshExpiration = Date.from(refreshExpirationInstant);
+        return Jwts.builder()
+                .setSubject(login)
+                .setExpiration(refreshExpiration)
+                .signWith(SignatureAlgorithm.HS512, jwtRefreshSecret)
+                .compact();
+    }
+
+    public boolean validateAccessToken(@NonNull String accessToken) {
+        return validateToken(accessToken, jwtAccessSecret);
+    }
+
+    public boolean validateRefreshToken(@NonNull String refreshToken) {
+        return validateToken(refreshToken, jwtRefreshSecret);
+    }
+
+    public boolean validateToken(String token, String secretKey) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             log.severe("invalid token");
@@ -40,13 +64,18 @@ public class JwtProvider {
         return false;
     }
 
-    public String getLoginFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+    public String getLoginFromAccessToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(jwtAccessSecret).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
 
-    public String getRoleFromToken(String token){
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+    public String getLoginFromRefreshToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(jwtRefreshSecret).parseClaimsJws(token).getBody();
+        return claims.getSubject();
+    }
+
+    public String getRoleFromAccessToken(String token){
+        Claims claims = Jwts.parser().setSigningKey(jwtAccessSecret).parseClaimsJws(token).getBody();
         String roles = (String) claims.get("roles");
         return roles;
     }

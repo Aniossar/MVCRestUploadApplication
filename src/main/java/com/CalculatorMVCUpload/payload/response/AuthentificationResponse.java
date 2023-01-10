@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.payload;
+package com.CalculatorMVCUpload.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AuthentificationResponse {
 
-    private String token;
+    private String accessToken;
+
+    private String refreshToken;
 
 }
