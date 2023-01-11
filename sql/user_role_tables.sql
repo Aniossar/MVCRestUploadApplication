@@ -20,7 +20,7 @@ CREATE TABLE public.activity_table
     activity_time timestamp with time zone NOT NULL,
     activity_type varchar(50) NOT NULL,
     login varchar(100) NOT NULL,
-    activity_message varchar(1000) NOT NULL
+    activity_message varchar(3000) NOT NULL
 );
 
 CREATE TABLE public.user_table

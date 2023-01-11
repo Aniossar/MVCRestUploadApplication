@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -28,8 +29,9 @@ public class ActivityController {
     private String saveExternalActivity(@RequestBody SingleMessageRequest payload){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         try{
+            String decodedActivity = new String(Base64.getDecoder().decode(payload.getMessage()));
             ActivityEntity activityEntity = new ActivityEntity(Instant.now(), "Calculator", userName,
-                    payload.getMessage());
+                    decodedActivity);
             activityService.saveActivity(activityEntity);
             return "OK";
         } catch (Exception e){

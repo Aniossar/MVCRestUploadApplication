@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,14 +23,28 @@ public class AuthService {
     @Autowired
     private JwtProvider jwtProvider;
 
-    private final Map<String, String> refreshStorage = new HashMap<>();
+    private final Map<String, ArrayList<String>> refreshStorage = new HashMap<>();
+    private final int numberOfConcurrentSessions = 5;
 
     public AuthentificationResponse authenticate(AuthentificationRequest authRequest) {
         try {
             UserEntity userEntity = userService.findByLoginAndPassword(authRequest.getLogin(), authRequest.getPassword());
             String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
             String refreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin());
-            refreshStorage.put(userEntity.getLogin(), refreshToken);
+            ArrayList<String> refreshTokens = refreshStorage.get(userEntity.getLogin());
+
+            if (refreshTokens != null) {
+                if (refreshTokens.size() < numberOfConcurrentSessions) {
+                    refreshTokens.add(refreshToken);
+                } else {
+                    refreshTokens = new ArrayList<>();
+                    refreshTokens.add(refreshToken);
+                }
+            } else {
+                refreshTokens = new ArrayList<>();
+                refreshTokens.add(refreshToken);
+            }
+            refreshStorage.put(userEntity.getLogin(), refreshTokens);
             return new AuthentificationResponse(accessToken, refreshToken);
         } catch (NullPointerException nullPointerException) {
             log.warning("Failed auth with login: " + authRequest.getLogin());
@@ -40,8 +55,8 @@ public class AuthService {
     public AuthentificationResponse getAccessToken(String refreshToken) {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             String login = jwtProvider.getLoginFromRefreshToken(refreshToken);
-            String savedRefreshToken = refreshStorage.get(login);
-            if (savedRefreshToken != null && savedRefreshToken.equals(refreshToken)) {
+            ArrayList<String> savedRefreshTokens = refreshStorage.get(login);
+            if (savedRefreshTokens != null && savedRefreshTokens.contains(refreshToken)) {
                 UserEntity userEntity = userService.findByLogin(login);
                 String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
                 return new AuthentificationResponse(accessToken, null);
@@ -53,12 +68,15 @@ public class AuthService {
     public AuthentificationResponse getNewRefreshToken(String refreshToken) {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             String login = jwtProvider.getLoginFromRefreshToken(refreshToken);
-            String savedRefreshToken = refreshStorage.get(login);
-            if (savedRefreshToken != null && savedRefreshToken.equals(refreshToken)) {
+            ArrayList<String> savedRefreshTokens = refreshStorage.get(login);
+            if (savedRefreshTokens != null && savedRefreshTokens.contains(refreshToken)) {
                 UserEntity userEntity = userService.findByLogin(login);
                 String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
                 String newRefreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin());
-                refreshStorage.put(userEntity.getLogin(), newRefreshToken);
+                ArrayList<String> newSavedRefreshTokens = savedRefreshTokens;
+                newSavedRefreshTokens.remove(savedRefreshTokens.indexOf(refreshToken));
+                newSavedRefreshTokens.add(newRefreshToken);
+                refreshStorage.put(userEntity.getLogin(), newSavedRefreshTokens);
                 return new AuthentificationResponse(accessToken, newRefreshToken);
             }
         }

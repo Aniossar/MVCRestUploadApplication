@@ -21,7 +21,7 @@ public class LoggingAspect {
     private final String userTypeActivity = "User Activity";
     private final String updateFileTypeActivity = "Update file";
 
-    @AfterReturning("execution(* com.CalculatorMVCUpload.configuration.jwt.JwtProvider.generateToken(String))"
+    @AfterReturning("execution(* com.CalculatorMVCUpload.configuration.jwt.JwtProvider.generateAccessToken(String))"
             + "&&args(loginString)")
     public void loginUserAdvice(JoinPoint joinPoint, String loginString) {
         Instant timeStamp = Instant.now();
