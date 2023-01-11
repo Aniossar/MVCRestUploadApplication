@@ -1,6 +1,5 @@
 package com.CalculatorMVCUpload.aspect;
 
-import com.CalculatorMVCUpload.entity.ActivityEntity;
 import com.CalculatorMVCUpload.entity.EmailContext;
 import com.CalculatorMVCUpload.payload.request.RegistrationRequest;
 import com.CalculatorMVCUpload.service.EmailService;
@@ -9,12 +8,9 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 

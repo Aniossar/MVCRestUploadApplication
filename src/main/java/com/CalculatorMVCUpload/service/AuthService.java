@@ -32,10 +32,6 @@ public class AuthService {
             String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
             String refreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin());
             ArrayList<String> refreshTokens = refreshStorage.get(userEntity.getLogin());
-            /*System.out.println(userEntity.getLogin());
-            if(refreshTokens != null){
-                refreshTokens.stream().forEach(item -> System.out.print(item + " "));
-            }*/
 
             if (refreshTokens != null) {
                 if (refreshTokens.size() < numberOfConcurrentSessions) {
@@ -49,8 +45,6 @@ public class AuthService {
                 refreshTokens.add(refreshToken);
             }
             refreshStorage.put(userEntity.getLogin(), refreshTokens);
-            System.out.println(userEntity.getLogin());
-            refreshTokens.stream().forEach(item -> System.out.print(item + " "));
             return new AuthentificationResponse(accessToken, refreshToken);
         } catch (NullPointerException nullPointerException) {
             log.warning("Failed auth with login: " + authRequest.getLogin());
