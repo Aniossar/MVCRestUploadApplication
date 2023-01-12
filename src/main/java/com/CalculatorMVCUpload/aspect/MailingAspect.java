@@ -35,7 +35,7 @@ public class MailingAspect {
             context.put("email", registrationRequest.getEmail());
             emailContext.setContext(context);
             emailService.sendMail(emailContext);
-            log.info("Sended welcome letter to email " + registrationRequest.getEmail());
+            log.info("Sent welcome letter to email " + registrationRequest.getEmail());
         } catch (MessagingException e) {
             log.severe("Error while sending out email — " + e.getLocalizedMessage());
         }

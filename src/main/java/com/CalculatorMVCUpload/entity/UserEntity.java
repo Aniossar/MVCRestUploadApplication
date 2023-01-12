@@ -3,6 +3,7 @@ package com.CalculatorMVCUpload.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class UserEntity {
 
     @Id
@@ -41,6 +43,9 @@ public class UserEntity {
 
     @Column(name = "certain_place_address")
     private String certainPlaceAddress;
+
+    @Column(name = "appAccess")
+    private String appAccess;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

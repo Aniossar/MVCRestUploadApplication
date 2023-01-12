@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import static org.springframework.util.StringUtils.hasText;
+
 @Component
 @Log
 public class JwtProvider {
@@ -78,5 +80,17 @@ public class JwtProvider {
         Claims claims = Jwts.parser().setSigningKey(jwtAccessSecret).parseClaimsJws(token).getBody();
         String roles = (String) claims.get("roles");
         return roles;
+    }
+
+    public String getLoginFromBearer(String bearer){
+        String token = null;
+        String userLogin = null;
+        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
+            token = bearer.substring(7);
+        }
+        if (token != null && validateAccessToken(token)) {
+            userLogin = getLoginFromAccessToken(token);
+        }
+        return userLogin;
     }
 }

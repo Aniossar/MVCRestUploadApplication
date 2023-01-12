@@ -1,4 +1,6 @@
-1. Add directory Upload and update the path in application.properties
+Add directory Upload and update the path in application.properties
+
+_All /api/ endpoints need authorization with bearer token._
 
 REST EndPoints for working with update files:
 1. GET /api/updatefiles/lastFile — get the last uploaded file in JSON
@@ -22,15 +24,24 @@ REST Endpoints for authorization:
 3. POST /token - return new access token using refresh token
 4. GET /me - check user auth; return role
 5. POST /api/refreshToken - return new refresh token using old refresh token
-6. PUT /api/changeOwnPassword - change password of authenticated user
+6. POST /forgottenPassword - send restoring token for resetting password on user's email
+7. POST /resetPassword - takes restoring token with new password and changes in db
 
-REST Endpoints for activity:
+REST Endpoints for user management:
+1. PUT /api/changeOwnPassword - change password of authenticated user
+2. DELETE /api/deleteUser/{login} - delete user (only for ADMIN)
+
+REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities
 2. POST /api/saveCalculatorActivity - saves activity from calculator app
 
 REST Endpoints for system information:
 1. GET /api/getApplicationStart - get time the app started
 2. GET /api/getApplicationWorkingTime - calculates the period the app is working
+
+REST Endpoint for user online status management:
+1. GET /api/pingAlive - request from client to ping that user is active
+2. GET /api/showUserStats - get all active users for the last N minutes
 
 Docker:
 

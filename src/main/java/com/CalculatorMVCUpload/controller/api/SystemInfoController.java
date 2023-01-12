@@ -1,6 +1,7 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.configuration.SystemParametersConfig;
+import com.CalculatorMVCUpload.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ public class SystemInfoController {
 
     @Autowired
     private SystemParametersConfig systemParametersConfig;
+
+    @Autowired
+    private UserService userService;
 
     private final String patternFormat = "dd.MM.yyyy hh:mm:ss";
 

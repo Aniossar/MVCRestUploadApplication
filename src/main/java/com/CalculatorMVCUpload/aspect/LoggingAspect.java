@@ -20,6 +20,7 @@ public class LoggingAspect {
 
     private final String userTypeActivity = "User Activity";
     private final String updateFileTypeActivity = "Update file";
+    private final String priceListFileTypeActivity = "Price list file";
 
     @AfterReturning("execution(* com.CalculatorMVCUpload.configuration.jwt.JwtProvider.generateAccessToken(String))"
             + "&&args(loginString)")
@@ -47,6 +48,15 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
+    @AfterReturning("execution(* com.CalculatorMVCUpload.service.UserService.deleteUser(..))" + "&&args(login,..)")
+    public void deleteUserAdvice(JoinPoint joinPoint, String login) {
+        Instant timeStamp = Instant.now();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, userName,
+                "Deleted user: " + login);
+        activityService.saveActivity(activityEntity);
+    }
+
     @AfterReturning("execution(public * com.CalculatorMVCUpload.service.UploadFileService.addNewFile(..))")
     public void addNewFileAdvice() {
         Instant timeStamp = Instant.now();
@@ -62,6 +72,24 @@ public class LoggingAspect {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, updateFileTypeActivity, userName,
                 "Update file deleted by " + userName);
+        activityService.saveActivity(activityEntity);
+    }
+
+    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.PriceListUploadService.addNewFile(..))")
+    public void addNewPriceListAdvice() {
+        Instant timeStamp = Instant.now();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        ActivityEntity activityEntity = new ActivityEntity(timeStamp, priceListFileTypeActivity, userName,
+                "New price list file uploaded by " + userName);
+        activityService.saveActivity(activityEntity);
+    }
+
+    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.PriceListUploadService.deleteFile(..))")
+    public void deletePriceListFileAdvice() {
+        Instant timeStamp = Instant.now();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        ActivityEntity activityEntity = new ActivityEntity(timeStamp, priceListFileTypeActivity, userName,
+                "Price list file deleted by " + userName);
         activityService.saveActivity(activityEntity);
     }
 

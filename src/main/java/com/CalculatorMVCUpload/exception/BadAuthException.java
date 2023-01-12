@@ -3,7 +3,7 @@ package com.CalculatorMVCUpload.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "Login/password are incorrect")
+@ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "User not found")
 public class BadAuthException extends RuntimeException {
 
     public BadAuthException(String message) {

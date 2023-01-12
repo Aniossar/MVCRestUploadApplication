@@ -25,4 +25,9 @@ public class ViewController {
     public String userPage() {
         return "userPage";
     }
+
+    @GetMapping("/changePassword?token={restoreToken}")
+    public String restorePasswordPage(String restoreToken){
+        return "restorePass";
+    }
 }

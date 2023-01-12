@@ -36,6 +36,11 @@ public class UserService {
         return userEntityRepository.save(userEntity);
     }
 
+    public void deleteUser(String login){
+        UserEntity userEntity = findByLogin(login);
+        userEntityRepository.delete(userEntity);
+    }
+
     public UserEntity findByLogin(String login) {
         return userEntityRepository.findByLogin(login);
     }

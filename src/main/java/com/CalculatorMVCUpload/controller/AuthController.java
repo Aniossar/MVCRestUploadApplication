@@ -2,23 +2,29 @@ package com.CalculatorMVCUpload.controller;
 
 import com.CalculatorMVCUpload.configuration.CustomUserDetailsService;
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
+import com.CalculatorMVCUpload.entity.EmailContext;
 import com.CalculatorMVCUpload.entity.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
 import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
-import com.CalculatorMVCUpload.payload.request.AuthentificationRequest;
-import com.CalculatorMVCUpload.payload.request.RefreshTokenRequest;
-import com.CalculatorMVCUpload.payload.request.RegistrationRequest;
+import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
+import com.CalculatorMVCUpload.payload.request.*;
 import com.CalculatorMVCUpload.payload.response.AuthentificationResponse;
 import com.CalculatorMVCUpload.payload.response.MeResponse;
 import com.CalculatorMVCUpload.service.AuthService;
+import com.CalculatorMVCUpload.service.EmailService;
 import com.CalculatorMVCUpload.service.UserService;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -36,6 +42,10 @@ public class AuthController {
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private EmailService emailService;
+
     @Autowired
     private JwtProvider jwtProvider;
 
@@ -54,6 +64,7 @@ public class AuthController {
         userEntity.setPhoneNumber(registrationRequest.getPhoneNumber());
         userEntity.setAddress(registrationRequest.getAddress());
         userEntity.setCertainPlaceAddress(registrationRequest.getCertainPlaceAddress());
+        userEntity.setAppAccess(registrationRequest.getAppAccess());
         userService.saveUser(userEntity, registrationRequest.getDesiredRole());
         return "OK";
     }
@@ -65,7 +76,7 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<AuthentificationResponse> getNewAccessToken(@RequestBody RefreshTokenRequest request){
+    public ResponseEntity<AuthentificationResponse> getNewAccessToken(@RequestBody RefreshTokenRequest request) {
         AuthentificationResponse authResponse = authService.getAccessToken(request.getRefreshToken());
         return ResponseEntity.ok(authResponse);
     }
@@ -81,5 +92,47 @@ public class AuthController {
             String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
             return new MeResponse(userLogin, roleFromToken);
         } else throw new BadAuthException("No user is authorized");
+    }
+
+    @PostMapping("/forgottenPassword")
+    public String situationWithTheForgottenPassword(@RequestBody SingleMessageRequest request) {
+        String usersMail = request.getMessage();
+        UserEntity userEntity = userService.findByEmail(usersMail);
+        if (userEntity != null) {
+            String restoringToken = authService.generateRestoringPasswordToken(userEntity.getLogin());
+            String contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+            String restorePasswordUrl = contextPath + "/changePassword?token=" + restoringToken;
+            try {
+                EmailContext emailContext = new EmailContext();
+                emailContext.setFrom("noreply@koreanika.ru");
+                emailContext.setSubject("Восстановление пароля на портале KOREANIKA");
+                emailContext.setTo(usersMail);
+                emailContext.setTemplateLocation("passwordRestoreLetter");
+                Map<String, Object> context = new HashMap<>();
+                context.put("restorePwLink", restorePasswordUrl);
+                emailContext.setContext(context);
+                emailService.sendMail(emailContext);
+                log.info("Sent restoring letter to email " + usersMail);
+                return "OK";
+            } catch (MessagingException e) {
+                log.severe("Error while sending out email — " + e.getLocalizedMessage());
+            }
+        } else {
+            throw new BadAuthException("User mail not found");
+        }
+        return "NOK";
+    }
+
+    @PutMapping("/resetPassword")
+    public void resetPassword(@RequestBody PasswordResetRequest request) {
+        String loginFromRestoreToken = authService.getLoginFromRestoreToken(request.getRestoreToken());
+        if (loginFromRestoreToken != null) {
+            UserEntity userEntity = userService.findByLogin(loginFromRestoreToken);
+            if (userEntity != null) {
+                userEntity.setPassword(request.getNewPassword());
+                userService.updateUser(userEntity);
+            } else throw new WrongPasswordUserMovesException("Wrong old password");
+        }
+        throw new BadAuthException("Need authorization");
     }
 }

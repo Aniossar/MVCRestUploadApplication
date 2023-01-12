@@ -31,6 +31,8 @@ public class RegistrationRequest {
 
     private String certainPlaceAddress;
 
+    private String appAccess;
+
     private DesiredRole desiredRole;
 
 }
