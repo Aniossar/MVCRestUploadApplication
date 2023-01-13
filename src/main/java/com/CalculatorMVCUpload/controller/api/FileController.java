@@ -2,6 +2,7 @@ package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
+import com.CalculatorMVCUpload.payload.request.FileInfoChangeRequest;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.FileStorageService;
 import com.CalculatorMVCUpload.service.UploadFileService;
@@ -11,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,10 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @Log
@@ -35,6 +35,8 @@ public class FileController {
 
     @Autowired
     private UploadFileService uploadFileService;
+
+    private final String markFileForAll = "ALL";
 
     @GetMapping("/allFiles")
     public List<UploadedFile> getAllFiles() {
@@ -49,7 +51,9 @@ public class FileController {
     }
 
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file,
+                                         @RequestParam("info") String info,
+                                         @RequestParam("forClients") String forClients) {
         String fileName = fileStorageService.storeFile(file);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -67,18 +71,14 @@ public class FileController {
                 file.getSize(),
                 file.hashCode());
 
+        String author = SecurityContextHolder.getContext().getAuthentication().getName();
+        uploadedFile.setAuthor(author);
+        uploadedFile.setInfo(info);
+        uploadedFile.setForClients(forClients);
         uploadFileService.addNewFile(uploadedFile);
 
         return new UploadFileResponse(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());
-    }
-
-    @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file))
-                .collect(Collectors.toList());
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
@@ -117,7 +117,6 @@ public class FileController {
         }
     }
 
-
     @GetMapping("/lastFile")
     public UploadedFile getLastUploadedFile() {
         try {
@@ -126,6 +125,30 @@ public class FileController {
         } catch (Exception e) {
             throw new FileNotFoundException("No files uploaded");
         }
+    }
+
+    @GetMapping("/lastFile/{forClients}")
+    public UploadedFile getLastUploadedFileForClients(@PathVariable String forClients) {
+        UploadedFile lastFileForAll = uploadFileService.getLastFileByForClients(markFileForAll);
+        try {
+            UploadedFile lastFileForClients = uploadFileService.getLastFileByForClients(forClients);
+            return (lastFileForClients.getId() > lastFileForAll.getId() ? lastFileForClients : lastFileForAll);
+        } catch (Exception e) {
+            return lastFileForAll;
+        }
+    }
+
+    @PostMapping("/editFileInfo/{id}")
+    public void editFileInfo(@RequestBody FileInfoChangeRequest request,
+                             @PathVariable int id) {
+        UploadedFile uploadedFile = uploadFileService.getFileViaId(id);
+        if (request.getInfo() != null) {
+            uploadedFile.setInfo(request.getInfo());
+        }
+        if (request.getForClients() != null) {
+            uploadedFile.setForClients(request.getForClients());
+        }
+        uploadFileService.addNewFile(uploadedFile);
     }
 
 }

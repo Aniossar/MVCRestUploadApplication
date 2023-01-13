@@ -40,6 +40,14 @@ public class UploadedFile {
     @Column(name = "hashcode")
     private int hashCode;
 
+    @Column(name = "info")
+    private String info;
+
+    @Column(name = "for_clients")
+    private String forClients;
+
+    @Column(name = "author")
+    private String author;
 
     public UploadedFile(String name, String path, String url, Date uploadDate, long size, int hashCode) {
         this.name = name;

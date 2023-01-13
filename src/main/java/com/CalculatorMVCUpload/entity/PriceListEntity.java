@@ -31,14 +31,23 @@ public class PriceListEntity {
     @Column(name = "uploadtime")
     private Instant uploadTime;
 
+    @Column(name = "info")
+    private String info;
+
+    @Column(name = "for_clients")
+    private String forClients;
+
     @Column(name = "author")
     private String userAuthor;
 
-    public PriceListEntity(String name, String path, String url, Instant uploadTime, String userAuthor) {
+    public PriceListEntity(String name, String path, String url, Instant uploadTime,
+                           String info, String forClients, String userAuthor) {
         this.name = name;
         this.path = path;
         this.url = url;
         this.uploadTime = uploadTime;
+        this.info = info;
+        this.forClients = forClients;
         this.userAuthor = userAuthor;
     }
 }

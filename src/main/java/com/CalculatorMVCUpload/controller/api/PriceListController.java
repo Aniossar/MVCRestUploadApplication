@@ -1,7 +1,9 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.PriceListEntity;
+import com.CalculatorMVCUpload.entity.UploadedFile;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
+import com.CalculatorMVCUpload.payload.request.FileInfoChangeRequest;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.PriceListStorageService;
 import com.CalculatorMVCUpload.service.PriceListUploadService;
@@ -35,6 +37,8 @@ public class PriceListController {
     @Autowired
     private PriceListUploadService priceListUploadService;
 
+    private final String markFileForAll = "ALL";
+
     @GetMapping("/allFiles")
     public List<PriceListEntity> getAllPrices() {
         return priceListUploadService.getAllFiles();
@@ -46,7 +50,9 @@ public class PriceListController {
     }
 
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadPriceFile(@RequestParam("file") MultipartFile file) {
+    public UploadFileResponse uploadPriceFile(@RequestParam("file") MultipartFile file,
+                                              @RequestParam("info") String info,
+                                              @RequestParam("forClients") String forClients) {
         try{
             String fileName = priceListStorageService.storeFile(file);
 
@@ -62,6 +68,8 @@ public class PriceListController {
             priceList.setPath(priceListStorageService.getFileStorageLocation().toAbsolutePath().normalize() + "\\" + fileName);
             priceList.setUploadTime(timeNow);
             priceList.setUrl(fileDownloadUri);
+            priceList.setInfo(info);
+            priceList.setForClients(forClients);
             priceList.setUserAuthor(SecurityContextHolder.getContext().getAuthentication().getName());
 
             priceListUploadService.addNewFile(priceList);
@@ -110,7 +118,6 @@ public class PriceListController {
         }
     }
 
-
     @GetMapping("/lastFile")
     public PriceListEntity getLastUploadedFile() {
         try {
@@ -118,5 +125,29 @@ public class PriceListController {
         } catch (Exception e) {
             throw new FileNotFoundException("No price files uploaded");
         }
+    }
+
+    @GetMapping("/lastFile/{forClients}")
+    public PriceListEntity getLastPriceListForClients(@PathVariable String forClients) {
+        PriceListEntity priceListForAll = priceListUploadService.getLastPriceListByForClients(markFileForAll);
+        try {
+            PriceListEntity priceListForClients = priceListUploadService.getLastPriceListByForClients(forClients);
+            return (priceListForClients.getId() > priceListForAll.getId() ? priceListForClients : priceListForAll);
+        } catch (Exception e) {
+            return priceListForAll;
+        }
+    }
+
+    @PostMapping("/editFileInfo/{id}")
+    public void editFileInfo(@RequestBody FileInfoChangeRequest request,
+                             @PathVariable int id) {
+        PriceListEntity priceListEntity = priceListUploadService.getFileViaId(id);
+        if (request.getInfo() != null) {
+            priceListEntity.setInfo(request.getInfo());
+        }
+        if (request.getForClients() != null) {
+            priceListEntity.setForClients(request.getForClients());
+        }
+        priceListUploadService.addNewFile(priceListEntity);
     }
 }

@@ -20,22 +20,33 @@ public class UploadFileService {
     }
 
     @Transactional
-    public UploadedFile getFileViaId(int id){
+    public UploadedFile getFileViaId(int id) {
         return uploadedFileRepository.getById(id);
     }
 
     @Transactional
-    public void addNewFile(UploadedFile uploadedFile){
+    public void addNewFile(UploadedFile uploadedFile) {
         uploadedFileRepository.saveAndFlush(uploadedFile);
     }
 
     @Transactional
-    public void deleteFile(int id){
+    public void deleteFile(int id) {
         uploadedFileRepository.deleteById(id);
     }
 
     @Transactional
-    public UploadedFile getLastFile(){
+    public UploadedFile getLastFile() {
         return uploadedFileRepository.findTopByOrderByIdDesc();
     }
+
+    @Transactional
+    public UploadedFile getLastFileByForClients(String forClients) {
+        return uploadedFileRepository.findTopByForClientsOrderByIdDesc(forClients);
+    }
+
+    @Transactional
+    public void editFileInfo(UploadedFile uploadedFile) {
+        uploadedFileRepository.save(uploadedFile);
+    }
+
 }
