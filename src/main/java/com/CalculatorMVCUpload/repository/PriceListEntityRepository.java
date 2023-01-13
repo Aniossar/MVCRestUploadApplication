@@ -11,4 +11,6 @@ public interface PriceListEntityRepository extends JpaRepository<PriceListEntity
     PriceListEntity findTopByOrderByIdDesc();
 
     PriceListEntity findTopByForClientsOrderByIdDesc(String forClients);
+
+    PriceListEntity findTopByForClientsContainingOrderByIdDesc(String forClients);
 }

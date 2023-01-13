@@ -41,7 +41,7 @@ public class UploadFileService {
 
     @Transactional
     public UploadedFile getLastFileByForClients(String forClients) {
-        return uploadedFileRepository.findTopByForClientsOrderByIdDesc(forClients);
+        return uploadedFileRepository.findTopByForClientsContainingOrderByIdDesc(forClients);
     }
 
     @Transactional

@@ -42,7 +42,7 @@ public class PriceListUploadService {
 
     @Transactional
     public PriceListEntity getLastPriceListByForClients(String forClients) {
-        return priceListEntityRepository.findTopByForClientsOrderByIdDesc(forClients);
+        return priceListEntityRepository.findTopByForClientsContainingOrderByIdDesc(forClients);
     }
 
     @Transactional
