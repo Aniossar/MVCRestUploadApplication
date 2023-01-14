@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.service;
+package com.CalculatorMVCUpload.service.users;
 
 import com.CalculatorMVCUpload.entity.RoleEntity;
 import com.CalculatorMVCUpload.entity.UserEntity;

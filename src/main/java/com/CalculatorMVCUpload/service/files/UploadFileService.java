@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.service;
+package com.CalculatorMVCUpload.service.files;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
 import com.CalculatorMVCUpload.repository.UploadedFileRepository;

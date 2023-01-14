@@ -1,12 +1,11 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.PriceListEntity;
-import com.CalculatorMVCUpload.entity.UploadedFile;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.payload.request.FileInfoChangeRequest;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
-import com.CalculatorMVCUpload.service.PriceListStorageService;
-import com.CalculatorMVCUpload.service.PriceListUploadService;
+import com.CalculatorMVCUpload.service.files.PriceListStorageService;
+import com.CalculatorMVCUpload.service.files.PriceListUploadService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;

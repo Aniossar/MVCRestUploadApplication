@@ -10,9 +10,9 @@ import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
 import com.CalculatorMVCUpload.payload.request.*;
 import com.CalculatorMVCUpload.payload.response.AuthentificationResponse;
 import com.CalculatorMVCUpload.payload.response.MeResponse;
-import com.CalculatorMVCUpload.service.AuthService;
+import com.CalculatorMVCUpload.service.users.AuthService;
 import com.CalculatorMVCUpload.service.EmailService;
-import com.CalculatorMVCUpload.service.UserService;
+import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +54,10 @@ public class AuthController {
         UserEntity userEntity = new UserEntity();
         if (userService.findByLogin(registrationRequest.getLogin()) != null
                 || userService.findByEmail(registrationRequest.getEmail()) != null) {
+            log.warning("Trying to register user with existing email or login");
             throw new ExistingLoginEmailRegisterException("This login or email is already registered");
         }
+        log.warning(registrationRequest.toString());
         userEntity.setPassword(registrationRequest.getPassword());
         userEntity.setLogin(registrationRequest.getLogin());
         userEntity.setEmail(registrationRequest.getEmail());

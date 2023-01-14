@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.service;
+package com.CalculatorMVCUpload.service.users;
 
 import com.CalculatorMVCUpload.entity.OnlineUserEntity;
 import com.CalculatorMVCUpload.entity.UploadedFile;

@@ -40,7 +40,7 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
-    @AfterReturning("execution(* com.CalculatorMVCUpload.service.UserService.saveUser(..))" + "&&args(userEntity,..)")
+    @AfterReturning("execution(* com.CalculatorMVCUpload.service.users.UserService.saveUser(..))" + "&&args(userEntity,..)")
     public void saveNewUserAdvice(JoinPoint joinPoint, UserEntity userEntity) {
         Instant timeStamp = Instant.now();
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, userEntity.getLogin(),
@@ -48,7 +48,7 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
-    @AfterReturning("execution(* com.CalculatorMVCUpload.service.UserService.deleteUser(..))" + "&&args(login,..)")
+    @AfterReturning("execution(* com.CalculatorMVCUpload.service.users.UserService.deleteUser(..))" + "&&args(login,..)")
     public void deleteUserAdvice(JoinPoint joinPoint, String login) {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -57,7 +57,7 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
-    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.UploadFileService.addNewFile(..))")
+    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.files.UploadFileService.addNewFile(..))")
     public void addNewFileAdvice() {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -66,7 +66,7 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
-    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.UploadFileService.deleteFile(..))")
+    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.files.UploadFileService.deleteFile(..))")
     public void deleteFileAdvice() {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -75,7 +75,7 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
-    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.PriceListUploadService.addNewFile(..))")
+    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.files.PriceListUploadService.addNewFile(..))")
     public void addNewPriceListAdvice() {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -84,7 +84,7 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
-    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.PriceListUploadService.deleteFile(..))")
+    @AfterReturning("execution(public * com.CalculatorMVCUpload.service.files.PriceListUploadService.deleteFile(..))")
     public void deletePriceListFileAdvice() {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();

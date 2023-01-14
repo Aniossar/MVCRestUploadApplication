@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
@@ -18,6 +15,9 @@ import java.time.Instant;
 public class OnlineUserEntity {
 
     @Id
+    @Column(name = "id")
+    private int id;
+
     @Column(name = "user_login")
     private String userLogin;
 

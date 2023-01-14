@@ -2,18 +2,17 @@ package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.UserEntity;
-import com.CalculatorMVCUpload.exception.BadAuthException;
-import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
-import com.CalculatorMVCUpload.payload.request.PasswordChangeRequest;
-import com.CalculatorMVCUpload.service.UserService;
+import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
+import com.CalculatorMVCUpload.payload.request.RegistrationRequest;
+import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
+import com.CalculatorMVCUpload.service.users.UserManagementService;
+import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @Log
 public class UserController {
 
@@ -23,23 +22,58 @@ public class UserController {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @DeleteMapping("/deleteUser/{login}")
-    @RolesAllowed("ROLE_ADMIN")
-    public void deleteUser(@PathVariable String login) {
-        userService.deleteUser(login);
+    @Autowired
+    private UserManagementService userManagementService;
+
+    @DeleteMapping("/deleteUser")
+    public void deleteUser(@RequestHeader(name = "Authorization") String bearer,
+                           @RequestBody SingleMessageRequest request) {
+
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
+        String userLoginToDelete = request.getMessage();
+        UserEntity userToDelete = userService.findByLogin(userLoginToDelete);
+
+        if (userToDelete != null && userManagementService.isFirstUserCoolerThanSecond(roleFromToken,
+                userToDelete.getRoleEntity().getName())) {
+            userService.deleteUser(userLoginToDelete);
+        } else throw new IncorrectPayloadException("Bad user change request");
     }
 
+    @PutMapping("/editUser")
+    public void editUser(@RequestHeader(name = "Authorization") String bearer,
+                         @RequestBody RegistrationRequest request) {
 
-    @PutMapping("/changeOwnPassword")
-    public void changePasswordByUser(@RequestHeader(name = "Authorization") String bearer,
-                                     @RequestBody PasswordChangeRequest request) {
-        String userLogin = jwtProvider.getLoginFromBearer(bearer);
-        if (userLogin != null) {
-            UserEntity userEntity = userService.findByLoginAndPassword(userLogin, request.getOldPassword());
-            if (userEntity != null) {
-                userEntity.setPassword(request.getNewPassword());
-                userService.updateUser(userEntity);
-            } else throw new WrongPasswordUserMovesException("Wrong old password");
-        } else throw new BadAuthException("No user is authorized");
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
+        String userLoginToEdit = request.getLogin();
+        UserEntity userToEdit = userService.findByLogin(userLoginToEdit);
+
+        if (userToEdit != null && userManagementService.isFirstUserCoolerThanSecond(roleFromToken,
+                userToEdit.getRoleEntity().getName())) {
+            if (request.getEmail() != null) {
+                userToEdit.setEmail(request.getEmail());
+            }
+            if (request.getFullName() != null) {
+                userToEdit.setFullName(request.getFullName());
+            }
+            if (request.getCompanyName() != null) {
+                userToEdit.setCompanyName(request.getCompanyName());
+            }
+            if (request.getPhoneNumber() != null) {
+                userToEdit.setPhoneNumber(request.getPhoneNumber());
+            }
+            if (request.getAddress() != null) {
+                userToEdit.setAddress(request.getAddress());
+            }
+            if (request.getCertainPlaceAddress() != null) {
+                userToEdit.setCertainPlaceAddress(request.getCertainPlaceAddress());
+            }
+            if (request.getAppAccess() != null) {
+                userToEdit.setAppAccess(request.getAppAccess());
+            }
+
+            userService.updateUser(userToEdit);
+        } else throw new IncorrectPayloadException("Bad user change request");
     }
 }

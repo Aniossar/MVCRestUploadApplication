@@ -82,15 +82,14 @@ public class JwtProvider {
         return roles;
     }
 
-    public String getLoginFromBearer(String bearer){
+    public String getTokenFromBearer(String bearer){
         String token = null;
         String userLogin = null;
         if (hasText(bearer) && bearer.startsWith("Bearer ")) {
             token = bearer.substring(7);
         }
         if (token != null && validateAccessToken(token)) {
-            userLogin = getLoginFromAccessToken(token);
-        }
-        return userLogin;
+            return token;
+        } else return null;
     }
 }
