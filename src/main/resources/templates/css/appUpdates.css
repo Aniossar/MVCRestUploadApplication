@@ -1,0 +1,240 @@
+
+.container{
+    display: flex;
+    justify-content: center;
+    
+    margin: 20px 10px;
+
+    /* border: 1px solid black; */
+
+    box-shadow: 0 0 10px  rgba(0,0,0,0.2); /* Параметры тени */
+
+    min-width: var(--min-page-width);
+    max-width: var(--min-page-width);
+
+    margin: 10px auto;
+}
+
+.container_file_settings{
+    background-image: url("../images/pattern_1.png");
+    background-repeat: repeat-x;
+    background-size: 55%;
+    background-position: bottom;
+}
+
+
+.container_file_settings_content, .container_mid{
+
+    /* border: 1px solid black; */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.file_settings{
+
+
+    /* display: flex;
+    justify-content: center; */
+
+    /* border: 1px solid black; */
+    
+    margin: 5px auto;
+
+    
+}
+
+
+
+.file_link{
+
+    margin: 0 auto;
+    
+
+    /* border: 1px solid black; */
+    
+    /* padding-right: 40px; */
+}
+
+#upload-progress{
+    margin-top: 5px;
+    /* border: 1px solid black; */
+    /* height: 30px; */
+}
+
+#progress_state{
+    margin-left: 10px;
+    height: 25px;
+    align-self: center;
+}
+
+#fileInput{
+    margin-top: 5px;
+}
+
+.file_link div{
+    display: flex;
+    justify-content: left;
+    padding-bottom: 5px;
+    
+}
+
+
+
+.info{
+    width: 700px;
+    height: 100px;
+
+    resize: none;
+
+    border-radius: 4px;
+    border: 2px solid #EBE9E7;
+    border-bottom: 2px solid #838281;
+}
+
+.file_clients{
+    display: flex;
+
+    justify-content: center;
+    padding: 10px;
+
+}
+
+.file_clients div{
+    display: flex;
+    justify-content: left;
+    padding-bottom: 5px;
+    padding-right: 20px;
+}
+
+.file_clients div label{
+    padding-left: 5px;
+}
+
+
+.file_btn{
+    width: 164px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    
+    margin: 10px auto;
+
+    border: 1px solid 658B76;
+    background-color: #658B76;
+    border-radius: 3px;
+}
+
+h4{
+    padding-bottom: 5px;
+}
+.file_btn input[type="button"]{
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    color: white;
+}
+
+.file_btn:hover{
+    background-color: #8f8f8f;
+}
+
+.file_btn:active{
+    background-color: #555555;
+}
+
+textarea:focus{
+    outline: none;
+}
+
+
+
+
+
+/* .container{
+
+} */
+
+.container_mid{
+    width: 100%;
+}
+
+.table_caption{
+    display: flex;
+    background-color: #E7E5E3;
+    justify-content: left;
+    height: 54px;
+
+    background-image: url("/images/pattern_2.png");
+    background-size: contain;
+    background-position-x: 30px;
+}
+
+.table_caption h4{
+    
+    margin: auto 0;
+    margin-left: 20px;
+
+    
+}
+
+
+.table_container{
+    margin-top: 20px;
+    /* max-height: 500px;
+    overflow-x: auto; */
+}
+
+table{
+    width:100%;
+    border-spacing: 0;
+    
+}
+
+thead{
+    
+    position: sticky;
+    top: 0;
+    background-color: #E7E5E3;
+    height: 50px;
+}
+
+tfoot{
+    height: 20px;
+    background-color: grey;
+}
+
+.file_access{
+    display: flex;
+    justify-content: space-around;
+
+}
+
+td{
+    /* border:1px solid black; */
+    padding: 5px;
+    text-align: center;
+}
+
+/* thead tr th{
+
+} */
+
+a{
+    text-decoration: none;
+}
+
+a_download:visited, a_delete:visited{
+    color: blue;
+}
+
+a_download:active, a_delete:active{
+    color: grey
+}
+
+ /* thead tr th:first-child{
+    width:10%;
+} 
+thead tr th:first-child + th + th + th{
+
+    width:7%;
+}  */

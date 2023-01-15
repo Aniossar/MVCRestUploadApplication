@@ -73,9 +73,9 @@ input[type=date]:focus{
     margin-bottom: 5px;
 }
 
-.filter_row input[type=checkbox]{
+/* .filter_row input[type=checkbox]{
 
-}
+} */
 .filter_row span:first-of-type{
     margin-left: 10px;
 }

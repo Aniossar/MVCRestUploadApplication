@@ -27,7 +27,7 @@ async function auth(login, password){
     let response
 
     try {
-        response = await fetch(AUTH_URL, {
+        response = await fetch(URL_API_AUTH, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -59,14 +59,17 @@ async function auth(login, password){
 
     if(response.headers.get('Content-Type') == 'application/json'){
         let content = await response.json()
-        let token = content['token']
+        let accessToken = content[ACCESS_TOKEN_NAME]
+        let refreshToken = content[REFRESH_TOKEN_NAME]
         console.log(content)
-        console.log(content['jwt-token'])
+        console.log('accessToken = ' + content[ACCESS_TOKEN_NAME])
         console.log(`login = ${login} password = ${password}`)
 
-        localStorage.setItem('jwt-token', token)
+        localStorage.setItem(ACCESS_TOKEN_NAME, accessToken)
+        localStorage.setItem(REFRESH_TOKEN_NAME, refreshToken)
 
-        console.log(`jwt-token from localStorage = ${localStorage.getItem('jwt-token')}`)
+        console.log(ACCESS_TOKEN_NAME + ` from localStorage = ${localStorage.getItem(ACCESS_TOKEN_NAME)}`)
+        console.log(REFRESH_TOKEN_NAME + ` from localStorage = ${localStorage.getItem(REFRESH_TOKEN_NAME)}`)
 
         window.location.replace('/')
     }

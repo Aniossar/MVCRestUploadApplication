@@ -1,7 +1,17 @@
 .menu_container{
     /* max-width: 1370px; */
+    display: flex;
+    justify-content: center;
     min-width: var(--min-page-width);
     margin: 0 auto;
+
+    background-color: var(--color-primary);
+    background-image: url("/images/headerPattern.png");
+    background-repeat: repeat;
+    background-size: contain;
+
+    min-width: var(--min-page-width);
+    max-width: var(--min-page-width);
 }
 
 .menu_container_content{
@@ -12,6 +22,11 @@
     align-items: center;
     padding-right: 30px;
     min-width: var(--min-page-width);
+    max-width: var(--min-page-width);
+
+
+    
+
 }
 
 .menu_user_info{
@@ -65,14 +80,13 @@
 
 .menu_link{
     text-decoration: none;
-    color: black;
+    color: #8BB59D;
     padding: 5px 5px
 }
 .menu_link.highlight{
 
     color: white;
     font-weight: bold;
-
 }
 
 .menu_items > ul >li >a:hover{

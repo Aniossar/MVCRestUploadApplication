@@ -30,4 +30,19 @@ public class ViewController {
     public String statistics() {
         return "statistics";
     }
+
+    @GetMapping("/appUpdates")
+    public String appUpdates() {
+        return "appUpdates";
+    }
+
+    @GetMapping("/pricesUpdates")
+    public String pricesUpdates() {
+        return "pricesUpdates";
+    }
+
+    @GetMapping("/fileUploader")
+    public String fileUploader() {
+        return "fileUploader";
+    }
 }
