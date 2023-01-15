@@ -67,6 +67,7 @@ public class AuthController {
         userEntity.setAddress(registrationRequest.getAddress());
         userEntity.setCertainPlaceAddress(registrationRequest.getCertainPlaceAddress());
         userEntity.setAppAccess(registrationRequest.getAppAccess());
+        userEntity.setEnabled(true);
         userService.saveUser(userEntity, registrationRequest.getDesiredRole());
         return "OK";
     }

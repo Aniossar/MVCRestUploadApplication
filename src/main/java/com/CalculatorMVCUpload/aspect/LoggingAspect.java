@@ -57,6 +57,15 @@ public class LoggingAspect {
         activityService.saveActivity(activityEntity);
     }
 
+    @AfterReturning("execution(* com.CalculatorMVCUpload.service.users.UserService.updateUser(..))" + "&&args(userEntity,..)")
+    public void editUserAdvice(JoinPoint joinPoint, UserEntity userEntity) {
+        Instant timeStamp = Instant.now();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, userName,
+                "Edited user: " + userEntity.getLogin());
+        activityService.saveActivity(activityEntity);
+    }
+
     @AfterReturning("execution(public * com.CalculatorMVCUpload.service.files.UploadFileService.addNewFile(..))")
     public void addNewFileAdvice() {
         Instant timeStamp = Instant.now();

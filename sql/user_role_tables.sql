@@ -38,7 +38,8 @@ CREATE TABLE public.user_table
     appAccess varchar(50),
     role_id  integer
         constraint user_table_role_table_id_fk
-            references role_table
+            references role_table,
+    enabled boolean
 );
 
 create unique index user_table_login_uindex

@@ -51,4 +51,7 @@ public class UserEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
 }

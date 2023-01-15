@@ -35,6 +35,8 @@ REST Endpoints for user management:
 1. PUT /api/changeOwnPassword - change password of authenticated user
 2. DELETE /api/users/deleteUser - delete user (only for user with greater role)
 3. PUT /api/users/editUser - edit user fields (only for user with greater role)
+4. PUT /api/users/editUserRole - edit user Role field (only for admin)
+5. PUT /api/users/editUserEnabled - edit user Enabled field (only for admin)
 
 REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities

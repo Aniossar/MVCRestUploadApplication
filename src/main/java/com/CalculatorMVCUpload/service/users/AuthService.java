@@ -33,27 +33,30 @@ public class AuthService {
     public AuthentificationResponse authenticate(AuthentificationRequest authRequest) {
         try {
             UserEntity userEntity = userService.findByLoginAndPassword(authRequest.getLogin(), authRequest.getPassword());
-            String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
-            String refreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin());
-            ArrayList<String> refreshTokens = refreshStorage.get(userEntity.getLogin());
+            if (userEntity.isEnabled()) {
+                String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
+                String refreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin());
+                ArrayList<String> refreshTokens = refreshStorage.get(userEntity.getLogin());
 
-            if (refreshTokens != null) {
-                if (refreshTokens.size() < numberOfConcurrentSessions) {
-                    refreshTokens.add(refreshToken);
+                if (refreshTokens != null) {
+                    if (refreshTokens.size() < numberOfConcurrentSessions) {
+                        refreshTokens.add(refreshToken);
+                    } else {
+                        refreshTokens = new ArrayList<>();
+                        refreshTokens.add(refreshToken);
+                    }
                 } else {
                     refreshTokens = new ArrayList<>();
                     refreshTokens.add(refreshToken);
                 }
-            } else {
-                refreshTokens = new ArrayList<>();
-                refreshTokens.add(refreshToken);
+                refreshStorage.put(userEntity.getLogin(), refreshTokens);
+                return new AuthentificationResponse(accessToken, refreshToken);
             }
-            refreshStorage.put(userEntity.getLogin(), refreshTokens);
-            return new AuthentificationResponse(accessToken, refreshToken);
         } catch (NullPointerException nullPointerException) {
             log.warning("Failed auth with login: " + authRequest.getLogin());
             throw new BadAuthException("Login/password are incorrect");
         }
+        return new AuthentificationResponse(null, null);
     }
 
     public AuthentificationResponse getAccessToken(String refreshToken) {
@@ -62,8 +65,10 @@ public class AuthService {
             ArrayList<String> savedRefreshTokens = refreshStorage.get(login);
             if (savedRefreshTokens != null && savedRefreshTokens.contains(refreshToken)) {
                 UserEntity userEntity = userService.findByLogin(login);
-                String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
-                return new AuthentificationResponse(accessToken, null);
+                if (userEntity.isEnabled()) {
+                    String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
+                    return new AuthentificationResponse(accessToken, null);
+                }
             }
         }
         return new AuthentificationResponse(null, null);
