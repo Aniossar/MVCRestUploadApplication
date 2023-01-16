@@ -3,7 +3,7 @@ package com.CalculatorMVCUpload.controller;
 import com.CalculatorMVCUpload.configuration.CustomUserDetailsService;
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.EmailContext;
-import com.CalculatorMVCUpload.entity.UserEntity;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
 import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;

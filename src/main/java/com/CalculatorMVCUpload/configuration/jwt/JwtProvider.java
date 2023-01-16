@@ -1,6 +1,6 @@
 package com.CalculatorMVCUpload.configuration.jwt;
 
-import com.CalculatorMVCUpload.entity.RoleEntity;
+import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

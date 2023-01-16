@@ -1,7 +1,6 @@
 package com.CalculatorMVCUpload.service.users;
 
-import com.CalculatorMVCUpload.entity.OnlineUserEntity;
-import com.CalculatorMVCUpload.entity.UploadedFile;
+import com.CalculatorMVCUpload.entity.users.OnlineUserEntity;
 import com.CalculatorMVCUpload.repository.OnlineUserEntityRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;

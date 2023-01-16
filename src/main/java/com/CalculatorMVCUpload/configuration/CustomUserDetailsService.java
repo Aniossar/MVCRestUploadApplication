@@ -1,6 +1,6 @@
 package com.CalculatorMVCUpload.configuration;
 
-import com.CalculatorMVCUpload.entity.UserEntity;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.service.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

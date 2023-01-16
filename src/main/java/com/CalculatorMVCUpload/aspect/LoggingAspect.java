@@ -1,7 +1,7 @@
 package com.CalculatorMVCUpload.aspect;
 
 import com.CalculatorMVCUpload.entity.ActivityEntity;
-import com.CalculatorMVCUpload.entity.UserEntity;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.service.ActivityService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;

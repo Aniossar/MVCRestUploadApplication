@@ -1,6 +1,6 @@
 package com.CalculatorMVCUpload.service.users;
 
-import com.CalculatorMVCUpload.entity.RoleEntity;
+import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.repository.UserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;

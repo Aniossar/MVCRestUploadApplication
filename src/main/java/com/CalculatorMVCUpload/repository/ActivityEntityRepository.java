@@ -11,4 +11,6 @@ public interface ActivityEntityRepository extends JpaRepository<ActivityEntity, 
 
     void deleteActivityEntitiesByLogin(String login);
 
+    List<ActivityEntity> findByActivityType(String activityType);
+
 }
