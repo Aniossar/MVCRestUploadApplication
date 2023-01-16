@@ -9,7 +9,16 @@ var progressBarText = document.querySelector(".progress-bar-text")
 var list = document.querySelector('.fileList')
 
 async function getAllFilesFromDB() {
-    let response = await fetch("/allFiles")
+
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+
+    let response = await fetch("/api/updatefiles/allFiles",{
+        method: 'POST',
+        headers:{
+            'Authorization': 'Bearer ' + accessToken
+            // 'Content-Type': 'multipart/form-data; boundary=something'
+        }
+    });
     let content = await response.json()
 
     for (let key in content) {
@@ -24,7 +33,8 @@ getAllFilesFromDB()
 
 function deleteFile(id) {
     var xhr = new XMLHttpRequest();
-    xhr.open("DELETE", "/deleteFile/" + id, false);
+    xhr.open("DELETE", "/api/updatefiles/deleteFile/" + id, false);
+    xhr.setRequestHeader('Authorization','Bearer ' + accessToken);
     xhr.send();
     console.log(xhr.responseText);
 
@@ -32,11 +42,15 @@ function deleteFile(id) {
 }
 
 function uploadSingleFile(file) {
+
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+
     var formData = new FormData();
     formData.append("file", file);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/uploadFile");
+    xhr.setRequestHeader('Authorization','Bearer ' + accessToken);
+    xhr.open("POST", "/api/updatefiles/uploadFile");
 
     xhr.upload.addEventListener("progress", e => {
         const percent = e.lengthComputable ? (e.loaded / e.total) * 100 : 0;

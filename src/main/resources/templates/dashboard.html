@@ -8,10 +8,11 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
     <link rel="stylesheet" href="css/main_style.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/header.css">
     <script src="https://kit.fontawesome.com/ac37b1b49c.js" crossorigin="anonymous"></script>
 
-    <script src="/js/constants.js"></script>
-    <script src="/js/checkAuth.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/checkAuth.js"></script>
 
 </head>
 <body>
@@ -24,18 +25,18 @@
                     <div class="menu_user_info_2">
                         <p class="user_name">USER NAME SURNAME</p>
                         <p class="user_info">COMPANY/ROLE(ADMIN)</p>
-                        <a class="user_logout" href="#">logout</a>
+                        <a class="user_logout" onclick="logout()" href="/login">logout</a>
                     </div>
                 </div>
 
                 <div class="menu_items">
                     <ul>
-                        <li><a href="#">Информация</a></li>
-                        <li><a href="#">Пользователи</a></li>
-                        <li><a href="#">Статистика</a></li>
-                        <li><a href="#">Обновления</a></li>
-                        <li><a href="#">Цены</a></li>
-                        <li><a href="#">Новости</a></li>
+                        <li><a class="menu_link highlight" href="/dashboard">Информация</a></li>
+                        <li><a class="menu_link" href="#">Пользователи</a></li>
+                        <li><a class="menu_link" href="/statistics">Статистика</a></li>
+                        <li><a class="menu_link" href="/appUpdates">Обновления</a></li>
+                        <li><a class="menu_link" href="/pricesUpdates">Цены</a></li>
+                        <li><a class="menu_link" href="#">Новости</a></li>
                     </ul>
                 </div>
 
@@ -152,6 +153,6 @@
         </div>
     </div>
 
-    <script src="/js/dashboard.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>

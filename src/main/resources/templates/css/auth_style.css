@@ -31,6 +31,14 @@ body{
     justify-content: center;
 }
 
+.wrong_data{
+
+    margin: 0px 0px;
+    display: flex;
+    justify-content: center;
+    color: rgb(221, 4, 4);
+}
+
 .fogot_link > a{
     text-decoration: none;
     font-family: sans-serif;

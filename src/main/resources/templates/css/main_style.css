@@ -13,5 +13,12 @@
     --min-page-width: 1270px;
     --color-primary: #505F56;
     --color-dark: #363f3a;
-    --color-text-1: white;
+    --color-text-1: black;
   }
+
+body{
+    /* background-color: var(--color-primary); */
+    /* font-family: sans-serif; */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}

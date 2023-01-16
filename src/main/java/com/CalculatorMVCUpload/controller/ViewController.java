@@ -26,8 +26,29 @@ public class ViewController {
         return "userPage";
     }
 
+
     @GetMapping("/changePassword?token={restoreToken}")
     public String restorePasswordPage(String restoreToken){
         return "restorePass";
+
+    @GetMapping("/statistics")
+    public String statistics() {
+        return "statistics";
+    }
+
+    @GetMapping("/appUpdates")
+    public String appUpdates() {
+        return "appUpdates";
+    }
+
+    @GetMapping("/pricesUpdates")
+    public String pricesUpdates() {
+        return "pricesUpdates";
+    }
+
+    @GetMapping("/fileUploader")
+    public String fileUploader() {
+        return "fileUploader";
+
     }
 }

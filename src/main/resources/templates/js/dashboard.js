@@ -21,12 +21,12 @@ setInterval(()=>{
 
 async function getUserActivities(){
 
-    let jwtToken = localStorage.getItem('jwt-token');
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
 
     let response = await fetch('/api/allActivities', {
         method:'GET',
         headers:{
-            'Authorization': 'Bearer ' + jwtToken
+            'Authorization': 'Bearer ' + accessToken
         }
     });
 

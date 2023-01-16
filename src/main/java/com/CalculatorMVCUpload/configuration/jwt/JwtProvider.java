@@ -39,7 +39,7 @@ public class JwtProvider {
 
     public String generateRefreshToken(@NonNull String login) {
         final LocalDateTime now = LocalDateTime.now();
-        final Instant refreshExpirationInstant = now.plusDays(40).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant refreshExpirationInstant = now/*.plusDays(5)*/.plusMinutes(15).atZone(ZoneId.systemDefault()).toInstant();
         final Date refreshExpiration = Date.from(refreshExpirationInstant);
         return Jwts.builder()
                 .setSubject(login)
