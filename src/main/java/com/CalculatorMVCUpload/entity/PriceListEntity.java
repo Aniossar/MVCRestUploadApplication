@@ -3,12 +3,14 @@ package com.CalculatorMVCUpload.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "pricelist_table")
+@Proxy(lazy = false)
 @Getter
 @Setter
 @NoArgsConstructor
