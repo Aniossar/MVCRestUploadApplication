@@ -18,29 +18,42 @@
 
 <div class="auth_container">
     <div class="form_auth_block">
-        <div class="form_auth_block_content">
-            <p class="form_auth_block_logo">Koreanika</p>
+
+        <div class="logo"></div>
+
             <p class="form_auth_block_header">Авторизация</p>
-            <form id="auth_form" class="form_auth_style" method="post">
-                <div class="form_auth_login_block">
-                    <div class="auth_icon_block"><i class="fa-solid fa-user"></i></div>
-                    <input class="textfield" type="text" name="auth_login" placeholder="Логин или email" required>
-                </div>
 
-                <div class="form_auth_password_block">
-                    <div class="auth_icon_block"><i class="fa-solid fa-lock"></i></div>
-                    <input class="textfield" type="password" name="auth_password" placeholder="Введите пароль" required>
-                </div>
+        <div class="center">
+            <div class="form_auth_login_block">
+                <p>Логин:</p>
+                <!--                    <div class="auth_icon_block"><i class="fa-solid fa-user"></i></div>-->
+                <input class="textfield" type="text" name="auth_login" placeholder="Логин или email" required>
+            </div>
+        </div>
 
-                <div class="fogot_link"><a href="#"> Забыли пароль?</a></div>
 
-                <button id="btn_submit" class="form_auth_button" type="submit" name="form_auth_submit">Войти</button>
-            </form>
-            <div class="fogot_link"><a href="/registration"> Еще не зарегистрированы?</a></div>
+        <div class="center">
+            <div class="form_auth_password_block">
+                <p>Пароль:</p>
+                <!--                    <div class="auth_icon_block"><i class="fa-solid fa-lock"></i></div>-->
+                <input class="textfield" type="password" name="auth_password" placeholder="Введите пароль" required>
+            </div>
+        </div>
 
+
+
+
+        <button id="btn_submit" class="form_auth_button" type="submit" name="form_auth_submit">Войти</button>
+
+<!--            <form id="auth_form" class="form_auth_style" method="post">-->
+
+
+<!--            </form>-->
+        <div class="fogot_link"><a href="/registration"> Зарегистрироваться</a></div>
+        <div class="fogot_link"><a href="#"> Забыли пароль?</a></div>
             
 
-        </div>
+
     </div>
 </div>
 

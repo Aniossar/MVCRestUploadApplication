@@ -26,18 +26,34 @@ reg_form.addEventListener("submit", (e)=>{
     e.preventDefault();
     let login = loginInput.value
     let password = passwordInput.value
-    let role = roleInput.value
     let email = emailInput.value
-    register(login, password, email, role)
-})
-async function register(login, password, email, role){
-    let loginData = {
+
+    let fullName
+    let companyName
+    let phoneNumber
+    let address
+    let certainPlaceAddress
+    let appAccess = "koreanika"
+    let role = roleInput.value
+
+    let loginData ={
         "login": login,
         "password":password,
         "email":email,
+        "fullName":fullName,
+        "companyName":companyName,
+        "phoneNumber":phoneNumber,
+        "address":address,
+        "certainPlaceAddress":certainPlaceAddress,
+        "appAccess":appAccess,
         "desiredRole":role
     }
-     let response = await fetch(REGISTER_URL, {
+
+    register(loginData)
+})
+async function register(loginData){
+
+     let response = await fetch(URL_API_REGISTER, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
