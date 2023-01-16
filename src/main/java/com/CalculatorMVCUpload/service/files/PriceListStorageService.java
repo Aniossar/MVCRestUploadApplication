@@ -53,7 +53,6 @@ public class PriceListStorageService {
 
     public String storeFile(MultipartFile file) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        System.out.println(fileName);
 
         try {
             if (fileName.contains("..")) {
