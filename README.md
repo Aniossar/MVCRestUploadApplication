@@ -57,4 +57,106 @@ Docker:
 docker-compose_production.yml - make images for 3 
 different pack of containers, for dev, test and production.
 3. for deploy this on server:
-   1. 
+
+
+
+
+##About the filter into calculator event table:
+
+### GET ALL EVENTS
+__request:__
+
+method: POST   /api/appEvents/list - return all events, happens in apps
+
+body - empty
+
+__response:__
+
+```json
+{
+  "events": [
+    {
+      "id": 23,
+      "date": "12:30 22.12.2022",
+      "activity_type": "calculator",
+      "user_login" : "userName",
+      "message":{
+        "type":"show receipt",
+        "materials":"Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
+        "materialPrice":"12345.34",
+        "addPrice":"12345.34",
+        "allPrice":"12345.34",
+        "mainCoeff":"1.6",
+        "materialCoeff":"1.6",
+        "slabs":"4",
+        "productSquare":"4"
+      }
+    },
+    {
+      "id": 24,
+      "date": "12:35 22.12.2022",
+      "activity_type": "calculator",
+      "user_login" : "userName",
+      "message":{
+        "type":"show receipt",
+        "materials":"Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
+        "materialPrice":"12345.34",
+        "addPrice":"12345.34",
+        "allPrice":"12345.34",
+        "mainCoeff":"1.6",
+        "materialCoeff":"1.6",
+        "slabs":"4",
+        "productSquare":"4"
+      }
+    },
+    {
+      "id": 25,
+      "date": "12:40 22.12.2022",
+      "activity_type": "calculator",
+      "user_login" : "userName",
+      "message":{
+        "type":"show receipt",
+        "materials":"Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
+        "materialPrice":"12345.34",
+        "addPrice":"12345.34",
+        "allPrice":"12345.34",
+        "mainCoeff":"1.6",
+        "materialCoeff":"1.6",
+        "slabs":"4",
+        "productSquare":"4"
+      }
+    }
+  ]
+}
+
+```
+
+### GET FILTERED EVENT LIST
+__request:__
+
+method: POST   /api/appEvents/filteredlist - return all events, happens in apps, 
+fit to filter conditions
+
+body :
+
+```json
+{
+  "dateFrom": "12.12.2022",
+  "dateTo": "12.12.2022",
+  "shop": "Zetta",
+  "concreteAddress": "Zetta",
+  "materialPriceFrom": "1000",
+  "materialPriceTo": "1000",
+  "addPriceFrom": "1500",
+  "addPriceTo": "1500",
+  "allPriceFrom": "3000",
+  "allPriceTo": "4000",
+  "materials": "Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2"
+}
+```
+
+if the parameter does not uses - field is empty ("")
+
+__response:__
+
+As in "Get all events", but filtered

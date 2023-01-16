@@ -1,8 +1,8 @@
-let loginInput = document.querySelector('form input[name="auth_login"]')
-let passwordInput = document.querySelector('form input[name="auth_password"]')
+let loginInput = document.querySelector('input[name="auth_login"]')
+let passwordInput = document.querySelector('input[name="auth_password"]')
 
 
-auth_form.addEventListener("submit", (e)=>{
+btn_submit.addEventListener("click", (e)=>{
     e.preventDefault();
 
     let login = loginInput.value
@@ -25,6 +25,8 @@ async function auth(login, password){
         "password":password
     }
     let response
+
+    console.log(loginData)
 
     try {
         response = await fetch(URL_API_AUTH, {

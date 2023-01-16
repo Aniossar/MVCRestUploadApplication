@@ -1,27 +1,46 @@
 
+
+
+authStatus.then(()=>{
+
+    //onFulfilled
+    document.querySelector('.user_name').innerHTML = userLogin
+    document.querySelector('.user_info').innerHTML = userRole
+
+}, ()=>{
+    //onRejected
+})
+
 getFilesList()
 
 let tableBody = document.querySelector("tbody")
 
-function createTableRow(tableBody, date, access, name, downloadUrl, idFile){
+function createTableRow(tableBody, date, access, name, info, downloadUrl, idFile){
 
     let newTr = document.createElement("tr")
 
+    newTr.classList.add(name)
 
+    let rowClass = "row_" + id
     newTr.innerHTML = `                                
     <td>${date.toLocaleString()}</td>
     <td>
-        <div class="file_access">
+        <div class="file_access ${rowClass}">
 
-            <div><input type="checkbox" name="all" ${access.all}> <label for="all">all</label></div>
-            <div><input type="checkbox" name="KM" ${access.KM}> <label for="KM">KM</label></div>
-            <div><input type="checkbox" name="K" ${access.K}> <label for="K">K</label></div>
-            <div><input type="checkbox" name="Z" ${access.Z}> <label for="Z">Z</label></div>
-            <div><input type="checkbox" name="PM" ${access.PM}> <label for="PM">PM</label></div>
+            <div><input type="checkbox" name="all" ${access.all} onclick="changeFileAccess(${idFile},'${APP_ALL}')"> <label for="all">all</label></div>
+            <div><input type="checkbox" name="KM" ${access.KM} onclick="changeFileAccess(${idFile},'${APP_KOREANIKA_MASTER}')"> <label for="KM">KM</label></div>
+            <div><input type="checkbox" name="K" ${access.K} onclick="changeFileAccess(${idFile}, '${APP_KOREANIKA}')"> <label for="K">K</label></div>
+            <div><input type="checkbox" name="Z" ${access.Z} onclick="changeFileAccess(${idFile}, '${APP_ZETTA}')"> <label for="Z">Z</label></div>
+            <div><input type="checkbox" name="PM" ${access.PM} onclick="changeFileAccess(${idFile}, '${APP_PRO_MEBEL}')"> <label for="PM">PM</label></div>
        
         </div>
     </td>
-    <td>${name}</td>
+    <td>
+        <div class="tooltip">
+            ${name}
+                <span class="tooltiptext">${info}</span> 
+        </div>
+    </td>
 <!--    <td><a href="##" onclick="downloadUpdateFile('${name.toString()}')">скачать</a></td>-->
     <td><a href="##" onclick="downloadUpdateFile('${name}')" >скачать</a></td>
     <td><a href="##" onclick="deleteUpdateFile(${idFile})">удалить</a></td>
@@ -57,20 +76,35 @@ async function getFilesList(){
         let date = new Date(content[i].uploadDate);
 
         let access = {
-            all:"checked",
-            KM:"checked",
-            K:"checked",
-            Z:"checked",
-            PM:"checked"
+            all:"",
+            KM:"",
+            K:"",
+            Z:"",
+            PM:""
+        }
+
+        let forClients = content[i].forClients.split(',')
+
+        for(let i =0;i< forClients.length;i++){
+
+            if(forClients[i] == APP_ALL) access.all = "checked"
+            if(forClients[i] == APP_KOREANIKA_MASTER) access.KM = "checked"
+            if(forClients[i] == APP_KOREANIKA) access.K = "checked"
+            if(forClients[i] == APP_ZETTA) access.Z = "checked"
+            if(forClients[i] == APP_PRO_MEBEL) access.PM = "checked"
         }
 
         let name = content[i].name
+
+        let info = content[i].info
 
         let downloadUrl = content[i].url
 
         let idFile = content[i].id
 
-        createTableRow(tableBody, date, access, name, downloadUrl, idFile)
+        console.log('forClients = ' + forClients)
+
+        createTableRow(tableBody, date, access, name,info, downloadUrl, idFile)
     }
 }
 
@@ -91,12 +125,28 @@ function uploadUpdateFile() {
 
     const formData = new FormData();
     const fileField = document.querySelector('input[type="file"]');
+    const textArea = document.querySelector('.info');
+
+    const checkBoxAll = document.querySelector('.upload_file_access input[name="all"]')
+    const checkBoxKM = document.querySelector('.upload_file_access input[name="km"]')
+    const checkBoxK = document.querySelector('.upload_file_access input[name="k"]')
+    const checkBoxZetta = document.querySelector('.upload_file_access input[name="zetta"]')
+    const checkBoxProMebel = document.querySelector('.upload_file_access input[name="proMebel"]')
+
+    let access = ""
+    if(checkBoxAll.checked) access +=APP_ALL
+    if(checkBoxKM.checked) access +="," + APP_KOREANIKA_MASTER
+    if(checkBoxK.checked) access +="," + APP_KOREANIKA
+    if(checkBoxZetta.checked) access +="," + APP_ZETTA
+    if(checkBoxProMebel.checked) access +="," + APP_PRO_MEBEL
 
     if(fileField.files.length == 0) return;
     uploadProgress.hidden = false
     progressState.hidden = false
 
     formData.append('file', fileField.files[0]);
+    formData.append('info', textArea.value);
+    formData.append('forClients', access);
 
     var xhr = new XMLHttpRequest();
 
@@ -202,6 +252,49 @@ async function deleteUpdateFile(idFile){
     try {
         const response = await fetch(url_delete_file + idFile, {
             method: 'DELETE',
+            headers:{
+                'Authorization': 'Bearer ' + accessToken
+            }
+        })
+        //const result = await response.json();
+        console.log('Успех:');
+        await getFilesList();
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+}
+
+async function changeFileAccess(idFile, name, appName){
+    let pathname = window.location.pathname
+
+    let rowClass = "row_" + idFile
+
+
+    const checkBoxAll = document.querySelector(`.${rowClass} input[name="all"]`)
+    const checkBoxKM = document.querySelector('.upload_file_access input[name="km"]')
+    const checkBoxK = document.querySelector('.upload_file_access input[name="k"]')
+    const checkBoxZetta = document.querySelector('.upload_file_access input[name="zetta"]')
+    const checkBoxProMebel = document.querySelector('.upload_file_access input[name="proMebel"]')
+
+    let access = ""
+    if(checkBoxAll.checked) access +=APP_ALL
+    if(checkBoxKM.checked) access +="," + APP_KOREANIKA_MASTER
+    if(checkBoxK.checked) access +="," + APP_KOREANIKA
+    if(checkBoxZetta.checked) access +="," + APP_ZETTA
+    if(checkBoxProMebel.checked) access +="," + APP_PRO_MEBEL
+
+
+    let url_edit_file = URL_UPDATES_EDIT_FILE
+
+    if(pathname == "/pricesUpdates"){
+        url_edit_file = URL_UPDATES_EDIT_FILE
+    }
+
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+
+    try {
+        const response = await fetch(url_edit_file + idFile, {
+            method: 'POST',
             headers:{
                 'Authorization': 'Bearer ' + accessToken
             }

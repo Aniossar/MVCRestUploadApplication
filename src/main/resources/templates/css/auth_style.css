@@ -1,34 +1,55 @@
 body{
-    background-color: var(--color-primary);
+    /*background-color: var(--color-primary);*/
 }
 
 .auth_container{
     display: flex;
     justify-content: center;
-    height: 420px;
+    /*height: 420px;*/
     margin: 10vh;
 }
 
 .form_auth_block{
-    width: 400px;
-    height: 450px;
+    width: 535px;
+    height: 556px;
     margin: auto auto;
-    background: white;
-    background-size: cover;
+    background-color: white;
+    background-image: url("../images/pattern_3.png");
+    background-size: 108%;
+    background-position: bottom;
+    background-repeat: repeat-x;
     border-radius: 4px;
+    align-items: center;
+
+    box-shadow: 0 0 10px  rgba(0,0,0,0.2); /* Параметры тени */
 }
 
-.form_auth_block_content{
-    margin: auto;
-    display: flex;
-    flex-direction: column;
+.logo{
+
+
+    background: url("../images/loginLogo.png");
+    background-size: contain;
+    width: 256px;
+    height: 75px;
+    margin: 71px auto 10px;
+
 }
+
+/*.form_auth_block_content{*/
+/*    margin: auto;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
 
 .fogot_link{
 
-    margin: 20px 0px;
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
+
+    /*margin: 20px 0px;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
 }
 
 .wrong_data{
@@ -58,48 +79,69 @@ body{
     display: block;
     margin: 5px auto;
     /* color:  #505F56; */
-    font-size: 20px;
-    font-family: sans-serif;
-    font-family: "PlayfairDisplay";
+    font-size: 28px;
+    font-family: "Segoe UI Semibold";
+    /*font-family: "PlayfairDisplay";*/
+    color: #907757;
+    text-align: center;
 }
 
+.center{
+    display: flex;
+    justify-content: center;
+}
+
+.form_auth_login_block p, .form_auth_password_block p{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+
+    font-family: "Segoe UI Semibold";
+
+    color: #526158;
+}
 .form_auth_login_block, .form_auth_password_block {
-    display: flex;
-    width: 280px;
-    margin: 0 auto;
-    justify-content: center;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    height: 40px;
-    border: 1px solid var(--color-primary);
+    /*display: flex;*/
+    /*width: 280px;*/
+    /*justify-content: center;*/
+    margin: 15px auto;
+    /*height: 39px;*/
+    /*border: 1px solid var(--color-primary);*/
 }
-.auth_icon_block{
-    display: flex;
+/*.auth_icon_block{*/
+/*    display: flex;*/
 
-    height: 40px;
-    width: 30px;
-    align-items: center;
-    justify-content: center;
-}
+/*    height: 40px;*/
+/*    width: 30px;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
 
 
 .textfield{
-    border: 0;
-    width: 250px;
-    font-size: 15px;
+    border: 2px solid #EBE9E7;
+
+    border-radius: 4px;
+    border-bottom-color: #838281;
+    width: 352px;
+    height: 39px;
+    font-size: 16px;
     padding-left: 10px;
+    padding-right: 10px;
+    /*padding-left: 10px;*/
 }
 
 .form_auth_button{
     display: block;
-    width: 280px;
-    margin: 0 auto;
-    margin-top: 10px;
+    width: 164px;
+    height: 44px;
+    margin: 25px auto;
+
     border-radius: 4px;
-    height: 35px;
+
     border: none;
     cursor: pointer;
-    background-color: var(--color-primary);
+    background-color: #8AB69D;
     color: white;
 }
 
