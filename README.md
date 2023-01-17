@@ -40,7 +40,11 @@ REST Endpoints for user management:
 
 REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities
-2. POST /api/saveCalculatorActivity - saves activity from calculator app
+
+REST Endpoints for logging application activities:
+1. GET /api/app/allCalcActivities - get all activities from calculator app
+2. POST /api/app/saveCalcActivity - saves activity from calculator app
+3. POST /api/app/calcActivityFilter - returns filtered calculator activities
 
 REST Endpoints for system information:
 1. GET /api/getApplicationStart - get time the app started
@@ -66,7 +70,7 @@ different pack of containers, for dev, test and production.
 ### GET ALL EVENTS
 __request:__
 
-method: POST   /api/appEvents/list - return all events, happens in apps
+method: GET   /api/app/allCalcActivities - return all events, happens in Calculator app
 
 body - empty
 
@@ -77,54 +81,54 @@ __response:__
   "events": [
     {
       "id": 23,
-      "date": "12:30 22.12.2022",
-      "activity_type": "calculator",
-      "user_login" : "userName",
-      "message":{
-        "type":"show receipt",
-        "materials":"Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
-        "materialPrice":"12345.34",
-        "addPrice":"12345.34",
-        "allPrice":"12345.34",
-        "mainCoeff":"1.6",
-        "materialCoeff":"1.6",
-        "slabs":"4",
-        "productSquare":"4"
-      }
+      "activityTime": "2023-01-15T07:16:35.645686Z",
+      "userId": 1,
+      "login": "userName",
+      "companyName": "Company Name",
+      "certainPlaceAddress": "Moscow",
+      "type": "show receipt",
+      "materials": "Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
+      "materialPrice": 12345.34,
+      "addPrice": 12345.34,
+      "allPrice": 12345.34,
+      "mainCoeff": 1.6,
+      "materialCoeff": 1.6,
+      "slabs": 4,
+      "productSquare": 4
     },
     {
       "id": 24,
-      "date": "12:35 22.12.2022",
-      "activity_type": "calculator",
-      "user_login" : "userName",
-      "message":{
-        "type":"show receipt",
-        "materials":"Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
-        "materialPrice":"12345.34",
-        "addPrice":"12345.34",
-        "allPrice":"12345.34",
-        "mainCoeff":"1.6",
-        "materialCoeff":"1.6",
-        "slabs":"4",
-        "productSquare":"4"
-      }
+      "activityTime": "2023-01-15T07:16:35.645686Z",
+      "userId": 1,
+      "login": "userName",
+      "companyName": "Company Name",
+      "certainPlaceAddress": "Moscow",
+      "type": "show receipt",
+      "materials": "Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
+      "materialPrice": 12345.34,
+      "addPrice": 12345.34,
+      "allPrice": 12345.34,
+      "mainCoeff": 1.6,
+      "materialCoeff": 1.6,
+      "slabs": 4,
+      "productSquare": 4
     },
     {
       "id": 25,
-      "date": "12:40 22.12.2022",
-      "activity_type": "calculator",
-      "user_login" : "userName",
-      "message":{
-        "type":"show receipt",
-        "materials":"Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
-        "materialPrice":"12345.34",
-        "addPrice":"12345.34",
-        "allPrice":"12345.34",
-        "mainCoeff":"1.6",
-        "materialCoeff":"1.6",
-        "slabs":"4",
-        "productSquare":"4"
-      }
+      "activityTime": "2023-01-15T07:16:35.645686Z",
+      "userId": 1,
+      "login": "userName",
+      "companyName": "Company Name",
+      "certainPlaceAddress": "Moscow",
+      "type": "show receipt",
+      "materials": "Quarz0-subtype0-color0,Acryl1-subtype1-color1,Acryl2-subtype2-color2",
+      "materialPrice": 12345.34,
+      "addPrice": 12345.34,
+      "allPrice": 12345.34,
+      "mainCoeff": 1.6,
+      "materialCoeff": 1.6,
+      "slabs": 4,
+      "productSquare": 4
     }
   ]
 }
@@ -134,17 +138,17 @@ __response:__
 ### GET FILTERED EVENT LIST
 __request:__
 
-method: POST   /api/appEvents/filteredlist - return all events, happens in apps, 
+method: POST   /api/app/calcActivityFilter - return all events, happens in apps, 
 fit to filter conditions
 
 body :
 
 ```json
 {
-  "dateFrom": "12.12.2022",
-  "dateTo": "12.12.2022",
-  "shop": "Zetta",
-  "concreteAddress": "Zetta",
+  "dateFrom": "2015-12-05",
+  "dateTo": "2023-01-18",
+  "companyName": "Zetta",
+  "certainPlaceAddress": "Zetta",
   "materialPriceFrom": "1000",
   "materialPriceTo": "1000",
   "addPriceFrom": "1500",
@@ -155,7 +159,7 @@ body :
 }
 ```
 
-if the parameter does not uses - field is empty ("")
+if the parameter is not used - field is empty ("")
 
 __response:__
 

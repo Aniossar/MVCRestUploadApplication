@@ -1,7 +1,7 @@
 package com.CalculatorMVCUpload.aspect;
 
 import com.CalculatorMVCUpload.entity.EmailContext;
-import com.CalculatorMVCUpload.payload.request.RegistrationRequest;
+import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
 import com.CalculatorMVCUpload.service.EmailService;
 import lombok.extern.java.Log;
 import org.aspectj.lang.JoinPoint;

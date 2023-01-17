@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.payload.request;
+package com.CalculatorMVCUpload.payload.request.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

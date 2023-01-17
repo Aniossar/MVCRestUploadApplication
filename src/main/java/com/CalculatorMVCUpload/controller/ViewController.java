@@ -50,6 +50,20 @@ public class ViewController {
     @GetMapping("/fileUploader")
     public String fileUploader() {
         return "fileUploader";
+    }
 
+    @GetMapping("/usersList")
+    public String usersList(){
+        return "usersList";
+    }
+
+    @GetMapping("/profile")
+    public String profile(){
+        return "profile";
+    }
+
+    @GetMapping("/createUser")
+    public String createUser(){
+        return "createUser";
     }
 }

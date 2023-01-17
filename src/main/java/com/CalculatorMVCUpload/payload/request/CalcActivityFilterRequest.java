@@ -3,17 +3,23 @@ package com.CalculatorMVCUpload.payload.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class ActivityFilterRequest {
+@ToString
+public class CalcActivityFilterRequest {
 
-    private Date dateFrom;
+    private LocalDate dateFrom;
 
-    private Date dateTo;
+    private LocalDate dateTo;
+
+    private String companyName;
+
+    private String certainPlaceAddress;
 
     private double materialPriceFrom;
 

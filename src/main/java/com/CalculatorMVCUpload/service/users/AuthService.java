@@ -4,7 +4,7 @@ import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.PasswordResetToken;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
-import com.CalculatorMVCUpload.payload.request.AuthentificationRequest;
+import com.CalculatorMVCUpload.payload.request.users.AuthentificationRequest;
 import com.CalculatorMVCUpload.payload.response.AuthentificationResponse;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -26,7 +26,6 @@ public class AuthService {
     private JwtProvider jwtProvider;
 
     private final Map<String, ArrayList<String>> refreshStorage = new HashMap<>();
-    private final Map<String, Map<String, String>> allAuthUsersCompanyAddressStorage =new HashMap<>();
     private Map<String, PasswordResetToken> restoringPasswordTokensStorage = new HashMap<>();
     private final int numberOfConcurrentSessions = 5;
 
@@ -50,12 +49,6 @@ public class AuthService {
                     refreshTokens.add(refreshToken);
                 }
                 refreshStorage.put(userEntity.getLogin(), refreshTokens);
-
-                Map<String, String> shopAddressForUser = new HashMap<>();
-                shopAddressForUser.put("companyName", userEntity.getCompanyName());
-                shopAddressForUser.put("certainPlaceAddress", userEntity.getCertainPlaceAddress());
-                allAuthUsersCompanyAddressStorage.put(userEntity.getLogin(), shopAddressForUser);
-
                 return new AuthentificationResponse(accessToken, refreshToken);
             }
         } catch (NullPointerException nullPointerException) {
