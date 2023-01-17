@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class FileController {
                 .path(fileName)
                 .toUriString();
 
-        Date dateNow = new Date();
+        Instant dateNow = Instant.now();
 
         UploadedFile uploadedFile = new UploadedFile(
                 fileName,
