@@ -6,7 +6,7 @@
     margin: 0 auto;
 
     background-color: var(--color-primary);
-    background-image: url("/images/headerPattern.png");
+    background-image: url("../images/headerPattern.png");
     background-repeat: repeat;
     background-size: contain;
 
@@ -73,7 +73,7 @@
 }
 
 .menu_items > ul >li{
-    padding-left: 40px;
+    padding-left: 20px;
     font-family: sans-serif;
 
 }

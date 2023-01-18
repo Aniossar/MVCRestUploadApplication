@@ -1,14 +1,20 @@
 let loginInput = document.querySelector('input[name="auth_login"]')
 let passwordInput = document.querySelector('input[name="auth_password"]')
 
+    let loginForm = document.querySelector('.login_form')
 
-btn_submit.addEventListener("click", (e)=>{
+loginForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-
-    let login = loginInput.value
-    let password = passwordInput.value
-    auth(login, password)
+    auth()
 })
+
+// document.querySelector('body').addEventListener('keypress', (e)=>{
+//     if(e.code === "Enter"){
+//         auth()
+//     }
+// })
+
+
 
 // btn_submit.addEventListener("click", (e)=>{
 //     e.preventDefault();
@@ -18,7 +24,10 @@ btn_submit.addEventListener("click", (e)=>{
 //     auth(login, password)
 // })
 
-async function auth(login, password){
+async function auth(){
+
+    let login = loginInput.value
+    let password = passwordInput.value
 
     let loginData = {
         "login": login,
@@ -41,7 +50,7 @@ async function auth(login, password){
         console.log('response ERROR = ' + response.status)
     }
 
-    if(response.status != 200){
+    if(response.status !== 200){
         console.log("wrong data")
         let divExt = document.querySelector('.form_auth_block')
         let divMsg = document.createElement("div", )
@@ -59,7 +68,7 @@ async function auth(login, password){
         return;
     }
 
-    if(response.headers.get('Content-Type') == 'application/json'){
+    if(response.headers.get('Content-Type') === 'application/json'){
         let content = await response.json()
         let accessToken = content[ACCESS_TOKEN_NAME]
         let refreshToken = content[REFRESH_TOKEN_NAME]

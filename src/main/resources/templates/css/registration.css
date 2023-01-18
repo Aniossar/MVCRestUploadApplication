@@ -1,104 +1,134 @@
 body{
-    background-color: var(--color-primary);
+    background-color: white;
 }
 
 .reg_container{
     display: flex;
     justify-content: center;
-    height: 420px;
+    /*height: 420px;*/
     margin: 10vh;
 }
 
 .form_reg_block{
-    width: 400px;
-    height: 530px;
+    /*width: 535px;*/
+    /*height: 556px;*/
     margin: auto auto;
     background: white;
     background-size: cover;
     border-radius: 4px;
+
+    background-color: white;
+    background-image: url("../images/pattern_3.png");
+    background-size: 108%;
+    background-position: bottom;
+    background-repeat: repeat-x;
+    box-shadow: 0 0 10px  rgba(0,0,0,0.2); /* Параметры тени */
+}
+
+
+
+
+.logo{
+
+
+    background: url("../images/loginLogo.png");
+    background-size: contain;
+    width: 256px;
+    height: 75px;
+    margin: 71px auto 10px;
+
+}
+.form_reg_block_header{
+    display: block;
+    margin: 5px auto;
+    /* color:  #505F56; */
+    font-size: 28px;
+    font-family: "Segoe UI Semibold";
+    /*font-family: "PlayfairDisplay";*/
+    color: #907757;
+    text-align: center;
 }
 
 .form_reg_block_content{
-    margin: auto;
     display: flex;
-    flex-direction: column;
 }
 
-.fogot_link{
+.form_reg_block_content div{
+
+    margin: 10px 10px 0px 10px;
+}
+
+
+.center{
+    display: flex;
+    justify-content: center;
+}
+
+
+.forgot_link{
 
     margin: 20px 0px;
     display: flex;
     justify-content: center;
 }
 
-.fogot_link > a{
+.forgot_link > a{
     text-decoration: none;
     font-family: sans-serif;
     font-size: 16px;
 }
 
-.form_reg_block_logo{
-    display: block;
-    margin: 20px auto;
-    margin-top: 45px;
-    color:  var(--color-primary);
-    font-size: 50px;
-    font-family: "PlayfairDisplay";
-}
 
-.form_reg_block_header{
-    display: block;
+
+
+.reg_field_container{
     margin: 5px auto;
-    /* color:  #505F56; */
-    font-size: 20px;
-    font-family: sans-serif;
-    font-family: "PlayfairDisplay";
 }
 
-.form_reg_role_block, .form_reg_login_block, .form_reg_password_block, .form_reg_email_block {
-    display: flex;
-    width: 280px;
-    margin: 0 auto;
-    justify-content: center;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    height: 40px;
-    border: 1px solid var(--color-primary);
+.reg_field_container p{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+
+    font-family: "Segoe UI Semibold";
+
+    color: #526158;
 }
 
 .role_selector{
     border: 0;
-    width: 250px;
-    font-size: 15;
-}
-.reg_icon_block{
-    display: flex;
-
-    height: 40px;
-    width: 30px;
-    align-items: center;
-    justify-content: center;
 }
 
 
-.textfield{
-    border: 0;
-    width: 250px;
-    font-size: 15px;
+
+.textfield, .role_selector{
+    border: 2px solid #EBE9E7;
+
+    border-radius: 4px;
+    border-bottom-color: #838281;
+    width: 352px;
+    height: 39px;
+    font-size: 16px;
     padding-left: 10px;
+    padding-right: 10px;
+    /*padding-left: 10px;*/
 }
 
 .form_reg_button{
+
     display: block;
-    width: 280px;
-    margin: 0 auto;
-    margin-top: 30px;
+    width: 204px;
+    height: 44px;
+    margin: 40px auto 30px;
+
     border-radius: 4px;
-    height: 35px;
+
     border: none;
     cursor: pointer;
-    background-color: var(--color-primary);
+    background-color: #8AB69D;
     color: white;
+
+    font-size: 16px;
 }
 
 .textfield:focus{

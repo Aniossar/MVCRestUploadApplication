@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koreanika Portal</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
+    <link rel="shortcut icon" href="images/favicon-16x16.png" type="image/x-icon">
     <link rel="stylesheet" href="css/main_style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/header.css">
@@ -32,11 +32,12 @@
                 <div class="menu_items">
                     <ul>
                         <li><a class="menu_link highlight" href="/dashboard">Информация</a></li>
-                        <li><a class="menu_link" href="#">Пользователи</a></li>
+                        <li><a class="menu_link" href="/usersList">Пользователи</a></li>
                         <li><a class="menu_link" href="/statistics">Статистика</a></li>
                         <li><a class="menu_link" href="/appUpdates">Обновления</a></li>
                         <li><a class="menu_link" href="/pricesUpdates">Цены</a></li>
                         <li><a class="menu_link" href="#">Новости</a></li>
+                        <li><a class="menu_link" href="#">Профиль</a></li>
                     </ul>
                 </div>
 
@@ -47,19 +48,19 @@
 
     <h2 class="header">Информация</h2>
 
-    <div class="system_info_conteiner_external">
+    <div class="system_info_container_external">
         <div class="system_info_container">
             <div class="system_info_element">
                 <p class="info_header"> О системе</p>
-                <div class="info_data">
+                <div class="sys_start_date">
                     <p>Дата запуска:</p>
                     <p>ДАТА</p>
                 </div>
-                <div class="info_data">
+                <div class="sys_work_time">
                     <p>Время работы сервера:</p>
                     <p>ДАТА</p>
                 </div>
-                <div class="info_data">
+                <div class="sys_memory">
                     <p>Память:</p>
                     <p>ДВСЕГО/ИСП</p>
                 </div>
@@ -68,63 +69,15 @@
 
             <div class="users_info_element">
                 <p class="info_header"> О пользователях</p>
-                <div class="info_data">
+                <div class="users_all">
                     <p>Всего :</p>
                     <p>КОЛИЧЕСТВО</p>
                 </div>
-                <div class="info_data">
+                <div class="users_online">
                     <p>Онлайн:</p>
                     <p>КОЛИЧЕСТВО</p>
                 </div>
-                <div class="info_data">
-                    <p>Оффлайн:</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-            </div>
-
-            <div class="users_info_element">
-                <p class="info_header"> О пользователях</p>
-                <div class="info_data">
-                    <p>Всего :</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-                <div class="info_data">
-                    <p>Онлайн:</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-                <div class="info_data">
-                    <p>Оффлайн:</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-            </div>
-
-            <div class="users_info_element">
-                <p class="info_header"> О пользователях</p>
-                <div class="info_data">
-                    <p>Всего :</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-                <div class="info_data">
-                    <p>Онлайн:</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-                <div class="info_data">
-                    <p>Оффлайн:</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-            </div>
-
-            <div class="users_info_element">
-                <p class="info_header"> О пользователях</p>
-                <div class="info_data">
-                    <p>Всего :</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-                <div class="info_data">
-                    <p>Онлайн:</p>
-                    <p>КОЛИЧЕСТВО</p>
-                </div>
-                <div class="info_data">
+                <div class="users_offline">
                     <p>Оффлайн:</p>
                     <p>КОЛИЧЕСТВО</p>
                 </div>
@@ -134,22 +87,48 @@
         </div>
     </div>
 
-    <div class="users_events_container_ext">
-        <div class="users_events_container_header">
-            <table class="event_table_header">
-                <caption>События пользователей</caption>
-                <tr>            
-                    <th>Дата</th>
-                    <th>Пользователь</th>
-                    <th>Операция</th>
-                    <th>Дополнительно</th>
-                </tr>
-            </table>
-        </div>
-        <div class="users_events_container">
-            <table id="event_table" class="event_table">
-                
-            </table>
+    <div class="container">
+        <div class="container_mid">
+            <div class="events">
+                <div class="table_caption"><h4>События портала</h4></div>
+
+                <div class="table_container">
+                    <table>
+
+                        <colgroup>
+                            <col style="width:20%">
+                            <col style="width:20%">
+                            <col style="width:20%">
+                            <col style="width:40%">
+
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Пользователь</th>
+                                <th>Операция</th>
+                                <th>Дополнительно</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+                            <td>дата</td>
+                            <td>user</td>
+                            <td>operation</td>
+                            <td>additional info</td>
+                        </tr>
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+            </div>
         </div>
     </div>
 

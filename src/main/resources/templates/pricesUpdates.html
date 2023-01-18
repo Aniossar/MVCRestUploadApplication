@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-
+  <title>Prices</title>
+  <link rel="shortcut icon" href="images/favicon-16x16.png" type="image/x-icon">
   <link rel="stylesheet" href="css/main_style.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/appUpdates.css">
@@ -32,11 +32,12 @@
       <div class="menu_items">
         <ul>
           <li><a class="menu_link" href="/dashboard">Информация</a></li>
-          <li><a class="menu_link" href="#">Пользователи</a></li>
+          <li><a class="menu_link" href="/usersList">Пользователи</a></li>
           <li><a class="menu_link" href="/statistics">Статистика</a></li>
           <li><a class="menu_link" href="/appUpdates">Обновления</a></li>
           <li><a class="menu_link highlight" href="/pricesUpdates">Цены</a></li>
           <li><a class="menu_link" href="#">Новости</a></li>
+          <li><a class="menu_link" href="#">Профиль</a></li>
         </ul>
       </div>
     </div>
@@ -76,7 +77,7 @@
           <label >Все</label>
         </div>
         <div>
-          <input type="checkbox" name="km">
+          <input type="checkbox" name="km" checked>
           <label>Koreanika master</label>
         </div>
         <div>
@@ -101,7 +102,6 @@
 
   </div>
 </div>
-
 
 <div class="container">
   <div class="container_mid">
@@ -163,7 +163,8 @@
   </div>
 </div>
 
-<script src="/js/updates.js"></script>
+
+  <script src="/js/updates.js"></script>
 
 </body>
 </html>

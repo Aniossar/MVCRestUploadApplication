@@ -7,6 +7,18 @@ authStatus.then(()=>{
     document.querySelector('.user_name').innerHTML = userLogin
     document.querySelector('.user_info').innerHTML = userRole
 
+    if(userRole === 'ROLE_ADMIN'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Администратор)'
+    }else if(userRole === 'ROLE_MODERATOR'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Модератор)'
+    }else if(userRole === 'ROLE_SUPPLIER'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Поставщик)'
+    }else if(userRole === 'ROLE_SHOP'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Салон)'
+    }else if(userRole === 'ROLE_USER'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Дизайнер)'
+    }
+
 }, ()=>{
     //onRejected
 })
@@ -73,11 +85,16 @@ async function getFilesList(){
     content.sort((a, b) =>{
         return  b.id - a.id
     })
+
     tableBody.innerHTML = ""
     for(let i=0;i < content.length;i++){
-        // console.log(content[i])
+        console.log(content[i])
 
         let date = new Date(content[i].uploadDate);
+
+        if(pathname == "/pricesUpdates"){
+            date = new Date(content[i].uploadTime);
+        }
 
         let access = {
             all:"",

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <link rel="shortcut icon" href="images/favicon-16x16.png" type="image/x-icon">
     <link rel="stylesheet" href="css/main_style.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/appUpdates.css">
@@ -32,11 +33,12 @@
                 <div class="menu_items">
                     <ul>
                         <li><a class="menu_link" href="/dashboard">Информация</a></li>
-                        <li><a class="menu_link" href="#">Пользователи</a></li>
+                        <li><a class="menu_link" href="/usersList">Пользователи</a></li>
                         <li><a class="menu_link" href="/statistics">Статистика</a></li>
                         <li><a class="menu_link highlight" href="/appUpdates">Обновления</a></li>
                         <li><a class="menu_link" href="/pricesUpdates">Цены</a></li>
                         <li><a class="menu_link" href="#">Новости</a></li>
+                        <li><a class="menu_link" href="#">Профиль</a></li>
                     </ul>
                 </div>
             </div>
@@ -76,7 +78,7 @@
                         <label >Все</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="km">
+                        <input type="checkbox" name="km" checked>
                         <label>Koreanika master</label>
                     </div>
                     <div>
@@ -118,10 +120,10 @@
                             <col style="width:30%">
                             <col style="width:12%">
                             <col style="width:12%">
-                          </colgroup>  
-    
+                          </colgroup>
+
                         <thead>
-    
+
                             <tr>
                                 <th>Дата</th>
                                 <th>Доступ</th>
@@ -129,33 +131,33 @@
                                 <th>Скачать</th>
                                 <th>Удалить</th>
                             </tr>
-    
+
                         </thead>
-    
+
                         <tbody>
-    
+
                             <tr>
                                 <td>дата</td>
                                 <td>
                                     <div class="file_access">
-    
+
                                         <div><input type="checkbox" name="all"> <label>all</label></div>
                                         <div><input type="checkbox" name="KM"> <label>KM</label></div>
                                         <div><input type="checkbox" name="K"> <label>K</label></div>
                                         <div><input type="checkbox" name="Z"> <label>Z</label></div>
                                         <div><input type="checkbox" name="PM"> <label>PM</label></div>
-                                   
+
                                     </div>
-    
+
                                 </td>
                                 <td>Имя</td>
                                 <td><a class="a_download" href="##" onclick="">скачать</a></td>
                                 <td><a class="a_delete"href="##" onclick="">удалить</a></td>
                             </tr>
-    
-    
+
+
                         </tbody>
-                        
+
                     </table>
                 </div>
 
