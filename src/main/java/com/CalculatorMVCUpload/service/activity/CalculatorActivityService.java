@@ -45,22 +45,22 @@ public class CalculatorActivityService {
         if (request.getCertainPlaceAddress() == null) {
             request.setCertainPlaceAddress("%%");
         } else request.setCertainPlaceAddress("%" + request.getCertainPlaceAddress() + "%");
-        if (request.getMaterialPriceFrom() == 0) {
+        if (request.getMaterialPriceFrom() == -1) {
             request.setMaterialPriceFrom(0);
         }
-        if (request.getMaterialPriceTo() == 0) {
+        if (request.getMaterialPriceTo() == -1) {
             request.setMaterialPriceTo(Double.MAX_VALUE);
         }
-        if (request.getAddPriceFrom() == 0) {
+        if (request.getAddPriceFrom() == -1) {
             request.setAddPriceFrom(0);
         }
-        if (request.getAddPriceTo() == 0) {
+        if (request.getAddPriceTo() == -1) {
             request.setAddPriceTo(Double.MAX_VALUE);
         }
-        if (request.getAllPriceFrom() == 0) {
+        if (request.getAllPriceFrom() == -1) {
             request.setAllPriceFrom(0);
         }
-        if (request.getAllPriceTo() == 0) {
+        if (request.getAllPriceTo() == -1) {
             request.setAllPriceTo(Double.MAX_VALUE);
         }
         if (request.getMaterials() == null) {
