@@ -13,10 +13,14 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 public class OnlineUserEntity {
-
+/*
     @Id
     @Column(name = "id")
-    private int id;
+    private int id;*/
+
+    @Id
+    @Column(name = "user_id")
+    private int userId;
 
     @Column(name = "user_login")
     private String userLogin;

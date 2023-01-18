@@ -8,7 +8,12 @@ import lombok.ToString;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.lang.reflect.Field;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -28,16 +33,16 @@ public class CalculatorActivityEntity {
     private Instant activityTime;
 
     @Column(name = "user_id")
-    private int userId;
+    public int userId;
 
     @Column(name = "login")
-    private String login;
+    public String login;
 
     @Column(name = "company_name")
-    private String companyName;
+    public String companyName;
 
     @Column(name = "certain_place_address")
-    private String certainPlaceAddress;
+    public String certainPlaceAddress;
 
     @Column(name = "type")
     private String type;
@@ -65,4 +70,13 @@ public class CalculatorActivityEntity {
 
     @Column(name = "product_square")
     private double productSquare;
+
+    /*public List<String> getClassFieldsName(){
+        Field[] fields = CalculatorActivityEntity.class.getFields();
+        List<Field> fieldList = Arrays.asList(fields);
+
+        fieldList.stream().map(item -> item.getName()).collect(Collectors.toList());
+        return fieldList;
+    }*/
+
 }

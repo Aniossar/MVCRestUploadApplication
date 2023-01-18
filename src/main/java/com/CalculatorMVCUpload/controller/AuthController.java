@@ -61,7 +61,6 @@ public class AuthController {
             log.warning("Trying to register user with existing email or login");
             throw new ExistingLoginEmailRegisterException("This login or email is already registered");
         }
-        log.warning(registrationRequest.toString());
         userEntity.setPassword(registrationRequest.getPassword());
         userEntity.setLogin(registrationRequest.getLogin());
         userEntity.setEmail(registrationRequest.getEmail());

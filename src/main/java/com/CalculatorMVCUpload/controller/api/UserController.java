@@ -6,8 +6,10 @@ import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
 import com.CalculatorMVCUpload.payload.request.users.BlockUserRequest;
 import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
-import com.CalculatorMVCUpload.payload.request.users.RoleChangeRequest;
+import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
+import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
+import com.CalculatorMVCUpload.payload.response.UserListResponse;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.service.users.UserManagementService;
 import com.CalculatorMVCUpload.service.users.UserService;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,6 +39,7 @@ public class UserController {
     private RoleEntityRepository roleEntityRepository;
 
     @DeleteMapping("/deleteUser")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void deleteUser(@RequestHeader(name = "Authorization") String bearer,
                            @RequestBody SingleMessageRequest request) {
 
@@ -49,14 +54,30 @@ public class UserController {
         } else throw new IncorrectPayloadException("Bad user change request");
     }
 
-    @GetMapping("/getUser/{login}")
-    public UserEntity getUser(@PathVariable String login){
-        return userService.findByLogin(login);
+    @GetMapping("/getUser/{id}")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public UserInfoResponse getUser(@PathVariable int id) {
+        Optional<UserEntity> userEntity = userService.findById(id);
+        UserInfoResponse userInfoResponse = null;
+        if (userEntity.isPresent()) {
+            userInfoResponse = userManagementService.transferUserEntityToUserInfoResponse(userEntity.get());
+        }
+        return userInfoResponse;
     }
 
+    @GetMapping("/getAllUsers")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public List<UserListResponse> getAllUsers() {
+        List<UserEntity> allUsers = userManagementService.getAllUsers();
+        List<UserListResponse> userListResponses = userManagementService.transferUserEntitiesToUserListResponse(allUsers);
+        return userListResponses;
+    }
+
+
     @PutMapping("/editUser")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void editUser(@RequestHeader(name = "Authorization") String bearer,
-                         @RequestBody RegistrationRequest request) {
+                         @RequestBody UserEditRequest request) {
 
         String token = jwtProvider.getTokenFromBearer(bearer);
         String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
@@ -86,39 +107,16 @@ public class UserController {
             if (request.getAppAccess() != null) {
                 userToEdit.setAppAccess(request.getAppAccess());
             }
-
-            userService.updateUser(userToEdit);
-        } else throw new IncorrectPayloadException("Bad user change request");
-    }
-
-    @PutMapping("/editUserRole")
-    @RolesAllowed("ROLE_ADMIN")
-    public void editUserRole(@RequestHeader(name = "Authorization") String bearer,
-                             @RequestBody RoleChangeRequest request) {
-
-        String userLoginToEdit = request.getLogin();
-        UserEntity userToEdit = userService.findByLogin(userLoginToEdit);
-
-        if (userToEdit != null) {
-            RoleEntity userRole = roleEntityRepository.findByName("ROLE_" + request.getNewRole());
-            if(userRole != null){
+            if (request.getNewRole() != null) {
+                RoleEntity userRole = roleEntityRepository.findByName("ROLE_" + request.getNewRole());
                 userToEdit.setRoleEntity(userRole);
-                userService.updateUser(userToEdit);
-            } else throw new IncorrectPayloadException("Bad user change request");
-        } else throw new IncorrectPayloadException("Bad user change request");
-    }
+            }
+            if (request.getEnabled() != null) {
+                userToEdit.setEnabled(request.getEnabled());
+            }
 
-    @PutMapping("/editUserEnabled")
-    @RolesAllowed("ROLE_ADMIN")
-    public void editUserRole(@RequestHeader(name = "Authorization") String bearer,
-                             @RequestBody BlockUserRequest request) {
-
-        String userLoginToEdit = request.getLogin();
-        UserEntity userToEdit = userService.findByLogin(userLoginToEdit);
-
-        if (userToEdit != null) {
-            userToEdit.setEnabled(request.isStatusEnabled());
             userService.updateUser(userToEdit);
         } else throw new IncorrectPayloadException("Bad user change request");
     }
+
 }

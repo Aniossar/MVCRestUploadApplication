@@ -3,6 +3,8 @@ package com.CalculatorMVCUpload.service.users;
 import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
+import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
+import com.CalculatorMVCUpload.payload.response.UserListResponse;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.repository.UserEntityRepository;
 import lombok.extern.java.Log;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service

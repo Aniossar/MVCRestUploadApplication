@@ -26,6 +26,10 @@ public class OnlineUserService {
         return onlineUserEntityRepository.findByUserLogin(login);
     }
 
+    public OnlineUserEntity getUserViaId(int id){
+        return onlineUserEntityRepository.getById(id);
+    }
+
     @Transactional
     public void saveUserLine(OnlineUserEntity onlineUserEntity) {
         onlineUserEntityRepository.saveAndFlush(onlineUserEntity);
