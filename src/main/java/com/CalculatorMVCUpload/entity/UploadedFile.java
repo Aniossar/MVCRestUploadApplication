@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 
 @Entity
@@ -32,7 +33,7 @@ public class UploadedFile {
     private String url;
 
     @Column(name = "uploaddate")
-    private Date uploadDate;
+    private Instant uploadDate;
 
     @Column(name = "size")
     private long size;
@@ -49,7 +50,7 @@ public class UploadedFile {
     @Column(name = "author")
     private String author;
 
-    public UploadedFile(String name, String path, String url, Date uploadDate, long size, int hashCode) {
+    public UploadedFile(String name, String path, String url, Instant uploadDate, long size, int hashCode) {
         this.name = name;
         this.path = path;
         this.url = url;

@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.entity;
+package com.CalculatorMVCUpload.entity.users;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

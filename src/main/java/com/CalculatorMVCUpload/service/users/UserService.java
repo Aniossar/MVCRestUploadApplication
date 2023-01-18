@@ -1,14 +1,16 @@
 package com.CalculatorMVCUpload.service.users;
 
-import com.CalculatorMVCUpload.entity.RoleEntity;
-import com.CalculatorMVCUpload.entity.UserEntity;
-import com.CalculatorMVCUpload.payload.request.RegistrationRequest;
+import com.CalculatorMVCUpload.entity.users.RoleEntity;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
+import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.repository.UserEntityRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Log
@@ -47,6 +49,10 @@ public class UserService {
 
     public UserEntity findByEmail(String email) {
         return userEntityRepository.findByEmail(email);
+    }
+
+    public Optional<UserEntity> findById(int id){
+        return userEntityRepository.findById(id);
     }
 
     public UserEntity findByLoginAndPassword(String login, String password) {

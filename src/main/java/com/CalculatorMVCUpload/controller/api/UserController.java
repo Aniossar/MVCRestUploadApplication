@@ -1,12 +1,12 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
-import com.CalculatorMVCUpload.entity.RoleEntity;
-import com.CalculatorMVCUpload.entity.UserEntity;
+import com.CalculatorMVCUpload.entity.users.RoleEntity;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
-import com.CalculatorMVCUpload.payload.request.BlockUserRequest;
-import com.CalculatorMVCUpload.payload.request.RegistrationRequest;
-import com.CalculatorMVCUpload.payload.request.RoleChangeRequest;
+import com.CalculatorMVCUpload.payload.request.users.BlockUserRequest;
+import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
+import com.CalculatorMVCUpload.payload.request.users.RoleChangeRequest;
 import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.service.users.UserManagementService;
@@ -47,6 +47,11 @@ public class UserController {
                 userToDelete.getRoleEntity().getName())) {
             userService.deleteUser(userLoginToDelete);
         } else throw new IncorrectPayloadException("Bad user change request");
+    }
+
+    @GetMapping("/getUser/{login}")
+    public UserEntity getUser(@PathVariable String login){
+        return userService.findByLogin(login);
     }
 
     @PutMapping("/editUser")

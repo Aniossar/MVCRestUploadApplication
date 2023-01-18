@@ -1,10 +1,10 @@
 package com.CalculatorMVCUpload.service.users;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
-import com.CalculatorMVCUpload.entity.PasswordResetToken;
-import com.CalculatorMVCUpload.entity.UserEntity;
+import com.CalculatorMVCUpload.entity.users.PasswordResetToken;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
-import com.CalculatorMVCUpload.payload.request.AuthentificationRequest;
+import com.CalculatorMVCUpload.payload.request.users.AuthentificationRequest;
 import com.CalculatorMVCUpload.payload.response.AuthentificationResponse;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -26,7 +26,6 @@ public class AuthService {
     private JwtProvider jwtProvider;
 
     private final Map<String, ArrayList<String>> refreshStorage = new HashMap<>();
-
     private Map<String, PasswordResetToken> restoringPasswordTokensStorage = new HashMap<>();
     private final int numberOfConcurrentSessions = 5;
 

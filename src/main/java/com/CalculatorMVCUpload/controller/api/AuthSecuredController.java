@@ -1,11 +1,11 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
-import com.CalculatorMVCUpload.entity.UserEntity;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
 import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
-import com.CalculatorMVCUpload.payload.request.PasswordChangeRequest;
-import com.CalculatorMVCUpload.payload.request.RefreshTokenRequest;
+import com.CalculatorMVCUpload.payload.request.users.PasswordChangeRequest;
+import com.CalculatorMVCUpload.payload.request.users.RefreshTokenRequest;
 import com.CalculatorMVCUpload.payload.response.AuthentificationResponse;
 import com.CalculatorMVCUpload.service.users.AuthService;
 import com.CalculatorMVCUpload.service.users.UserService;

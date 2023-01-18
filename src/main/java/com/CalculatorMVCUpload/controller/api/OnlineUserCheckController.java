@@ -1,7 +1,7 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
-import com.CalculatorMVCUpload.entity.OnlineUserEntity;
+import com.CalculatorMVCUpload.entity.users.OnlineUserEntity;
 import com.CalculatorMVCUpload.service.users.OnlineUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

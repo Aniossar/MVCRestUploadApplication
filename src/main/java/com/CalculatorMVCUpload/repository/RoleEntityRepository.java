@@ -1,6 +1,6 @@
 package com.CalculatorMVCUpload.repository;
 
-import com.CalculatorMVCUpload.entity.RoleEntity;
+import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

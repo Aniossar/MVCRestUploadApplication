@@ -1,8 +1,8 @@
 package com.CalculatorMVCUpload.aspect;
 
 import com.CalculatorMVCUpload.entity.ActivityEntity;
-import com.CalculatorMVCUpload.entity.UserEntity;
-import com.CalculatorMVCUpload.service.ActivityService;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
+import com.CalculatorMVCUpload.service.activity.ActivityService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;

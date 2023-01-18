@@ -1,4 +1,4 @@
-package com.CalculatorMVCUpload.service;
+package com.CalculatorMVCUpload.service.activity;
 
 import com.CalculatorMVCUpload.entity.ActivityEntity;
 import com.CalculatorMVCUpload.repository.ActivityEntityRepository;
@@ -33,4 +33,5 @@ public class ActivityService {
     public void deleteActivitiesForUser(String login) {
         activityEntityRepository.deleteActivityEntitiesByLogin(login);
     }
+
 }
