@@ -48,7 +48,9 @@ create unique index user_table_login_uindex
 
 CREATE TABLE public.online_user_table
 (
-    id int NOT NULL PRIMARY KEY,
+    user_id int NOT NULL PRIMARY KEY
+        constraint online_user_id_fk
+            references user_table(id),
     user_login varchar(100) NOT NULL,
     last_ping_time timestamp with time zone NOT NULL
 );

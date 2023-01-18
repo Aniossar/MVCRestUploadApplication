@@ -3,6 +3,7 @@ package com.CalculatorMVCUpload.controller.api;
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.OnlineUserEntity;
 import com.CalculatorMVCUpload.service.users.OnlineUserService;
+import com.CalculatorMVCUpload.service.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,6 +25,9 @@ public class OnlineUserCheckController {
     @Autowired
     private OnlineUserService onlineUserService;
 
+    @Autowired
+    private UserService userService;
+
     private final long activityPeriodInMinutes = 15;
 
 
@@ -38,6 +42,7 @@ public class OnlineUserCheckController {
                 userEntity.setLastPingTime(timePing);
             } else {
                 userEntity = new OnlineUserEntity();
+                userEntity.setUserId(userService.findByLogin(userLogin).getId());
                 userEntity.setUserLogin(userLogin);
                 userEntity.setLastPingTime(timePing);
             }

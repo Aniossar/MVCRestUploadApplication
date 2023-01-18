@@ -32,11 +32,11 @@ REST Endpoints for authorization:
 7. POST /resetPassword - takes restoring token with new password and changes in db
 
 REST Endpoints for user management:
-1. PUT /api/changeOwnPassword - change password of authenticated user
-2. DELETE /api/users/deleteUser - delete user (only for user with greater role)
-3. PUT /api/users/editUser - edit user fields (only for user with greater role)
-4. PUT /api/users/editUserRole - edit user Role field (only for admin)
-5. PUT /api/users/editUserEnabled - edit user Enabled field (only for admin)
+1. GET /api/users/getUser/{id} - get user via id (only for admin and moderator)
+2. GET /api/users/getAllUsers - get all users in short info form (only for admin and moderator)
+1. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
+2. DELETE /api/users/deleteUser - delete user (only for admin and moderator)
+3. PUT /api/users/editUser - edit user fields (only for user with greater role + (only for admin and moderator))
 
 REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities
