@@ -20,6 +20,9 @@ const URL_PRICES_DELETE_FILE = '/api/pricelists/deleteFile/'
 const URL_PRICES_DOWNLOAD_FILE = '/api/pricelists/downloadFile/'
 const URL_PRICES_EDIT_FILE = '/api/pricelists/editFileInfo/'
 
+const URL_GET_CALC_ACTIVITY_ALL = '/api/app/allCalcActivities'
+const URL_GET_CALC_ACTIVITY_FILTERED = '/api/app/calcActivityFilter'
+
 const ACCESS_TOKEN_NAME = 'accessToken'
 const REFRESH_TOKEN_NAME = 'refreshToken'
 

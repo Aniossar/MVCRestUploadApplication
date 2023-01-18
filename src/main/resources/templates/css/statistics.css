@@ -4,6 +4,9 @@
     display: flex;
     margin: 10px auto;
     justify-content: center;
+
+    min-width: var(--min-page-width);
+    max-width: var(--min-page-width);
 }
 
 .filter_onoff{
@@ -96,9 +99,18 @@ input[type=date]:focus{
     width: 150px;
 }
 
+.updateBtnContainer{
+    display: flex;
+}
+
+#updateButton{
+    width: 100px;
+    height: 30px;
+}
 
 
 .table_container{
+    margin-top: 10px;
 
     max-height: 600px;
     overflow-x: auto;
@@ -118,13 +130,14 @@ table thead{
 
 table th{
     border: 2px solid black;
-    padding: 5px 10px;
+    padding: 1px 5px;
 }
 
 table td{
     border: 1px solid black;
     background-color: white;
-    padding: 1px 10px;
+    padding: 1px 5px;
+    text-align: center;
 }
 
 /* Стили для скролла */

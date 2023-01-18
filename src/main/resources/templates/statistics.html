@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/statistics.css">
 
     <script src="js/constants.js"></script>
-    <script src="js/checkAuth.js"></script>
+<!--    <script src="js/checkAuth.js"></script>-->
 </head>
 <body>
 
@@ -53,7 +53,7 @@
 
             <div class="filter_onoff">
                 <div>
-                    <input type="checkbox"/>
+                    <input id="filter_use" type="checkbox"/>
                     <span>Использовать фильтр</span>
                 </div>
                 <div>
@@ -65,60 +65,60 @@
                 <div class="filter">
                     <div class="filter_column1">
                         <div class="filter_row">
-                            <input type="checkbox"/>
+                            <input id="date_use" type="checkbox"/>
                             <span >Дата</span>
-                            <input type="date"/>
+                            <input id="date_from" type="date"/>
                             <span class="sdd">-</span>
-                            <input type="date"/>
+                            <input id="date_to" type="date"/>
 
                         </div>
                         <div class="filter_row">
-                            <input type="checkbox"/>
+                            <input id="material_use" type="checkbox"/>
                             <span>Камень</span>
-                            <input type="text"/>
+                            <input id="materials" type="text"/>
 
                         </div>
                         <div class="filter_row">
-                            <input type="checkbox"/>
+                            <input id="shop_use" type="checkbox"/>
                             <span>Салон</span>
-                            <input type="text"/>
+                            <input id="shop" type="text"/>
 
                         </div>
                         <div class="filter_row">
-                            <input type="checkbox"/>
+                            <input id="certain_address_use" type="checkbox"/>
                             <span>Магазин</span>
-                            <input type="text"/>
+                            <input id="certainAddress" type="text"/>
 
                         </div>
                     </div>
                     <div class="filter_column2">
                         <div class="filter_row">
-                            <input type="checkbox"/>
+                            <input id="material_price_use" type="checkbox"/>
                             <span>Цена материала</span>
                             <span>от</span>
-                            <input type="text"/>
+                            <input id="materialPriceFrom" type="text" oninput="filterNumberFieldValidation()"/>
                             <span>до</span>
-                            <input type="text"/>
+                            <input id="materialPriceTo" type="text" oninput="filterNumberFieldValidation()"/>
                             <span>руб.</span>
 
                         </div>
                         <div class="filter_row">
-                            <input type="checkbox"/>
+                            <input id="add_price_use" type="checkbox"/>
                             <span>Цена доп. работ</span>
                             <span>от</span>
-                            <input type="text"/>
+                            <input id="addPriceFrom" type="text"/>
                             <span>до</span>
-                            <input type="text"/>
+                            <input id="addPriceTo" type="text"/>
                             <span>руб.</span>
 
                         </div>
                         <div class="filter_row">
-                            <input type="checkbox"/>
+                            <input id="all_use" type="checkbox"/>
                             <span>Цена общая</span>
                             <span>от</span>
-                            <input type="text"/>
+                            <input id="allPriceFrom" type="text"/>
                             <span>до</span>
-                            <input type="text"/>
+                            <input id="allPriceTo" type="text"/>
                             <span>руб.</span>
 
                         </div>
@@ -129,21 +129,37 @@
 
             </div>
 
+            <div class="updateBtnContainer"><input id="updateButton" type="button" value="Обновить" onclick="updateTableView()"></div>
+
             <div class="table_container">
 
                 <table>
+
+                    <colgroup>
+                        <col style="width:10%">
+                        <col style="width:10%">
+                        <col style="width:6%">
+                        <col style="width:10%">
+                        <col style="width:30%">
+                        <col style="width:2%">
+                        <col style="width:2%">
+                        <col style="width:10%">
+                        <col style="width:10%">
+                        <col style="width:10%">
+                    </colgroup>
+
                     <thead>
                         <tr>
                             <th>Дата</th>
                             <th>Салон</th>
                             <th>Пользователь</th>
                             <th>Тип события</th>
-                            <th>Материал</th>
+                            <th>Материал (тип-коллекция-цвет)</th>
                             <th>Кол-во слэбов</th>
-                            <th>Площадь изделия</th>
-                            <th>Сумма материала</th>
-                            <th>Сумма доп. работ</th>
-                            <th>Сумма счета</th>
+                            <th>Площадь изделия (м2)</th>
+                            <th>Цена материала (₽)</th>
+                            <th>Цена доп. работ (₽)</th>
+                            <th>Цена счета (₽)</th>
                         </tr>
                     </thead>
 
@@ -155,8 +171,8 @@
                             <td>Тип события</td>
                             <td>Материал</td>
                             <td>Кол-во слэбов</td>
-                            <td>Площадь изделия</td>
-                            <td>Сумма материала</td>
+                            <td>Площадь изделия </td>
+                            <td>Цена материала</td>
                             <td>Сумма доп. работ</td>
                             <td>Сумма счета</td>
                         </tr>
