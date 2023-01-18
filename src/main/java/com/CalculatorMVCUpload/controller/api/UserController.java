@@ -4,10 +4,8 @@ import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
-import com.CalculatorMVCUpload.payload.request.users.BlockUserRequest;
-import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
-import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
+import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
 import com.CalculatorMVCUpload.payload.response.UserListResponse;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
@@ -48,7 +46,7 @@ public class UserController {
         String userLoginToDelete = request.getMessage();
         UserEntity userToDelete = userService.findByLogin(userLoginToDelete);
 
-        if (userToDelete != null && userManagementService.isFirstUserCoolerThanSecond(roleFromToken,
+        if (userToDelete != null && userManagementService.isFirstUserCoolerOrEqualThanSecond(roleFromToken,
                 userToDelete.getRoleEntity().getName())) {
             userService.deleteUser(userLoginToDelete);
         } else throw new IncorrectPayloadException("Bad user change request");
@@ -84,7 +82,7 @@ public class UserController {
         String userLoginToEdit = request.getLogin();
         UserEntity userToEdit = userService.findByLogin(userLoginToEdit);
 
-        if (userToEdit != null && userManagementService.isFirstUserCoolerThanSecond(roleFromToken,
+        if (userToEdit != null && userManagementService.isFirstUserCoolerOrEqualThanSecond(roleFromToken,
                 userToEdit.getRoleEntity().getName())) {
             if (request.getEmail() != null) {
                 userToEdit.setEmail(request.getEmail());

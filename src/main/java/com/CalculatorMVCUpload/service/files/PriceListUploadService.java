@@ -1,7 +1,6 @@
 package com.CalculatorMVCUpload.service.files;
 
 import com.CalculatorMVCUpload.entity.PriceListEntity;
-import com.CalculatorMVCUpload.entity.UploadedFile;
 import com.CalculatorMVCUpload.repository.PriceListEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

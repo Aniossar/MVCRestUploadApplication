@@ -9,8 +9,6 @@ import com.CalculatorMVCUpload.service.files.PriceListUploadService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -35,6 +32,9 @@ public class PriceListController {
 
     @Autowired
     private PriceListUploadService priceListUploadService;
+
+    @Autowired
+    private FileController fileController;
 
     private final String markFileForAll = "ALL";
 
@@ -52,11 +52,11 @@ public class PriceListController {
     public UploadFileResponse uploadPriceFile(@RequestParam("file") MultipartFile file,
                                               @RequestParam("info") String info,
                                               @RequestParam("forClients") String forClients) {
-        try{
+        try {
             String fileName = priceListStorageService.storeFile(file);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/downloadFile/")
+                    .path("/api/pricelists/downloadFile/")
                     .path(fileName)
                     .toUriString();
 
@@ -75,7 +75,7 @@ public class PriceListController {
 
             return new UploadFileResponse(fileName, fileDownloadUri,
                     file.getContentType(), file.getSize());
-        } catch (Exception e){
+        } catch (Exception e) {
             log.warning(e.getMessage());
         }
         return null;
@@ -84,22 +84,7 @@ public class PriceListController {
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadPriceFile(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = priceListStorageService.loadPriceFileAsResource(fileName);
-
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            log.info("Could not determine file type.");
-        }
-
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+        return fileController.downloadFile(resource, request);
     }
 
     @DeleteMapping("/deleteFile/{id}")

@@ -30,8 +30,8 @@ public class UserManagementService {
         this.userRolesMap = roleEntityList.stream().collect(Collectors.toMap(RoleEntity::getName, RoleEntity::getId));
     }
 
-    public boolean isFirstUserCoolerThanSecond(String roleName1, String roleName2) {
-        return userRolesMap.get(roleName1) < userRolesMap.get(roleName2);
+    public boolean isFirstUserCoolerOrEqualThanSecond(String roleName1, String roleName2) {
+        return userRolesMap.get(roleName1) <= userRolesMap.get(roleName2);
     }
 
     @Transactional

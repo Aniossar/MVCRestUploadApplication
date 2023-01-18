@@ -1,8 +1,8 @@
 package com.CalculatorMVCUpload.service.files;
 
 import com.CalculatorMVCUpload.exception.BadNamingException;
-import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
+import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class FileStorageService {
 
         try {
             Files.createDirectories(this.fileStorageLocation);
-            log.info("Files will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
+            log.info("Update files will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }

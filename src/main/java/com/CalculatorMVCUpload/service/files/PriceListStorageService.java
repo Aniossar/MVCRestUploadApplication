@@ -45,7 +45,7 @@ public class PriceListStorageService {
 
         try {
             Files.createDirectories(this.fileStorageLocation);
-            log.info("Files will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
+            log.info("Price lists will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
