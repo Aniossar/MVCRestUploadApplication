@@ -39,7 +39,10 @@ async function saveNewPassword(){
     }
 
 
-    let restoreToken = window.location.pathname.split("toker=")[1].replaceAll("{").replaceAll("}");
+    let restoreToken = window.location.pathname.split("token=")[1]
+        .replaceAll("{", "")
+        .replaceAll("}", "");
+
     console.log(restoreToken)
 
     let filterObject = {
