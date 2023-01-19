@@ -23,6 +23,12 @@ const URL_PRICES_EDIT_FILE = '/api/pricelists/editFileInfo/'
 const URL_GET_CALC_ACTIVITY_ALL = '/api/app/allCalcActivities'
 const URL_GET_CALC_ACTIVITY_FILTERED = '/api/app/calcActivityFilter'
 
+const URL_GET_ALL_USERS = '/api/users/getAllUsers'
+const URL_GET_USER = '/api/users/getUser/' //+{id}
+const URL_GET_EDIT_USER = '/api/users/editUser'
+
+const URL_CHANGE_USER_PW = '/api/changeOwnPassword'
+
 const ACCESS_TOKEN_NAME = 'accessToken'
 const REFRESH_TOKEN_NAME = 'refreshToken'
 

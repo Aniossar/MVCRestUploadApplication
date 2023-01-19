@@ -62,6 +62,15 @@
     margin: 10px auto;
 }
 
+.left{
+    display: flex;
+    justify-content: left;
+}
+
+.left>div{
+    margin: 10px 0px 10px 35px;
+}
+
 .textfield, .role_selector{
     border: 2px solid #EBE9E7;
 

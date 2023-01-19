@@ -47,15 +47,18 @@ async function checkAccess(){
                 userRole = content['roleName']
                 userLogin = content['login']
 
+                console.log(userRole)
                 if(window.location.pathname == '/'){
 
                     /** разкомментировать когда будет возвращаться корректная роль*/
-                    // if(userRole === "ADMIN" || userRole === "MODERATOR"){
+                     if(userRole === "ROLE_ADMIN" || userRole === "ROLE_MODERATOR"){
                     //     window.location.replace('admin/dashboard')
-                    // }else{
+                         window.location.replace('/dashboard')
+                     }else{
                     //     window.location.replace('user/info')
-                    // }
-                    window.location.replace('/dashboard')
+                         window.location.replace('/profile')
+                     }
+
                 }
 
                 return 1;

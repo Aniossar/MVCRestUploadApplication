@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="shortcut icon" href="images/favicon-16x16.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/main_style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/profile.css">
+
+    <script src="js/constants.js"></script>
+<!--    <script src="js/checkAuth.js"></script>-->
+</head>
+<body>
+
+    <div class="menu_container">
+        <div class="menu_container_inner">
+            <div class="menu_container_content">
+                <div class="menu_user_info">
+                    <img src="images/user_no_logo.png" alt="">
+                    <div class="menu_user_info_2">
+                        <p class="user_name">user </p>
+                        <p class="user_info" hidden>COMPANY/ROLE(ADMIN)</p>
+                        <a class="user_logout" onclick="logout()" href="/login">logout</a>
+                    </div>
+                </div>
+
+                <div class="menu_items">
+                    <ul>
+                        <li><a class="menu_link menu_dashboard" href="/dashboard">Информация</a></li>
+                        <li><a class="menu_link menu_usersList" href="/usersList">Пользователи</a></li>
+                        <li><a class="menu_link menu_statistics" href="/statistics">Статистика</a></li>
+                        <li><a class="menu_link menu_appUpdates" href="/appUpdates">Обновления</a></li>
+                        <li><a class="menu_link menu_pricesUpdates" href="/pricesUpdates">Цены</a></li>
+                        <li><a class="menu_link menu_news" href="#">Новости</a></li>
+                        <li><a class="menu_link menu_profile highlight" href="/profile">Профиль</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="container_mid">
+            <div class="container_info">
+
+                <div class="header"> <p >Профиль пользователя</p></div>
+
+                <div class="data_body">
+                    <div class="user_data_container">
+                        <!--                    <div class="center">-->
+                        <!--                        <div class="field_container">-->
+                        <!--                            <p>Тип учетной записи:</p>-->
+                        <!--                            <select class="role_selector" name="role">-->
+                        <!--                                <option value="ROLE_ADMIN">Администратор</option>-->
+                        <!--                                <option value="ROLE_MODERATOR">Модератор</option>-->
+                        <!--                                <option value="ROLE_SUPPLIER">Поставщик материала</option>-->
+                        <!--                                <option value="ROLE_SHOP">Салон</option>-->
+                        <!--                                <option value="ROLE_USER">Дизайнер</option>-->
+                        <!--                            </select>-->
+                        <!--                        </div>-->
+                        <!--                    </div>-->
+
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Логин:</p>
+                                <input class="textfield" type="text" name="login" placeholder="Введите логин" required>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Email:</p>
+                                <input class="textfield" type="email" name="email" placeholder="Введите email" required>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <div class="field_container">
+                                <p>ФИО:</p>
+                                <input class="textfield" type="text" name="fullName" placeholder="ФИО" required>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Компания:</p>
+                                <input class="textfield" type="text" name="company" placeholder="Компания" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="user_data_container">
+
+
+                        <div class="center" hidden>
+                            <div class="field_container">
+                                <p>Адрес компании:</p>
+                                <input class="textfield" type="text" name="address" placeholder="Адрес компании" required>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Адрес салона продаж:</p>
+                                <input class="textfield" type="text" name="certain_place_address" placeholder="Адрес салона продаж" required>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Номер телефона:</p>
+                                <input class="textfield" type="text" name="phone_number" placeholder="Номер телефона" required>
+                            </div>
+                        </div>
+<!--                        <div class="center">-->
+<!--                            <div class="field_container">-->
+<!--                                <p>Доступные приложения:</p>-->
+<!--                                <div class="app_access">-->
+<!--                                    <div><input type="checkbox" name="all" ${access.all} onclick="changeFileAccess(${idFile})"> <label >all</label></div>-->
+<!--                                    <div><input type="checkbox" name="km" ${access.KM} onclick="changeFileAccess(${idFile})"> <label >KM</label></div>-->
+<!--                                    <div><input type="checkbox" name="k" ${access.K} onclick="changeFileAccess(${idFile})"> <label>K</label></div>-->
+<!--                                    <div><input type="checkbox" name="z" ${access.Z} onclick="changeFileAccess(${idFile})"> <label>Z</label></div>-->
+<!--                                    <div><input type="checkbox" name="pm" ${access.PM} onclick="changeFileAccess(${idFile})"> <label>PM</label></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+
+                <div class="msg_container"> <p id="msg_profile" hidden> Сообщение </p></div>
+
+                <div class="btn_save_container">
+                    <input class="btn" type="button" value="Отменить" onclick="editUser()">
+                    <input class="btn" type="button" value="Сохранить" onclick="editUser()">
+                </div>
+
+                <div class="header"> <p>Изменение пароля</p></div>
+                <div class="password_body">
+                    <div class="user_data_container">
+
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Старый пароль:</p>
+                                <input class="textfield" type="password" name="pw" placeholder="Введите старый пароль" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user_data_container">
+
+
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Новый пароль:</p>
+                                <input class="textfield" type="password" name="pw_new" placeholder="Введите новый пароль"  oninput="checkPassword()" required>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <div class="field_container">
+                                <p>Повторите новый пароль:</p>
+                                <input class="textfield" type="password" name="pw_new_repeat" placeholder="Повторите новый пароль" oninput="checkPassword()" required>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="msg_container"> <p id="msg_password" hidden> Сообщение </p></div>
+
+                <div class="btn_change_password_container">
+
+                    <input class="btn" type="button" value="Изменить" onclick="changePassword()">
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+<!--    <h1>USER PAGE</h1>-->
+
+    <script src="js/profile.js"></script>
+    
+</body>
+</html>
