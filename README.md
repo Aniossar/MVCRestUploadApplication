@@ -64,8 +64,18 @@ Docker:
 docker-compose_production.yml - make images for 3 
 different pack of containers, for dev, test and production.
 3. for deploy this on server:
+4. Build artefact (latest .jar executable file of project)
+5. Build new Docker image. For this: use command:
 
+   ```docker build -t florence76/koreanikaserverapp .```
+"." means that Dockerfile into you workdir
+6. login: ```docker login```
+7. push you image to dockerhub: ```docker image push florence76/koreanikaserverapp```
+8. Next use Docker-compose 
+9. to start : ```docker compose -f docker-compose_production.yml up -d```
+10. to stop: ```docker compose -f docker-compose_production.yml down```
 
+!!! check that in local storage or on Docker hub is the newest version of image!!!
 
 
 ##About the filter into calculator event table:

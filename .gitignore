@@ -42,3 +42,6 @@ build/
 Upload/417014308_KPD_2.0.60.zip
 Upload/Prices/15.01.2023_10-33-54_KPR_12_12_4.xls
 Upload/
+pgadmin/
+db_production/
+out/
