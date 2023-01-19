@@ -66,4 +66,10 @@ public class ViewController {
     public String createUser(){
         return "createUser";
     }
+
+    @GetMapping("/forgotPassword")
+    public String forgotPassword(){
+        return "forgotPassword";
+    }
+
 }

@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koreanika auth</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
-    <link rel="stylesheet" href="/css/main_style.css">
-    <link rel="stylesheet" href="/css/auth_style.css">
+    <link rel="shortcut icon" href="images/favicon-16x16.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/main_style.css">
+    <link rel="stylesheet" href="css/auth_style.css">
     <script src="https://kit.fontawesome.com/ac37b1b49c.js" crossorigin="anonymous"></script>
 
-    <script src="/js/constants.js"></script>
+    <script src="js/constants.js"></script>
 </head>
 <body>
 
@@ -21,43 +21,47 @@
 
         <div class="logo"></div>
 
-            <p class="form_auth_block_header">Авторизация</p>
+        <p class="form_auth_block_header">Авторизация</p>
 
-        <div class="center">
-            <div class="form_auth_login_block">
-                <p>Логин:</p>
-                <!--                    <div class="auth_icon_block"><i class="fa-solid fa-user"></i></div>-->
-                <input class="textfield" type="text" name="auth_login" placeholder="Логин или email" required>
+        <form class="login_form">
+            <div class="center">
+                <div class="form_auth_login_block">
+                    <p>Логин:</p>
+                    <!--                    <div class="auth_icon_block"><i class="fa-solid fa-user"></i></div>-->
+                    <input class="textfield" type="text" name="auth_login" placeholder="Логин или email" required>
+                </div>
             </div>
-        </div>
 
 
-        <div class="center">
-            <div class="form_auth_password_block">
-                <p>Пароль:</p>
-                <!--                    <div class="auth_icon_block"><i class="fa-solid fa-lock"></i></div>-->
-                <input class="textfield" type="password" name="auth_password" placeholder="Введите пароль" required>
+            <div class="center">
+                <div class="form_auth_password_block">
+                    <p>Пароль:</p>
+                    <!--                    <div class="auth_icon_block"><i class="fa-solid fa-lock"></i></div>-->
+                    <input class="textfield" type="password" name="auth_password" placeholder="Введите пароль" required>
+                </div>
             </div>
-        </div>
 
 
 
 
-        <button id="btn_submit" class="form_auth_button" type="submit" name="form_auth_submit">Войти</button>
+            <input id="btn_submit" class="form_auth_button" type="submit" name="form_auth_submit" value="Войти"></input>
+
+        </form>
+
 
 <!--            <form id="auth_form" class="form_auth_style" method="post">-->
 
 
 <!--            </form>-->
         <div class="fogot_link"><a href="/registration"> Зарегистрироваться</a></div>
-        <div class="fogot_link"><a href="#"> Забыли пароль?</a></div>
+        <div class="fogot_link"><a href="/forgotPassword"> Забыли пароль?</a></div>
             
 
 
     </div>
 </div>
 
-<script src="/js/login.js"></script>
+<script src="js/login.js"></script>
 
 </body>
 </html>

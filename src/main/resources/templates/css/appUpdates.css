@@ -187,7 +187,7 @@ textarea:focus{
 table{
     width:100%;
     border-spacing: 0;
-    
+    table-layout: fixed;
 }
 
 thead{
@@ -213,6 +213,7 @@ td{
     /* border:1px solid black; */
     padding: 5px;
     text-align: center;
+    word-wrap: break-word;
 }
 
 /* thead tr th{
@@ -232,7 +233,8 @@ a{
 /* Tooltip text */
 .tooltip .tooltiptext {
     visibility: hidden;
-    /*width: 120px;*/
+   max-width: 300px;
+    height: auto;
     word-wrap: normal;
     background-color: black;
     color: #fff;

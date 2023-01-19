@@ -7,6 +7,18 @@ authStatus.then(()=>{
     document.querySelector('.user_name').innerHTML = userLogin
     document.querySelector('.user_info').innerHTML = userRole
 
+    if(userRole === 'ROLE_ADMIN'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Администратор)'
+    }else if(userRole === 'ROLE_MODERATOR'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Модератор)'
+    }else if(userRole === 'ROLE_SUPPLIER'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Поставщик)'
+    }else if(userRole === 'ROLE_SHOP'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Салон)'
+    }else if(userRole === 'ROLE_USER'){
+        document.querySelector('.user_name').innerHTML = userLogin + ' (Дизайнер)'
+    }
+
 }, ()=>{
     //onRejected
 })
@@ -21,24 +33,24 @@ function createTableRow(tableBody, date, access, name, info, downloadUrl, idFile
 
     newTr.classList.add(name)
 
-    let rowClass = "row_" + id
+    let rowClass = "row_" + idFile
     newTr.innerHTML = `                                
-    <td>${date.toLocaleString()}</td>
+    <td>${idFile} - ${date.toLocaleDateString()}</td>
     <td>
         <div class="file_access ${rowClass}">
 
-            <div><input type="checkbox" name="all" ${access.all} onclick="changeFileAccess(${idFile},'${APP_ALL}')"> <label for="all">all</label></div>
-            <div><input type="checkbox" name="KM" ${access.KM} onclick="changeFileAccess(${idFile},'${APP_KOREANIKA_MASTER}')"> <label for="KM">KM</label></div>
-            <div><input type="checkbox" name="K" ${access.K} onclick="changeFileAccess(${idFile}, '${APP_KOREANIKA}')"> <label for="K">K</label></div>
-            <div><input type="checkbox" name="Z" ${access.Z} onclick="changeFileAccess(${idFile}, '${APP_ZETTA}')"> <label for="Z">Z</label></div>
-            <div><input type="checkbox" name="PM" ${access.PM} onclick="changeFileAccess(${idFile}, '${APP_PRO_MEBEL}')"> <label for="PM">PM</label></div>
+            <div><input type="checkbox" name="all" ${access.all} onclick="changeFileAccess(${idFile})"> <label for="all">all</label></div>
+            <div><input type="checkbox" name="km" ${access.KM} onclick="changeFileAccess(${idFile})"> <label for="km">KM</label></div>
+            <div><input type="checkbox" name="k" ${access.K} onclick="changeFileAccess(${idFile})"> <label for="k">K</label></div>
+            <div><input type="checkbox" name="z" ${access.Z} onclick="changeFileAccess(${idFile})"> <label for="z">Z</label></div>
+            <div><input type="checkbox" name="pm" ${access.PM} onclick="changeFileAccess(${idFile})"> <label for="pm">PM</label></div>
        
         </div>
     </td>
     <td>
-        <div class="tooltip">
+        <div class="tooltip ${rowClass}">
             ${name}
-                <span class="tooltiptext">${info}</span> 
+                <span class="tooltiptext info">${info}</span> 
         </div>
     </td>
 <!--    <td><a href="##" onclick="downloadUpdateFile('${name.toString()}')">скачать</a></td>-->
@@ -69,11 +81,20 @@ async function getFilesList(){
     });
 
     let content = await response.json()
+
+    content.sort((a, b) =>{
+        return  b.id - a.id
+    })
+
     tableBody.innerHTML = ""
     for(let i=0;i < content.length;i++){
-        // console.log(content[i])
+        console.log(content[i])
 
         let date = new Date(content[i].uploadDate);
+
+        if(pathname == "/pricesUpdates"){
+            date = new Date(content[i].uploadTime);
+        }
 
         let access = {
             all:"",
@@ -264,17 +285,21 @@ async function deleteUpdateFile(idFile){
     }
 }
 
-async function changeFileAccess(idFile, name, appName){
+async function changeFileAccess(idFile){
     let pathname = window.location.pathname
 
     let rowClass = "row_" + idFile
 
 
     const checkBoxAll = document.querySelector(`.${rowClass} input[name="all"]`)
-    const checkBoxKM = document.querySelector('.upload_file_access input[name="km"]')
-    const checkBoxK = document.querySelector('.upload_file_access input[name="k"]')
-    const checkBoxZetta = document.querySelector('.upload_file_access input[name="zetta"]')
-    const checkBoxProMebel = document.querySelector('.upload_file_access input[name="proMebel"]')
+    const checkBoxKM = document.querySelector(`.${rowClass} input[name="km"]`)
+    const checkBoxK = document.querySelector(`.${rowClass} input[name="k"]`)
+    const checkBoxZetta = document.querySelector(`.${rowClass} input[name="z"]`)
+    const checkBoxProMebel = document.querySelector(`.${rowClass} input[name="pm"]`)
+
+    const tooltipSpan = document.querySelector(`.${rowClass} .info`)
+
+    let info = tooltipSpan.textContent;
 
     let access = ""
     if(checkBoxAll.checked) access +=APP_ALL
@@ -283,21 +308,31 @@ async function changeFileAccess(idFile, name, appName){
     if(checkBoxZetta.checked) access +="," + APP_ZETTA
     if(checkBoxProMebel.checked) access +="," + APP_PRO_MEBEL
 
+    if (access[0] == ',') access = access.replace(",","")
+
 
     let url_edit_file = URL_UPDATES_EDIT_FILE
 
     if(pathname == "/pricesUpdates"){
-        url_edit_file = URL_UPDATES_EDIT_FILE
+        url_edit_file = URL_PRICES_EDIT_FILE
     }
 
     let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+
+    let newData = {
+        "info": info,
+        "forClients": access
+    }
+    console.log(JSON.stringify(newData))
 
     try {
         const response = await fetch(url_edit_file + idFile, {
             method: 'POST',
             headers:{
-                'Authorization': 'Bearer ' + accessToken
-            }
+                'Authorization': 'Bearer ' + accessToken,
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(newData)
         })
         //const result = await response.json();
         console.log('Успех:');

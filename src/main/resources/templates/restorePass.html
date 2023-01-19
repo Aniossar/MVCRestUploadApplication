@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restore password</title>
+    <link rel="shortcut icon" href="images/favicon-16x16.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/main_style.css">
+    <link rel="stylesheet" href="css/restorePass.css">
+
+    <script src="js/constants.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form_block">
+
+            <div class="logo"></div>
+
+            <p class="form_block_header">Восстановление пароля</p>
+
+            <form class="formRestore">
+                <div class="center">
+                    <div class="form_auth_login_block">
+                        <p>Новый пароль:</p>
+                        <!--                    <div class="auth_icon_block"><i class="fa-solid fa-user"></i></div>-->
+                        <input class="textfield" type="password" name="pw_new" placeholder="Новый пароль" oninput="checkPassword()" required>
+                    </div>
+                </div>
+
+
+                <div class="center">
+                    <div class="form_auth_password_block">
+                        <p>Повторите пароль:</p>
+                        <!--                    <div class="auth_icon_block"><i class="fa-solid fa-lock"></i></div>-->
+                        <input class="textfield" type="password" name="pw_new_repeat" placeholder="Повторите пароль" oninput="checkPassword()" required>
+                    </div>
+                </div>
+
+                <input id="btn_submit" class="form_auth_button" type="submit" name="form_auth_submit" value="Сохранить">
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="js/restorePass.js"></script>
+
+</body>
+</html>

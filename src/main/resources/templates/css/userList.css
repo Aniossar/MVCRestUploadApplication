@@ -1,0 +1,189 @@
+
+.container{
+
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.container_mid{
+
+    min-width: var(--min-page-width);
+    max-width: var(--min-page-width);
+
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.info_container{
+    width: 70%;
+    box-shadow: 0 0 10px  rgba(0,0,0,0.2); /* Параметры тени */
+    background-image: url("../images/pattern_4.png");
+
+    background-repeat: repeat-y;
+    background-size: 50%;
+}
+
+.info_header{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.info_header img{
+    height: 70px;
+    width: 70px;
+}
+
+.user_info{
+    /*align-items: center;*/
+    margin: auto 10px;
+}
+
+.info_body{
+
+}
+
+.edit_form > div{
+    display: flex;
+    margin: 10px 20px;
+}
+
+.user_data_container{
+    width: 100%;
+}
+.center{
+    display: flex;
+    justify-content: center;
+}
+
+.center>div{
+    margin: 10px auto;
+}
+
+.left{
+    display: flex;
+    justify-content: left;
+}
+
+.left>div{
+    margin: 10px 0px 10px 35px;
+}
+
+.textfield, .role_selector{
+    border: 2px solid #EBE9E7;
+
+    border-radius: 4px;
+    border-bottom-color: #838281;
+    width: 352px;
+    height: 39px;
+    font-size: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /*padding-left: 10px;*/
+}
+.app_access{
+    margin-top: 10px;
+    display: flex;
+    justify-content: left;
+    width: 352px;
+    gap: 20px;
+
+}
+
+.form_save_button{
+
+    display: block;
+    width: 204px;
+    height: 44px;
+    margin: 40px auto 30px;
+
+    border-radius: 4px;
+
+    border: none;
+    cursor: pointer;
+    background-color: #8AB69D;
+    color: white;
+
+    font-size: 16px;
+}
+
+
+
+
+
+.list_container{
+    width: 30%;
+    box-shadow: 0 0 10px  rgba(0,0,0,0.2); /* Параметры тени */
+    height: 100%;
+    padding: 10px;
+    background-image: url("../images/pattern_5.png");
+
+    background-repeat: repeat-y;
+    background-size: 100%;
+}
+
+.user_filter{
+    /*margin: 20px 10px;*/
+    height: 20%;
+}
+
+.user_filter > div{
+    /*margin: 20px 10px;*/
+
+    margin-bottom: 5px;
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+.user_filter > div > span{
+    width: 70px;
+}
+
+.user_filter > div > input[type="text"]{
+    width: 70%;
+}
+
+
+
+.users_list{
+    /*margin: 10px 10px;*/
+    /*background: #8f8f8f;*/
+    height: 80%;
+    max-height: 80%;
+    overflow-x: auto;
+
+}
+.users_list ul{
+    list-style:none;
+}
+
+.users_list ul li{
+    list-style:none;
+    margin: 10px 10px;
+}
+
+.user_row > img{
+    height: 40px;
+    width: 40px;
+}
+
+.user_row{
+    display: flex;
+    border-radius: 4px;
+    border: 2px solid #EDEDED;
+    background-color: white;
+    padding: 5px;
+}
+
+.user_row:hover{
+    cursor: pointer;
+}
+
+input[type=text]:focus{
+    outline: none;
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="shortcut icon" href="images/favicon-16x16.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/main_style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/userList.css">
+
+    <script src="js/constants.js"></script>
+
+    <script src="js/checkAuth.js"></script>
+</head>
+<body>
+
+    <div class="menu_container">
+        <div class="menu_container_inner">
+            <div class="menu_container_content">
+                <div class="menu_user_info">
+                    <img src="images/user_no_logo.png" alt="">
+                    <div class="menu_user_info_2">
+                        <p class="user_name">user </p>
+                        <p class="user_info" hidden>COMPANY/ROLE(ADMIN)</p>
+                        <a class="user_logout" onclick="logout()" href="/login">logout</a>
+                    </div>
+                </div>
+
+                <div class="menu_items">
+                    <ul>
+                        <li><a class="menu_link menu_dashboard" href="/dashboard">Информация</a></li>
+                        <li><a class="menu_link menu_usersList highlight" href="/usersList">Пользователи</a></li>
+                        <li><a class="menu_link menu_statistics" href="/statistics">Статистика</a></li>
+                        <li><a class="menu_link menu_appUpdates" href="/appUpdates">Обновления</a></li>
+                        <li><a class="menu_link menu_pricesUpdates" href="/pricesUpdates">Цены</a></li>
+                        <li><a class="menu_link menu_news" href="#">Новости</a></li>
+                        <li><a class="menu_link profile" href="/profile">Профиль</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="container_mid">
+            <div class="info_container">
+
+                <div class="info_header">
+                    <img src="images/user_no_logo.png" alt="">
+                    <div class="user_info">
+                        <p class="user_name">user</p>
+                        <p class="user_company" >COMPANY/ROLE(ADMIN)</p>
+                    </div>
+                </div>
+
+                <div class="info_body">
+                    <div class="">
+
+                        <form id="edit_form" class="edit_form" method="post">
+
+                            <div class="left">
+                                <div><input type="checkbox" name="enable"> <label >Активен</label></div>
+                            </div>
+
+                            <div class="">
+                                <div class="user_data_container">
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>Тип учетной записи:</p>
+                                            <select class="role_selector" name="role">
+                                                <option value="ROLE_ADMIN">Администратор</option>
+                                                <option value="ROLE_MODERATOR">Модератор</option>
+                                                <option value="ROLE_SUPPLIER">Поставщик материала</option>
+                                                <option value="ROLE_SHOP">Салон</option>
+                                                <option value="ROLE_USER">Дизайнер</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>Логин:</p>
+                                            <input class="textfield" type="text" name="login" placeholder="Введите логин" required>
+                                        </div>
+                                    </div>
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>Email:</p>
+                                            <input class="textfield" type="email" name="email" placeholder="Введите email" required>
+                                        </div>
+                                    </div>
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>ФИО:</p>
+                                            <input class="textfield" type="text" name="fullName" placeholder="ФИО" required>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="user_data_container">
+
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>Компания:</p>
+                                            <input class="textfield" type="text" name="company" placeholder="Компания" required>
+                                        </div>
+                                    </div>
+                                    <div class="center" hidden>
+                                        <div class="field_container">
+                                            <p>Адрес:</p>
+                                            <input class="textfield" type="text" name="address" placeholder="Адрес" required>
+                                        </div>
+                                    </div>
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>Адрес:</p>
+                                            <input class="textfield" type="text" name="certain_place_address" placeholder="Адрес" required>
+                                        </div>
+                                    </div>
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>Номер телефона:</p>
+                                            <input class="textfield" type="text" name="phone_number" placeholder="Номер телефона" required>
+                                        </div>
+                                    </div>
+                                    <div class="center">
+                                        <div class="field_container">
+                                            <p>Доступные приложения:</p>
+                                            <div class="app_access">
+                                                <div><input type="checkbox" name="all" ${access.all}> <label >all</label></div>
+                                                <div><input type="checkbox" name="km" ${access.KM}> <label >KM</label></div>
+                                                <div><input type="checkbox" name="k" ${access.K}> <label>K</label></div>
+                                                <div><input type="checkbox" name="z" ${access.Z}> <label>Z</label></div>
+                                                <div><input type="checkbox" name="pm" ${access.PM}> <label>PM</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input class="form_save_button" type="button" value="Сохранить" onclick="editUser()">
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="list_container">
+
+                <div class="user_filter">
+                    <div>
+                        <input type="checkbox" name="" id="use_filter" value="">
+                        <span>Фильтр</span>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="" id="filter_full_name" value="ABJ">
+                        <span>ФИО</span>
+                        <input type="text" name="" id="input_full_name">
+                    </div>
+                    <div>
+                        <input type="checkbox" name="" id="filter_shop" value="">
+                        <span>Салон</span>
+                        <input type="text" name="" id="input_shop">
+                    </div>
+                </div>
+                <div class="users_list">
+                    <ul>
+                        <li>
+                            <div class="user_row" onclick="selectUser(this)">
+                                <img src="images/user_no_logo.png" alt="">
+                                <div class="user_info">
+                                    <p class="user_name">user</p>
+                                    <p class="user_company" >COMPANY/ROLE(ADMIN)</p>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <script src="js/usersList.js"></script>
+</body>
+</html>

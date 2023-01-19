@@ -1,32 +1,28 @@
 body{
-    background-color: white;
+    /*background-color: var(--color-primary);*/
 }
 
-.reg_container{
+.container{
     display: flex;
     justify-content: center;
     /*height: 420px;*/
     margin: 10vh;
 }
 
-.form_reg_block{
-    /*width: 535px;*/
-    /*height: 556px;*/
+.form_block{
+    width: 535px;
+    height: 500px;
     margin: auto auto;
-    background: white;
-    background-size: cover;
-    border-radius: 4px;
-
     background-color: white;
     background-image: url("../images/pattern_3.png");
     background-size: 108%;
     background-position: bottom;
     background-repeat: repeat-x;
+    border-radius: 4px;
+    align-items: center;
+
     box-shadow: 0 0 10px  rgba(0,0,0,0.2); /* Параметры тени */
 }
-
-
-
 
 .logo{
 
@@ -38,7 +34,40 @@ body{
     margin: 71px auto 10px;
 
 }
-.form_reg_block_header{
+
+/*.form_auth_block_content{*/
+/*    margin: auto;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+.fogot_link{
+
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    /*margin: 20px 0px;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+}
+
+.wrong_data{
+
+    margin: 0px 0px;
+    display: flex;
+    justify-content: center;
+    color: rgb(221, 4, 4);
+}
+
+.fogot_link > a{
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+
+.form_block_header{
     display: block;
     margin: 5px auto;
     /* color:  #505F56; */
@@ -49,43 +78,12 @@ body{
     text-align: center;
 }
 
-.form_reg_block_content{
-    display: flex;
-}
-
-.form_reg_block_content div{
-
-    margin: 10px 10px 0px 10px;
-}
-
-
 .center{
     display: flex;
     justify-content: center;
 }
 
-
-.forgot_link{
-
-    margin: 20px 0px;
-    display: flex;
-    justify-content: center;
-}
-
-.forgot_link > a{
-    text-decoration: none;
-    font-family: sans-serif;
-    font-size: 16px;
-}
-
-
-
-
-.reg_field_container{
-    margin: 5px auto;
-}
-
-.reg_field_container p{
+.form_auth_login_block p, .form_auth_password_block p{
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
@@ -94,14 +92,25 @@ body{
 
     color: #526158;
 }
-
-.role_selector{
-    border: 0;
+.form_auth_login_block, .form_auth_password_block {
+    /*display: flex;*/
+    /*width: 280px;*/
+    /*justify-content: center;*/
+    margin: 15px auto;
+    /*height: 39px;*/
+    /*border: 1px solid var(--color-primary);*/
 }
+/*.auth_icon_block{*/
+/*    display: flex;*/
+
+/*    height: 40px;*/
+/*    width: 30px;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
 
 
-
-.textfield, .role_selector{
+.textfield{
     border: 2px solid #EBE9E7;
 
     border-radius: 4px;
@@ -114,12 +123,11 @@ body{
     /*padding-left: 10px;*/
 }
 
-.form_reg_button{
-
+.form_auth_button{
     display: block;
-    width: 204px;
+    width: 164px;
     height: 44px;
-    margin: 40px auto 30px;
+    margin: 25px auto;
 
     border-radius: 4px;
 
@@ -127,7 +135,6 @@ body{
     cursor: pointer;
     background-color: #8AB69D;
     color: white;
-
     font-size: 16px;
 }
 
@@ -135,17 +142,13 @@ body{
     outline: none;
 }
 
-.role_selector:focus{
-    outline: none;
-}
-
-.form_reg_login_block:hover, .form_reg_password_block:hover{
+.form_auth_login_block:hover, .form_auth_password_block:hover{
     border-color:  cornflowerblue;
 }
 
-.form_reg_button:hover{
+.form_auth_button:hover{
     background-color: grey;
 }
-.form_reg_button:active{
+.form_auth_button:active{
     background-color: var(--color-primary);
 }
