@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -58,7 +57,7 @@ public class FileController {
         String fileName = fileStorageService.storeFile(file);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
+                .path("/api/updatefiles/downloadFile/")
                 .path(fileName)
                 .toUriString();
 
@@ -83,9 +82,13 @@ public class FileController {
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+    public ResponseEntity<Resource> downloadFileController(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = fileStorageService.loadFileAsResource(fileName);
+        return downloadFile(resource, request);
+    }
 
+
+    public ResponseEntity<Resource> downloadFile(Resource resource, HttpServletRequest request) {
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
@@ -102,6 +105,7 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
 
     @DeleteMapping("/deleteFile/{id}")
     @RolesAllowed("ROLE_ADMIN")

@@ -7,15 +7,15 @@ import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
 import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
-import com.CalculatorMVCUpload.payload.request.*;
+import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
 import com.CalculatorMVCUpload.payload.request.users.AuthentificationRequest;
 import com.CalculatorMVCUpload.payload.request.users.PasswordResetRequest;
 import com.CalculatorMVCUpload.payload.request.users.RefreshTokenRequest;
 import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
 import com.CalculatorMVCUpload.payload.response.AuthentificationResponse;
 import com.CalculatorMVCUpload.payload.response.MeResponse;
-import com.CalculatorMVCUpload.service.users.AuthService;
 import com.CalculatorMVCUpload.service.EmailService;
+import com.CalculatorMVCUpload.service.users.AuthService;
 import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
@@ -26,7 +26,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-
 import java.util.HashMap;
 import java.util.Map;
 

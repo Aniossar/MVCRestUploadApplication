@@ -34,9 +34,9 @@ REST Endpoints for authorization:
 REST Endpoints for user management:
 1. GET /api/users/getUser/{id} - get user via id (only for admin and moderator)
 2. GET /api/users/getAllUsers - get all users in short info form (only for admin and moderator)
-1. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
-2. DELETE /api/users/deleteUser - delete user (only for admin and moderator)
-3. PUT /api/users/editUser - edit user fields (only for user with greater role + (only for admin and moderator))
+3. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
+4. DELETE /api/users/deleteUser - delete user (only for admin and moderator)
+5. PUT /api/users/editUser - edit user fields (only for user with greater role + (only for admin and moderator))
 
 REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities
@@ -45,6 +45,7 @@ REST Endpoints for logging application activities:
 1. GET /api/app/allCalcActivities - get all activities from calculator app
 2. POST /api/app/saveCalcActivity - saves activity from calculator app
 3. POST /api/app/calcActivityFilter - returns filtered calculator activities
+4. POST /api/app/calcActivityFilterFile - returns filtered calculator activities in .xlsx
 
 REST Endpoints for system information:
 1. GET /api/getApplicationStart - get time the app started

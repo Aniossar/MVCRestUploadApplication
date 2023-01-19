@@ -1,16 +1,13 @@
 package com.CalculatorMVCUpload.entity;
 
-import com.CalculatorMVCUpload.entity.users.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.lang.reflect.Field;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,16 +30,16 @@ public class CalculatorActivityEntity {
     private Instant activityTime;
 
     @Column(name = "user_id")
-    public int userId;
+    private int userId;
 
     @Column(name = "login")
-    public String login;
+    private String login;
 
     @Column(name = "company_name")
-    public String companyName;
+    private String companyName;
 
     @Column(name = "certain_place_address")
-    public String certainPlaceAddress;
+    private String certainPlaceAddress;
 
     @Column(name = "type")
     private String type;
@@ -71,12 +68,12 @@ public class CalculatorActivityEntity {
     @Column(name = "product_square")
     private double productSquare;
 
-    /*public List<String> getClassFieldsName(){
-        Field[] fields = CalculatorActivityEntity.class.getFields();
+    public List<String> getClassFieldsName() {
+        Field[] fields = CalculatorActivityEntity.class.getDeclaredFields();
         List<Field> fieldList = Arrays.asList(fields);
 
-        fieldList.stream().map(item -> item.getName()).collect(Collectors.toList());
-        return fieldList;
-    }*/
+        List<String> fieldNameList = fieldList.stream().map(item -> item.getName()).collect(Collectors.toList());
+        return fieldNameList;
+    }
 
 }
