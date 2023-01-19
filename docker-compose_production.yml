@@ -3,6 +3,8 @@ version: '3'
 services:
   postgres_prod:
     image: 'postgres:14'
+    privileged: true
+    user: root
     container_name: 'postgres-db-production'
     environment:
       - 'POSTGRES_USER=postgres'
@@ -22,6 +24,8 @@ services:
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4:5.7
+    privileged: true
+    user: root
     environment:
       PGADMIN_DEFAULT_EMAIL: "0671884@mail.ru"
       PGADMIN_DEFAULT_PASSWORD: "1713970"
@@ -43,9 +47,11 @@ services:
 
   app_prod:
     image: 'florence76/koreanikaserverapp:latest'
+    privileged: true
+    user: root
     container_name: 'backend-app-production'
     ports:
-      - 8080:8080
+      - 80:8080
     environment:
       - 'POSTGRES_URL=jdbc:postgresql://postgres-db-production:5432/productionDb?useSSL=false'
     volumes:
