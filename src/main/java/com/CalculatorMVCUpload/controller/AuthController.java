@@ -135,7 +135,7 @@ public class AuthController {
             UserEntity userEntity = userService.findByLogin(loginFromRestoreToken);
             if (userEntity != null) {
                 userEntity.setPassword(request.getNewPassword());
-                userService.updateUser(userEntity);
+                userService.updateUserPassword(userEntity);
             } else throw new WrongPasswordUserMovesException("Wrong old password");
         }
         throw new BadAuthException("Need authorization");

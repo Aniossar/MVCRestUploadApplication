@@ -3,6 +3,7 @@ package com.CalculatorMVCUpload.controller.api;
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
+import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
 import com.CalculatorMVCUpload.payload.request.users.PasswordChangeRequest;
 import com.CalculatorMVCUpload.payload.request.users.RefreshTokenRequest;
@@ -51,7 +52,7 @@ public class AuthSecuredController {
             UserEntity userEntity = userService.findByLoginAndPassword(userLogin, request.getOldPassword());
             if (userEntity != null) {
                 userEntity.setPassword(request.getNewPassword());
-                userService.updateUser(userEntity);
+                userService.updateUserPassword(userEntity);
             } else throw new WrongPasswordUserMovesException("Wrong old password");
         } else throw new BadAuthException("No user is authorized");
     }
@@ -76,7 +77,12 @@ public class AuthSecuredController {
         UserEntity userEntity = userService.findByLogin(userLogin);
 
         if (request.getEmail() != null) {
-            userEntity.setEmail(request.getEmail());
+            if (userService.findByEmail(request.getEmail()) == null) {
+                userEntity.setEmail(request.getEmail());
+            } else {
+                log.severe("Trying to use existing email " + request.getEmail() + " for another user");
+                throw new ExistingLoginEmailRegisterException("This email is already registered");
+            }
         }
         if (request.getFullName() != null) {
             userEntity.setFullName(request.getFullName());
