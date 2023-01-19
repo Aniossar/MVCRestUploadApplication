@@ -6,8 +6,11 @@ import com.CalculatorMVCUpload.exception.BadAuthException;
 import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
 import com.CalculatorMVCUpload.payload.request.users.PasswordChangeRequest;
 import com.CalculatorMVCUpload.payload.request.users.RefreshTokenRequest;
+import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.response.AuthentificationResponse;
+import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
 import com.CalculatorMVCUpload.service.users.AuthService;
+import com.CalculatorMVCUpload.service.users.UserManagementService;
 import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
@@ -28,10 +31,13 @@ public class AuthSecuredController {
     private UserService userService;
 
     @Autowired
+    private UserManagementService userManagementService;
+
+    @Autowired
     private JwtProvider jwtProvider;
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<AuthentificationResponse> getNewRefreshToken(@RequestBody RefreshTokenRequest request){
+    public ResponseEntity<AuthentificationResponse> getNewRefreshToken(@RequestBody RefreshTokenRequest request) {
         AuthentificationResponse authResponse = authService.getNewRefreshToken(request.getRefreshToken());
         return ResponseEntity.ok(authResponse);
     }
@@ -48,6 +54,47 @@ public class AuthSecuredController {
                 userService.updateUser(userEntity);
             } else throw new WrongPasswordUserMovesException("Wrong old password");
         } else throw new BadAuthException("No user is authorized");
+    }
+
+    @GetMapping("/getUserInfo")
+    public UserInfoResponse changePasswordByUser(@RequestHeader(name = "Authorization") String bearer) {
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        String userLogin = jwtProvider.getLoginFromAccessToken(token);
+        if (userLogin != null) {
+            UserEntity userEntity = userService.findByLogin(userLogin);
+            UserInfoResponse userInfoResponse = userManagementService.transferUserEntityToUserInfoResponse(userEntity);
+            return userInfoResponse;
+        } else throw new BadAuthException("No user is authorized");
+    }
+
+    @PutMapping("/editOwnInfo")
+    public void editMyself(@RequestHeader(name = "Authorization") String bearer,
+                           @RequestBody UserEditRequest request) {
+
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        String userLogin = jwtProvider.getLoginFromAccessToken(token);
+        UserEntity userEntity = userService.findByLogin(userLogin);
+
+        if (request.getEmail() != null) {
+            userEntity.setEmail(request.getEmail());
+        }
+        if (request.getFullName() != null) {
+            userEntity.setFullName(request.getFullName());
+        }
+        if (request.getCompanyName() != null) {
+            userEntity.setCompanyName(request.getCompanyName());
+        }
+        if (request.getPhoneNumber() != null) {
+            userEntity.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getAddress() != null) {
+            userEntity.setAddress(request.getAddress());
+        }
+        if (request.getCertainPlaceAddress() != null) {
+            userEntity.setCertainPlaceAddress(request.getCertainPlaceAddress());
+        }
+
+        userService.updateUser(userEntity);
     }
 
 }

@@ -34,9 +34,11 @@ REST Endpoints for authorization:
 REST Endpoints for user management:
 1. GET /api/users/getUser/{id} - get user via id (only for admin and moderator)
 2. GET /api/users/getAllUsers - get all users in short info form (only for admin and moderator)
-3. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
-4. DELETE /api/users/deleteUser - delete user (only for admin and moderator)
-5. PUT /api/users/editUser - edit user fields (only for user with greater role + (only for admin and moderator))
+3. DELETE /api/users/deleteUser - delete user (only for admin and moderator)
+4. PUT /api/users/editUser - edit user fields (only for user with greater role + only for admin and moderator)
+5. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
+6. GET /api/getUserInfo - get user fields (only for user itself)
+7. PUT /api/editOwnInfo - edit user fields (only for user itself)
 
 REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities

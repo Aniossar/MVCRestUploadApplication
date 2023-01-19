@@ -90,11 +90,12 @@ public class AppActivityController {
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/app/downloadFile/")
-                .path(fileName)
+                .path(fileName + ".xlsx")
                 .toUriString();
 
         if (fileName != null) {
-            UploadFileResponse response = new UploadFileResponse(fileName, fileDownloadUri, "xlsx", 0);
+            UploadFileResponse response = new UploadFileResponse
+                    (fileName + ".xlsx", fileDownloadUri, "xlsx", 0);
             return ResponseEntity.ok(response);
         }
         return null;

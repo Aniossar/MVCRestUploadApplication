@@ -88,7 +88,7 @@ public class FileController {
     }
 
 
-    public ResponseEntity<Resource> downloadFile(Resource resource, HttpServletRequest request) {
+    public ResponseEntity<Resource> downloadFile (Resource resource, HttpServletRequest request) {
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
