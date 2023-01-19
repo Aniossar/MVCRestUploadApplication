@@ -76,7 +76,8 @@ different pack of containers, for dev, test and production.
 10. to stop: ```docker compose -f docker-compose_production.yml down```
 
 !!! check that in local storage or on Docker hub is the newest version of image!!!
-
+- check ports it cat be uses another servises: ```sudo netstat -ntlp | grep 80```
+- check permissions for volume folders
 
 ##About the filter into calculator event table:
 
