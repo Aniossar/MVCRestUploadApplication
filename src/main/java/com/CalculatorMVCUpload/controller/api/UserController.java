@@ -3,6 +3,7 @@ package com.CalculatorMVCUpload.controller.api;
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
+import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
 import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
 import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
@@ -85,7 +86,9 @@ public class UserController {
         if (userToEdit != null && userManagementService.isFirstUserCoolerOrEqualThanSecond(roleFromToken,
                 userToEdit.getRoleEntity().getName())) {
             if (request.getEmail() != null) {
-                userToEdit.setEmail(request.getEmail());
+                if(userService.findByEmail(request.getEmail()) == null){
+                    userToEdit.setEmail(request.getEmail());
+                } else throw new ExistingLoginEmailRegisterException("This email is already registered");
             }
             if (request.getFullName() != null) {
                 userToEdit.setFullName(request.getFullName());
