@@ -51,7 +51,7 @@ public class AuthSecuredController {
             UserEntity userEntity = userService.findByLoginAndPassword(userLogin, request.getOldPassword());
             if (userEntity != null) {
                 userEntity.setPassword(request.getNewPassword());
-                userService.updateUser(userEntity);
+                userService.updateUserPassword(userEntity);
             } else throw new WrongPasswordUserMovesException("Wrong old password");
         } else throw new BadAuthException("No user is authorized");
     }

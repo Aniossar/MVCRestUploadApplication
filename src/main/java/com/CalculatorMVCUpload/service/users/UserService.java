@@ -33,8 +33,12 @@ public class UserService {
         return userEntityRepository.save(userEntity);
     }
 
-    public UserEntity updateUser(UserEntity userEntity){
+    public UserEntity updateUserPassword(UserEntity userEntity){
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        return userEntityRepository.save(userEntity);
+    }
+
+    public UserEntity updateUser(UserEntity userEntity){
         return userEntityRepository.save(userEntity);
     }
 
