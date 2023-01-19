@@ -235,10 +235,11 @@ async function downloadStatisticsAsXls(){
     let fileName = content.fileName
     downloadFile(fileName)
     console.log(fileName)
+    console.log(downloadUri)
 
 }
 
-function downloadFile(downloadUri) {
+function downloadFile(fileName) {
 
     // let pathname = window.location.pathname
     //
@@ -255,7 +256,7 @@ function downloadFile(downloadUri) {
     request = new XMLHttpRequest();
 
     request.responseType = "blob";
-    request.open("get", downloadUri, true);
+    request.open("get", URL_GET_CALC_ACTIVITY_DOWNLOAD_XLS + fileName, true);
     request.setRequestHeader('Authorization', 'Bearer ' + accessToken)
 
     console.log(request.statusText)
@@ -267,7 +268,7 @@ function downloadFile(downloadUri) {
 
             const anchor = document.createElement("a");
             anchor.href = imageURL;
-            anchor.download = name;
+            anchor.download = fileName;
             document.body.appendChild(anchor);
             anchor.click();
         }

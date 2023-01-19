@@ -41,6 +41,9 @@ authStatus.then(()=>{
         document.querySelector('.menu_news').hidden = true
     }
 
+    getUserProfile();
+
+    loginInput.disabled = true
 
 }, ()=>{
     //onRejected
@@ -66,9 +69,62 @@ function checkPassword(){
 
 async function getUserProfile(){
 
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+
+    let response = await fetch(URL_GET_USER_OWN_INFO, {
+        method:'GET',
+        headers:{
+            'Authorization': 'Bearer ' + accessToken
+        }
+    });
+
+    let content = await response.json()
+    console.log(content)
+
+
+    loginInput.value = content.login
+    emailInput.value = content.email
+    fullNameInput.value = content.fullName
+    companyNameInput.value = content.companyName
+    addressInput.value = content.address
+    certainPlaceAddressInput.value = content.certainPlaceAddress
+    phoneNumberInput.value =content.phoneNumber
+
 }
 
-async function saveUserProfile(){
+async function editUserProfile(){
+
+    let isExecuted = confirm("Вы уверены, что хотите изменить данные?");
+    if(!isExecuted){
+        console.log("NO")
+        return;
+    }
+    console.log("YES")
+
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+
+    let bodyObj ={
+        "email":emailInput.value,
+        "fullName": fullNameInput.value,
+        "companyName": companyNameInput.value,
+        "phoneNumber": phoneNumberInput.value,
+        "address": addressInput.value,
+        "certainPlaceAddress": certainPlaceAddressInput.value
+    }
+
+    let response = await fetch(URL_USER_OWN_EDIT, {
+        method:'PUT',
+        headers:{
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(bodyObj)
+    });
+
+     await response
+    // let content = await response.json()
+    // console.log(content)
+
 
 }
 

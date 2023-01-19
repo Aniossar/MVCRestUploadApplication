@@ -1,7 +1,7 @@
 let loginInput = document.querySelector('input[name="auth_login"]')
 let passwordInput = document.querySelector('input[name="auth_password"]')
 
-    let loginForm = document.querySelector('.login_form')
+let loginForm = document.querySelector('.login_form')
 
 loginForm.addEventListener("submit", (e)=>{
     e.preventDefault();
@@ -88,3 +88,4 @@ async function auth(){
 
 
 }
+
