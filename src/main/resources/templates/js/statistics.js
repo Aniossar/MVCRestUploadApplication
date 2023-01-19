@@ -164,46 +164,7 @@ function updateTableView(){
 
     if(filterUseInput.checked){
         console.log("update with filter");
-        let filterObject={
-            "dateFrom": "",
-            "dateTo": "",
-            "companyName": "",
-            "certainPlaceAddress": "",
-            "materialPriceFrom": -1,
-            "materialPriceTo": -1,
-            "addPriceFrom": -1,
-            "addPriceTo": -1,
-            "allPriceFrom": -1,
-            "allPriceTo": -1,
-            "materials": ""
-        }
-
-
-        if(dateUseInput.checked){
-            filterObject.dateFrom = dateFromInput.value
-            filterObject.dateTo = dateToInput.value
-        }
-        if(shopUseInput.checked){
-            filterObject.companyName = shopInput.value
-        }
-        if(certainAddressUseInput.checked){
-            filterObject.certainPlaceAddress = certainAddressInput.value
-        }
-        if(materialPriceUseInput.checked){
-            filterObject.materialPriceFrom = parseInt(materialPriceFromInput.value)
-            filterObject.materialPriceTo = parseInt(materialPriceToInput.value)
-        }
-        if(addPriceUseInput.checked){
-            filterObject.addPriceFrom = parseInt(addPriceFromInput.value)
-            filterObject.addPriceTo = parseInt(addPriceToInput.value)
-        }
-        if(allPriceUseInput.checked){
-            filterObject.allPriceFrom = parseInt(allPriceFromInput.value)
-            filterObject.allPriceTo = parseInt(allPriceToInput.value)
-        }
-        if(materialUseInput.checked){
-            filterObject.materials = materialsInput.value
-        }
+        let filterObject = getFilterObject()
 
         console.log(filterObject)
          getFilteredStatistics(filterObject)
@@ -250,6 +211,120 @@ function filterNumberFieldValidation(){
     return success
 }
 
-function downloadStatisticsAsXls(){
+async function downloadStatisticsAsXls(){
 
+    if(!filterNumberFieldValidation()) return
+
+    console.log("update with filter");
+    let filterObject = getFilterObject()
+
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+    let response = await fetch(URL_GET_CALC_ACTIVITY_FILTERED_XLS, {
+        method:'POST',
+        headers:{
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body:JSON.stringify(filterObject)
+    });
+
+    let content = await response.json()
+
+
+    let downloadUri = content.fileDownloadUri
+    let fileName = content.fileName
+    downloadFile(fileName)
+    console.log(fileName)
+
+}
+
+function downloadFile(downloadUri) {
+
+    // let pathname = window.location.pathname
+    //
+    // let url_download_file = URL_UPDATES_DOWNLOAD_FILE
+    //
+    // if(pathname == "/pricesUpdates"){
+    //     url_download_file = URL_PRICES_DOWNLOAD_FILE
+    // }
+
+    const startTime = new Date().getTime();
+
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_NAME);
+
+    request = new XMLHttpRequest();
+
+    request.responseType = "blob";
+    request.open("get", downloadUri, true);
+    request.setRequestHeader('Authorization', 'Bearer ' + accessToken)
+
+    console.log(request.statusText)
+    request.send();
+
+    request.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            const imageURL = window.URL.createObjectURL(this.response);
+
+            const anchor = document.createElement("a");
+            anchor.href = imageURL;
+            anchor.download = name;
+            document.body.appendChild(anchor);
+            anchor.click();
+        }
+    };
+
+    request.onprogress = function (e) {
+        const percent_complete = Math.floor((e.loaded / e.total) * 100);
+
+        const duration = (new Date().getTime() - startTime) / 1000;
+        const bps = e.loaded / duration;
+
+        const kbps = Math.floor(bps / 1024);
+    }
+}
+
+function getFilterObject(){
+
+    let filterObject = {
+        "dateFrom": "",
+        "dateTo": "",
+        "companyName": "",
+        "certainPlaceAddress": "",
+        "materialPriceFrom": -1,
+        "materialPriceTo": -1,
+        "addPriceFrom": -1,
+        "addPriceTo": -1,
+        "allPriceFrom": -1,
+        "allPriceTo": -1,
+        "materials": ""
+    }
+
+
+    if(dateUseInput.checked){
+        filterObject.dateFrom = dateFromInput.value
+        filterObject.dateTo = dateToInput.value
+    }
+    if(shopUseInput.checked){
+        filterObject.companyName = shopInput.value
+    }
+    if(certainAddressUseInput.checked){
+        filterObject.certainPlaceAddress = certainAddressInput.value
+    }
+    if(materialPriceUseInput.checked){
+        filterObject.materialPriceFrom = parseInt(materialPriceFromInput.value)
+        filterObject.materialPriceTo = parseInt(materialPriceToInput.value)
+    }
+    if(addPriceUseInput.checked){
+        filterObject.addPriceFrom = parseInt(addPriceFromInput.value)
+        filterObject.addPriceTo = parseInt(addPriceToInput.value)
+    }
+    if(allPriceUseInput.checked){
+        filterObject.allPriceFrom = parseInt(allPriceFromInput.value)
+        filterObject.allPriceTo = parseInt(allPriceToInput.value)
+    }
+    if(materialUseInput.checked){
+        filterObject.materials = materialsInput.value
+    }
+
+    return filterObject
 }
