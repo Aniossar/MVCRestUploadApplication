@@ -79,6 +79,14 @@ different pack of containers, for dev, test and production.
 - check ports it cat be uses another servises: ```sudo netstat -ntlp | grep 80```
 - check permissions for volume folders
 
+portal:
+
+vm:
+portal.koreanika.ru
+log:root
+pw: koreanikaPortal76!
+
+
 ##About the filter into calculator event table:
 
 ### GET ALL EVENTS
