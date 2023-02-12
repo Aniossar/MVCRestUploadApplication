@@ -87,7 +87,6 @@ public class ExcelWriterService {
             row.createCell(0).setCellValue(activity.getId());
             row.createCell(1).setCellValue(activity.getActivityTime().toString());
             row.createCell(2).setCellValue(activity.getUserId());
-            row.createCell(3).setCellValue(activity.getLogin());
             row.createCell(4).setCellValue(activity.getCompanyName());
             row.createCell(5).setCellValue(activity.getCertainPlaceAddress());
             row.createCell(6).setCellValue(activity.getType());

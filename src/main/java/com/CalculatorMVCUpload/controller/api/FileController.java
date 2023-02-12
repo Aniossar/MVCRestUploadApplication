@@ -1,11 +1,13 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.UploadedFile;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.payload.request.FileInfoChangeRequest;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.files.FileStorageService;
 import com.CalculatorMVCUpload.service.files.UploadFileService;
+import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -35,6 +37,9 @@ public class FileController {
 
     @Autowired
     private UploadFileService uploadFileService;
+
+    @Autowired
+    private UserService userService;
 
     private final String markFileForAll = "ALL";
 
@@ -72,7 +77,8 @@ public class FileController {
                 file.hashCode());
 
         String author = SecurityContextHolder.getContext().getAuthentication().getName();
-        uploadedFile.setAuthor(author);
+        UserEntity userEntity = userService.findByLogin(author);
+        uploadedFile.setAuthorId(userEntity.getId());
         uploadedFile.setInfo(info);
         uploadedFile.setForClients(forClients);
         uploadFileService.addNewFile(uploadedFile);

@@ -47,9 +47,9 @@ public class AuthSecuredController {
     public void changePasswordByUser(@RequestHeader(name = "Authorization") String bearer,
                                      @RequestBody PasswordChangeRequest request) {
         String token = jwtProvider.getTokenFromBearer(bearer);
-        String userLogin = jwtProvider.getLoginFromAccessToken(token);
-        if (userLogin != null) {
-            UserEntity userEntity = userService.findByLoginAndPassword(userLogin, request.getOldPassword());
+        int userId = jwtProvider.getIdFromAccessToken(token);
+        if (userId != 0) {
+            UserEntity userEntity = userService.findByIdAndPassword(userId, request.getOldPassword());
             if (userEntity != null) {
                 userEntity.setPassword(request.getNewPassword());
                 userService.updateUserPassword(userEntity);
@@ -60,9 +60,9 @@ public class AuthSecuredController {
     @GetMapping("/getUserInfo")
     public UserInfoResponse changePasswordByUser(@RequestHeader(name = "Authorization") String bearer) {
         String token = jwtProvider.getTokenFromBearer(bearer);
-        String userLogin = jwtProvider.getLoginFromAccessToken(token);
-        if (userLogin != null) {
-            UserEntity userEntity = userService.findByLogin(userLogin);
+        int userId = jwtProvider.getIdFromAccessToken(token);
+        if (userId != 0) {
+            UserEntity userEntity = userService.findById(userId);
             UserInfoResponse userInfoResponse = userManagementService.transferUserEntityToUserInfoResponse(userEntity);
             return userInfoResponse;
         } else throw new BadAuthException("No user is authorized");
@@ -73,9 +73,17 @@ public class AuthSecuredController {
                            @RequestBody UserEditRequest request) {
 
         String token = jwtProvider.getTokenFromBearer(bearer);
-        String userLogin = jwtProvider.getLoginFromAccessToken(token);
-        UserEntity userEntity = userService.findByLogin(userLogin);
+        int userId = jwtProvider.getIdFromAccessToken(token);
+        UserEntity userEntity = userService.findById(userId);
 
+        if (request.getLogin() != null) {
+            if (userService.findByLogin(request.getLogin()) == null) {
+                userEntity.setLogin(request.getLogin());
+            } else {
+                log.severe("Trying to use existing login " + request.getLogin() + " for another user");
+                throw new ExistingLoginEmailRegisterException("This login is already registered");
+            }
+        }
         if (request.getEmail() != null) {
             if (userService.findByEmail(request.getEmail()) == null) {
                 userEntity.setEmail(request.getEmail());

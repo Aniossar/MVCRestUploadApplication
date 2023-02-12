@@ -8,24 +8,21 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.Instant;
 
 @Entity
-@Table(name = "online_user_table")
+@Table(name = "managers_users_table")
 @Getter
 @Setter
 @NoArgsConstructor
-public class OnlineUserEntity {
-
-   /* @Id
-    @Column(name = "id")
-    private int id;*/
+public class ManagerAndUsersEntity {
 
     @Id
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "key_manager_id")
+    private int keyManagerId;
+
     @Column(name = "user_id")
     private int userId;
-
-    @Column(name = "last_ping_time")
-    private Instant lastPingTime;
-
 }

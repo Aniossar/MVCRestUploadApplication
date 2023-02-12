@@ -17,5 +17,7 @@ public class PasswordResetToken {
 
     private Instant expiryTime;
 
+    private int userId;
+
     private String login;
 }

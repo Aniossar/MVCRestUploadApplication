@@ -18,6 +18,8 @@ public class UserEditRequest {
         ADMIN, MODERATOR, SUPPLIER, SHOP, USER
     }
 
+    private int userId;
+
     private String login;
 
     private String email;

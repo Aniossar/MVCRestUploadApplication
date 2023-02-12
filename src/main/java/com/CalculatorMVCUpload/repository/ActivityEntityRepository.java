@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ActivityEntityRepository extends JpaRepository<ActivityEntity, Integer> {
 
-    List<ActivityEntity> findByLogin(String login);
+    List<ActivityEntity> findByUserId(int userId);
 
-    void deleteActivityEntitiesByLogin(String login);
+    void deleteActivityEntitiesByUserId(int userId);
 
     List<ActivityEntity> findByActivityType(String activityType);
 

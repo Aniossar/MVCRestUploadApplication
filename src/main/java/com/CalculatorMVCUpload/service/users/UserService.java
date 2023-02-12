@@ -42,8 +42,8 @@ public class UserService {
         return userEntityRepository.save(userEntity);
     }
 
-    public void deleteUser(String login){
-        UserEntity userEntity = findByLogin(login);
+    public void deleteUser(int id){
+        UserEntity userEntity = findById(id);
         userEntityRepository.delete(userEntity);
     }
 
@@ -55,12 +55,27 @@ public class UserService {
         return userEntityRepository.findByEmail(email);
     }
 
-    public Optional<UserEntity> findById(int id){
-        return userEntityRepository.findById(id);
+    public UserEntity findById(int id){
+        Optional<UserEntity> optionalUserEntity = userEntityRepository.findById(id);
+        UserEntity userEntity = null;
+        if(optionalUserEntity.isPresent()){
+            userEntity = optionalUserEntity.get();
+        }
+        return userEntity;
     }
 
     public UserEntity findByLoginAndPassword(String login, String password) {
         UserEntity userEntity = findByLogin(login);
+        if (userEntity != null) {
+            if (passwordEncoder.matches(password, userEntity.getPassword())) {
+                return userEntity;
+            }
+        }
+        return null;
+    }
+
+    public UserEntity findByIdAndPassword(int id, String password) {
+        UserEntity userEntity = findById(id);
         if (userEntity != null) {
             if (passwordEncoder.matches(password, userEntity.getPassword())) {
                 return userEntity;

@@ -25,16 +25,16 @@ public class ActivityEntity {
     @Column(name = "activity_type")
     private String activityType;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "user_id")
+    private int userId;
 
     @Column(name = "activity_message")
     private String activityMessage;
 
-    public ActivityEntity(Instant activityTime, String activityType, String login, String activityMessage) {
+    public ActivityEntity(Instant activityTime, String activityType, int userId, String activityMessage) {
         this.activityTime = activityTime;
         this.activityType = activityType;
-        this.login = login;
+        this.userId = userId;
         this.activityMessage = activityMessage;
     }
 }

@@ -50,8 +50,6 @@ public class AppActivityController {
             CalculatorActivityEntity activityEntity = new CalculatorActivityEntity();
             activityEntity.setActivityTime(Instant.now());
 
-            activityEntity.setLogin(loginName);
-
             UserEntity userEntity = userService.findByLogin(loginName);
             activityEntity.setUserId(userEntity.getId());
             activityEntity.setCompanyName(userEntity.getCompanyName());

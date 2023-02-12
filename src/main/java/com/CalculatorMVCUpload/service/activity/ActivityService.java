@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityService {
@@ -20,8 +21,8 @@ public class ActivityService {
     }
 
     @Transactional
-    public List<ActivityEntity> getCertainUserActivities(String login) {
-        return activityEntityRepository.findByLogin(login);
+    public List<ActivityEntity> getCertainUserActivities(int userId) {
+        return activityEntityRepository.findByUserId(userId);
     }
 
     @Transactional
@@ -30,8 +31,8 @@ public class ActivityService {
     }
 
     @Transactional
-    public void deleteActivitiesForUser(String login) {
-        activityEntityRepository.deleteActivityEntitiesByLogin(login);
+    public void deleteActivitiesForUser(int userId) {
+        activityEntityRepository.deleteActivityEntitiesByUserId(userId);
     }
 
 }

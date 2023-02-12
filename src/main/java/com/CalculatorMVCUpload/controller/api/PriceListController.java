@@ -1,11 +1,13 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.entity.PriceListEntity;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.payload.request.FileInfoChangeRequest;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.files.PriceListStorageService;
 import com.CalculatorMVCUpload.service.files.PriceListUploadService;
+import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -35,6 +37,9 @@ public class PriceListController {
 
     @Autowired
     private FileController fileController;
+
+    @Autowired
+    private UserService userService;
 
     private final String markFileForAll = "ALL";
 
@@ -69,7 +74,10 @@ public class PriceListController {
             priceList.setUrl(fileDownloadUri);
             priceList.setInfo(info);
             priceList.setForClients(forClients);
-            priceList.setUserAuthor(SecurityContextHolder.getContext().getAuthentication().getName());
+
+            String author = SecurityContextHolder.getContext().getAuthentication().getName();
+            UserEntity userEntity = userService.findByLogin(author);
+            priceList.setAuthorId(userEntity.getId());
 
             priceListUploadService.addNewFile(priceList);
 

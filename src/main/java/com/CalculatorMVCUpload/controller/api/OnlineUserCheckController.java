@@ -25,25 +25,21 @@ public class OnlineUserCheckController {
     @Autowired
     private OnlineUserService onlineUserService;
 
-    @Autowired
-    private UserService userService;
-
     private final long activityPeriodInMinutes = 15;
 
 
     @GetMapping("/pingAlive")
     public void pingAliveUser(@RequestHeader(name = "Authorization") String bearer) {
         String token = jwtProvider.getTokenFromBearer(bearer);
-        String userLogin = jwtProvider.getLoginFromAccessToken(token);
-        if (userLogin != null) {
-            OnlineUserEntity userEntity = onlineUserService.getUserViaLogin(userLogin);
+        int userId = jwtProvider.getIdFromAccessToken(token);
+        if (userId != 0) {
+            OnlineUserEntity userEntity = onlineUserService.getUserViaId(userId);
             Instant timePing = Instant.now();
             if (userEntity != null) {
                 userEntity.setLastPingTime(timePing);
             } else {
                 userEntity = new OnlineUserEntity();
-                userEntity.setUserId(userService.findByLogin(userLogin).getId());
-                userEntity.setUserLogin(userLogin);
+                userEntity.setUserId(userId);
                 userEntity.setLastPingTime(timePing);
             }
             onlineUserService.saveUserLine(userEntity);

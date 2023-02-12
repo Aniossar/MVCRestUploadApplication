@@ -94,8 +94,11 @@ public class AuthController {
         }
         if (token != null && jwtProvider.validateAccessToken(token)) {
             String userLogin = jwtProvider.getLoginFromAccessToken(token);
+            int userId = jwtProvider.getIdFromAccessToken(token);
             String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
-            return new MeResponse(userLogin, roleFromToken);
+            UserEntity userEntity = userService.findById(userId);
+            String appAccess = userEntity.getAppAccess();
+            return new MeResponse(userId, userLogin, roleFromToken, appAccess);
         } else throw new BadAuthException("No user is authorized");
     }
 
@@ -104,7 +107,7 @@ public class AuthController {
         String usersMail = request.getMessage();
         UserEntity userEntity = userService.findByEmail(usersMail);
         if (userEntity != null) {
-            String restoringToken = authService.generateRestoringPasswordToken(userEntity.getLogin());
+            String restoringToken = authService.generateRestoringPasswordToken(userEntity.getId());
             String contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
             String restorePasswordUrl = contextPath + "/changePassword?token=" + restoringToken;
             try {
@@ -130,9 +133,9 @@ public class AuthController {
 
     @PutMapping("/resetPassword")
     public void resetPassword(@RequestBody PasswordResetRequest request) {
-        String loginFromRestoreToken = authService.getLoginFromRestoreToken(request.getRestoreToken());
-        if (loginFromRestoreToken != null) {
-            UserEntity userEntity = userService.findByLogin(loginFromRestoreToken);
+        int idFromRestoreToken = authService.getIdFromRestoreToken(request.getRestoreToken());
+        if (idFromRestoreToken != -1) {
+            UserEntity userEntity = userService.findById(idFromRestoreToken);
             if (userEntity != null) {
                 userEntity.setPassword(request.getNewPassword());
                 userService.updateUserPassword(userEntity);

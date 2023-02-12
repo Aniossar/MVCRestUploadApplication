@@ -34,8 +34,8 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateAccessToken(token)) {
-            String userLogin = jwtProvider.getLoginFromAccessToken(token);
-            CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
+            int idFromAccessToken = jwtProvider.getIdFromAccessToken(token);
+            CustomUserDetails customUserDetails = customUserDetailsService.loadUserById(idFromAccessToken);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

@@ -47,8 +47,8 @@ public class UploadedFile {
     @Column(name = "for_clients")
     private String forClients;
 
-    @Column(name = "author")
-    private String author;
+    @Column(name = "author_id")
+    private int authorId;
 
     public UploadedFile(String name, String path, String url, Instant uploadDate, long size, int hashCode) {
         this.name = name;

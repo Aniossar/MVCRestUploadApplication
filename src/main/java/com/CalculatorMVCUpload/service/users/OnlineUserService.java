@@ -22,12 +22,8 @@ public class OnlineUserService {
     }
 
     @Transactional
-    public OnlineUserEntity getUserViaLogin(String login) {
-        return onlineUserEntityRepository.findByUserLogin(login);
-    }
-
     public OnlineUserEntity getUserViaId(int id){
-        return onlineUserEntityRepository.getById(id);
+        return onlineUserEntityRepository.findByUserId(id);
     }
 
     @Transactional

@@ -5,7 +5,7 @@ import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
-import com.CalculatorMVCUpload.payload.request.SingleMessageRequest;
+import com.CalculatorMVCUpload.payload.request.SingleIdRequest;
 import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
 import com.CalculatorMVCUpload.payload.response.UserListResponse;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -37,29 +36,29 @@ public class UserController {
     @Autowired
     private RoleEntityRepository roleEntityRepository;
 
-    @DeleteMapping("/deleteUser")
+    /*@DeleteMapping("/deleteUser")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void deleteUser(@RequestHeader(name = "Authorization") String bearer,
-                           @RequestBody SingleMessageRequest request) {
+                           @RequestBody SingleIdRequest request) {
 
         String token = jwtProvider.getTokenFromBearer(bearer);
         String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
-        String userLoginToDelete = request.getMessage();
-        UserEntity userToDelete = userService.findByLogin(userLoginToDelete);
+        int userIdToDelete = request.getSomeId();
+        UserEntity userToDelete = userService.findById(userIdToDelete);
 
         if (userToDelete != null && userManagementService.isFirstUserCoolerOrEqualThanSecond(roleFromToken,
                 userToDelete.getRoleEntity().getName())) {
-            userService.deleteUser(userLoginToDelete);
+            userService.deleteUser(userIdToDelete);
         } else throw new IncorrectPayloadException("Bad user change request");
-    }
+    }*/
 
     @GetMapping("/getUser/{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public UserInfoResponse getUser(@PathVariable int id) {
-        Optional<UserEntity> userEntity = userService.findById(id);
+        UserEntity userEntity = userService.findById(id);
         UserInfoResponse userInfoResponse = null;
-        if (userEntity.isPresent()) {
-            userInfoResponse = userManagementService.transferUserEntityToUserInfoResponse(userEntity.get());
+        if (userEntity != null) {
+            userInfoResponse = userManagementService.transferUserEntityToUserInfoResponse(userEntity);
         }
         return userInfoResponse;
     }
@@ -80,15 +79,23 @@ public class UserController {
 
         String token = jwtProvider.getTokenFromBearer(bearer);
         String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
-        String userLoginToEdit = request.getLogin();
-        UserEntity userToEdit = userService.findByLogin(userLoginToEdit);
+        int userIdToEdit = request.getUserId();
+        UserEntity userToEdit = userService.findById(userIdToEdit);
 
         if (userToEdit != null && userManagementService.isFirstUserCoolerOrEqualThanSecond(roleFromToken,
                 userToEdit.getRoleEntity().getName())) {
             if (request.getEmail() != null) {
-                if(userService.findByEmail(request.getEmail()) == null){
+                if (userService.findByEmail(request.getEmail()) == null) {
                     userToEdit.setEmail(request.getEmail());
                 } else throw new ExistingLoginEmailRegisterException("This email is already registered");
+            }
+            if (request.getLogin() != null) {
+                if (userService.findByLogin(request.getLogin()) == null) {
+                    userToEdit.setLogin(request.getLogin());
+                } else {
+                    log.severe("Trying to use existing login " + request.getLogin() + " for another user");
+                    throw new ExistingLoginEmailRegisterException("This login is already registered");
+                }
             }
             if (request.getFullName() != null) {
                 userToEdit.setFullName(request.getFullName());

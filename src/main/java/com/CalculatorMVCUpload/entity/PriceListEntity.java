@@ -39,17 +39,16 @@ public class PriceListEntity {
     @Column(name = "for_clients")
     private String forClients;
 
-    @Column(name = "author")
-    private String userAuthor;
+    @Column(name = "author_id")
+    private int authorId;
 
     public PriceListEntity(String name, String path, String url, Instant uploadTime,
-                           String info, String forClients, String userAuthor) {
+                           String info, String forClients) {
         this.name = name;
         this.path = path;
         this.url = url;
         this.uploadTime = uploadTime;
         this.info = info;
         this.forClients = forClients;
-        this.userAuthor = userAuthor;
     }
 }

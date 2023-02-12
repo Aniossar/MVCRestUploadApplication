@@ -25,11 +25,13 @@ public class JwtProvider {
     @Value("$(jwt.refresh.secret)")
     private String jwtRefreshSecret;
 
-    public String generateAccessToken(@NonNull String login, RoleEntity roleEntity) {
+    public String generateAccessToken(@NonNull String login, @NonNull int id, RoleEntity roleEntity) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
+        final String idStr = id + "";
         return Jwts.builder()
+                .setId(idStr)
                 .setSubject(login)
                 .claim("roles", roleEntity.getName())
                 .setExpiration(accessExpiration)
@@ -37,11 +39,13 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String generateRefreshToken(@NonNull String login) {
+    public String generateRefreshToken(@NonNull String login, @NonNull int id) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant refreshExpirationInstant = now.plusDays(40).atZone(ZoneId.systemDefault()).toInstant();
         final Date refreshExpiration = Date.from(refreshExpirationInstant);
+        final String idStr = id + "";
         return Jwts.builder()
+                .setId(idStr)
                 .setSubject(login)
                 .setExpiration(refreshExpiration)
                 .signWith(SignatureAlgorithm.HS512, jwtRefreshSecret)
@@ -76,15 +80,26 @@ public class JwtProvider {
         return claims.getSubject();
     }
 
-    public String getRoleFromAccessToken(String token){
+    public String getRoleFromAccessToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(jwtAccessSecret).parseClaimsJws(token).getBody();
         String roles = (String) claims.get("roles");
         return roles;
     }
 
-    public String getTokenFromBearer(String bearer){
+    public int getIdFromAccessToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(jwtAccessSecret).parseClaimsJws(token).getBody();
+        int userId = Integer.parseInt(claims.getId());
+        return userId;
+    }
+
+    public int getIdFromRefreshToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(jwtRefreshSecret).parseClaimsJws(token).getBody();
+        int userId = Integer.parseInt(claims.getId());
+        return userId;
+    }
+
+    public String getTokenFromBearer(String bearer) {
         String token = null;
-        String userLogin = null;
         if (hasText(bearer) && bearer.startsWith("Bearer ")) {
             token = bearer.substring(7);
         }

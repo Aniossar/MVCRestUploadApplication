@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Log
@@ -36,8 +33,9 @@ public class AuthService {
         try {
             UserEntity userEntity = userService.findByLoginAndPassword(authRequest.getLogin(), authRequest.getPassword());
             if (userEntity.isEnabled()) {
-                String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
-                String refreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin());
+                String accessToken = jwtProvider.generateAccessToken
+                        (userEntity.getLogin(), userEntity.getId(), userEntity.getRoleEntity());
+                String refreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin(), userEntity.getId());
                 ArrayList<String> refreshTokens = refreshStorage.get(userEntity.getLogin());
 
                 if (refreshTokens != null) {
@@ -63,12 +61,14 @@ public class AuthService {
 
     public AuthentificationResponse getAccessToken(String refreshToken) {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
+            int idFromRefreshToken = jwtProvider.getIdFromRefreshToken(refreshToken);
             String login = jwtProvider.getLoginFromRefreshToken(refreshToken);
             ArrayList<String> savedRefreshTokens = refreshStorage.get(login);
             if (savedRefreshTokens != null && savedRefreshTokens.contains(refreshToken)) {
-                UserEntity userEntity = userService.findByLogin(login);
+                UserEntity userEntity = userService.findById(idFromRefreshToken);
                 if (userEntity.isEnabled()) {
-                    String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
+                    String accessToken = jwtProvider.generateAccessToken
+                            (userEntity.getLogin(), userEntity.getId(), userEntity.getRoleEntity());
                     return new AuthentificationResponse(accessToken, null);
                 }
             }
@@ -78,12 +78,14 @@ public class AuthService {
 
     public AuthentificationResponse getNewRefreshToken(String refreshToken) {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
+            int idFromRefreshToken = jwtProvider.getIdFromRefreshToken(refreshToken);
             String login = jwtProvider.getLoginFromRefreshToken(refreshToken);
             ArrayList<String> savedRefreshTokens = refreshStorage.get(login);
             if (savedRefreshTokens != null && savedRefreshTokens.contains(refreshToken)) {
-                UserEntity userEntity = userService.findByLogin(login);
-                String accessToken = jwtProvider.generateAccessToken(userEntity.getLogin(), userEntity.getRoleEntity());
-                String newRefreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin());
+                UserEntity userEntity = userService.findById(idFromRefreshToken);
+                String accessToken = jwtProvider.generateAccessToken
+                        (userEntity.getLogin(), userEntity.getId(), userEntity.getRoleEntity());
+                String newRefreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin(), userEntity.getId());
                 ArrayList<String> newSavedRefreshTokens = savedRefreshTokens;
                 newSavedRefreshTokens.remove(savedRefreshTokens.indexOf(refreshToken));
                 newSavedRefreshTokens.add(newRefreshToken);
@@ -94,13 +96,13 @@ public class AuthService {
         throw new BadAuthException("Token is not valid");
     }
 
-    public String generateRestoringPasswordToken(String login) {
+    public String generateRestoringPasswordToken(@NonNull int userId) {
         String token = UUID.randomUUID().toString();
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setToken(token);
         Instant expiryTime = Instant.now().plus(30, ChronoUnit.MINUTES);
         resetToken.setExpiryTime(expiryTime);
-        resetToken.setLogin(login);
+        resetToken.setUserId(userId);
         restoringPasswordTokensStorage.put(token, resetToken);
         return token;
     }
@@ -116,5 +118,18 @@ public class AuthService {
             }
         }
         return null;
+    }
+
+    public int getIdFromRestoreToken(@NonNull String token) {
+        PasswordResetToken resetToken = restoringPasswordTokensStorage.get(token);
+        if (resetToken != null) {
+            Instant timeNow = Instant.now();
+            if (timeNow.isBefore(resetToken.getExpiryTime())) {
+                int userId = resetToken.getUserId();
+                restoringPasswordTokensStorage.remove(token);
+                return userId;
+            }
+        }
+        return -1;
     }
 }

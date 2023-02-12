@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class MeResponse {
 
+    private int userId;
     private String login;
     private String roleName;
+    private String appAccess;
 }

@@ -32,9 +32,6 @@ public class CalculatorActivityEntity {
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "login")
-    private String login;
-
     @Column(name = "company_name")
     private String companyName;
 
