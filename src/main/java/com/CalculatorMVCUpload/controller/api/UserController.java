@@ -1,15 +1,17 @@
 package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
+import com.CalculatorMVCUpload.entity.users.ManagerAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
-import com.CalculatorMVCUpload.payload.request.SingleIdRequest;
+import com.CalculatorMVCUpload.payload.request.users.ConnectTwoUsersRequest;
 import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
 import com.CalculatorMVCUpload.payload.response.UserListResponse;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
+import com.CalculatorMVCUpload.service.users.KeyManagerService;
 import com.CalculatorMVCUpload.service.users.UserManagementService;
 import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.extern.java.Log;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,6 +38,9 @@ public class UserController {
 
     @Autowired
     private RoleEntityRepository roleEntityRepository;
+
+    @Autowired
+    private KeyManagerService keyManagerService;
 
     /*@DeleteMapping("/deleteUser")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
@@ -125,6 +131,54 @@ public class UserController {
 
             userService.updateUser(userToEdit);
         } else throw new IncorrectPayloadException("Bad user change request");
+    }
+
+    @PostMapping("/connectUserAndManager")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public void connectUserWithManager(@RequestBody ConnectTwoUsersRequest request) {
+        UserEntity manager = userService.findById(request.getUserIdMain());
+        UserEntity user = userService.findById(request.getUserIdNonMain());
+        if (manager.getRoleEntity().getName().contains("KEYMANAGER")) {
+            keyManagerService.connectUserAndManager(manager, user);
+        }
+    }
+
+    @GetMapping("/getAllUsersWithoutKeyManagers")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public List<UserListResponse> getAllUsersWithoutKeyManagers() {
+        List<UserListResponse> resultList = new ArrayList<>();
+        List<UserEntity> allUsers = userManagementService.getAllUsers();
+        List<ManagerAndUsersEntity> allManagersAndUsers = keyManagerService.getAllManagersAndUsers();
+        for (UserEntity userEntity : allUsers) {
+            if (!userEntity.getRoleEntity().getName().contains("ADMIN")
+                    && !userEntity.getRoleEntity().getName().contains("MODERATOR")
+                    && !userEntity.getRoleEntity().getName().contains("KEYMANAGER")) {
+                boolean flagKeyManagerAsserts = false;
+                for (ManagerAndUsersEntity entity : allManagersAndUsers) {
+                    if (entity.getUser().getId() == userEntity.getId()) {
+                        flagKeyManagerAsserts = true;
+                        break;
+                    }
+                }
+                if (!flagKeyManagerAsserts) {
+                    resultList.add(userManagementService.transferSingleUserEntityToUserResponse(userEntity));
+                }
+            }
+        }
+        return resultList;
+    }
+
+    @GetMapping("/getMyUsers")
+    @RolesAllowed({"ROLE_KEYMANAGER"})
+    public List<UserListResponse> getAllUsersThatHaveThisManager(@RequestHeader(name = "Authorization") String bearer) {
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        int idFromAccessToken = jwtProvider.getIdFromAccessToken(token);
+        List<UserListResponse> resultList = new ArrayList<>();
+        List<ManagerAndUsersEntity> managerViaUserId = keyManagerService.getManagerViaUserId(idFromAccessToken);
+        for (ManagerAndUsersEntity entity : managerViaUserId) {
+            resultList.add(userManagementService.transferSingleUserEntityToUserResponse(entity.getUser()));
+        }
+        return resultList;
     }
 
 }

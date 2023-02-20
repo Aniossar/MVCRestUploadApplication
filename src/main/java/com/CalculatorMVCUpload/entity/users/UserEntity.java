@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "user_table")
@@ -50,6 +51,9 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;
+
+    @Column(name = "registration_time")
+    private Instant registrationTime;
 
     @Column(name = "enabled")
     private boolean enabled;

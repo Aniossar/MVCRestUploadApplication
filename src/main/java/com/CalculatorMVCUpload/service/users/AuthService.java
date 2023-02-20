@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 @Log
@@ -32,6 +35,9 @@ public class AuthService {
     public AuthentificationResponse authenticate(AuthentificationRequest authRequest) {
         try {
             UserEntity userEntity = userService.findByLoginAndPassword(authRequest.getLogin(), authRequest.getPassword());
+            if (userEntity == null) {
+                userEntity = userService.findByEmailAndPassword(authRequest.getLogin(), authRequest.getPassword());
+            }
             if (userEntity.isEnabled()) {
                 String accessToken = jwtProvider.generateAccessToken
                         (userEntity.getLogin(), userEntity.getId(), userEntity.getRoleEntity());

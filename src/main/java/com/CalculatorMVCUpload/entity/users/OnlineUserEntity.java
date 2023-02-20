@@ -3,6 +3,7 @@ package com.CalculatorMVCUpload.entity.users;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +16,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class OnlineUserEntity {
-
-   /* @Id
-    @Column(name = "id")
-    private int id;*/
 
     @Id
     @Column(name = "user_id")

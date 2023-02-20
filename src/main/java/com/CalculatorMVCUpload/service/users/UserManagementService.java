@@ -21,7 +21,6 @@ public class UserManagementService {
     @Autowired
     private UserEntityRepository userEntityRepository;
 
-    private RoleEntityRepository roleEntityRepository;
     private final Map<String, Integer> userRolesMap;
 
     @Autowired
@@ -51,6 +50,16 @@ public class UserManagementService {
             userListResponse.add(userResponse);
         }
         return userListResponse;
+    }
+
+    public UserListResponse transferSingleUserEntityToUserResponse(UserEntity userEntity) {
+        UserListResponse userResponse = new UserListResponse();
+        userResponse.setId(userEntity.getId());
+        userResponse.setLogin(userEntity.getLogin());
+        userResponse.setFullName(userEntity.getFullName());
+        userResponse.setCompanyName(userEntity.getCompanyName());
+        userResponse.setCertainPlaceAddress(userEntity.getCertainPlaceAddress());
+        return userResponse;
     }
 
     public UserInfoResponse transferUserEntityToUserInfoResponse(UserEntity userEntity) {

@@ -37,9 +37,12 @@ REST Endpoints for user management:
 1. GET /api/users/getUser/{id} - get user via id (only for admin and moderator)
 2. GET /api/users/getAllUsers - get all users in short info form (only for admin and moderator)
 3. PUT /api/users/editUser - edit user fields (only for user with greater role + only for admin and moderator)
-4. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
-5. GET /api/getUserInfo - get user fields (only for user itself)
-6. PUT /api/editOwnInfo - edit user fields (only for user itself)
+4. POST /api/users/connectUserAndManager - connect user with key-manager (only for admin and moderator)
+5. GET /api/users/getAllUsersWithoutKeyManagers - get all users (shops, suppliers and users) without key-manager (only for admin and moderator)
+6. GET /api/users/getMyUsers - get all users associated with this key-manager (only for user itself, only for key-manager)
+7. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
+8. GET /api/getUserInfo - get user fields (only for user itself)
+9. PUT /api/editOwnInfo - edit user fields (only for user itself)
 
 REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities
@@ -53,6 +56,7 @@ REST Endpoints for logging application activities:
 REST Endpoints for system information:
 1. GET /api/getApplicationStart - get time the app started
 2. GET /api/getApplicationWorkingTime - calculates the period the app is working
+3. POST /api/getUserStatistics - returns statistics of new users, online users and new receipts for day, week and month
 
 REST Endpoint for user online status management:
 1. GET /api/pingAlive - request from client to ping that user is active

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,16 +35,20 @@ public class UserService {
         return userEntityRepository.save(userEntity);
     }
 
-    public UserEntity updateUserPassword(UserEntity userEntity){
+    public UserEntity updateUserPassword(UserEntity userEntity) {
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         return userEntityRepository.save(userEntity);
     }
 
-    public UserEntity updateUser(UserEntity userEntity){
+    public UserEntity updateUser(UserEntity userEntity) {
         return userEntityRepository.save(userEntity);
     }
 
-    public void deleteUser(int id){
+    public List<UserEntity> getNewRegisteredUsersByTime(Instant startTime, Instant endTime) {
+        return userEntityRepository.selectByRegistrationTime(startTime, endTime);
+    }
+
+    public void deleteUser(int id) {
         UserEntity userEntity = findById(id);
         userEntityRepository.delete(userEntity);
     }
@@ -55,10 +61,10 @@ public class UserService {
         return userEntityRepository.findByEmail(email);
     }
 
-    public UserEntity findById(int id){
+    public UserEntity findById(int id) {
         Optional<UserEntity> optionalUserEntity = userEntityRepository.findById(id);
         UserEntity userEntity = null;
-        if(optionalUserEntity.isPresent()){
+        if (optionalUserEntity.isPresent()) {
             userEntity = optionalUserEntity.get();
         }
         return userEntity;
@@ -76,6 +82,16 @@ public class UserService {
 
     public UserEntity findByIdAndPassword(int id, String password) {
         UserEntity userEntity = findById(id);
+        if (userEntity != null) {
+            if (passwordEncoder.matches(password, userEntity.getPassword())) {
+                return userEntity;
+            }
+        }
+        return null;
+    }
+
+    public UserEntity findByEmailAndPassword(String email, String password) {
+        UserEntity userEntity = findByEmail(email);
         if (userEntity != null) {
             if (passwordEncoder.matches(password, userEntity.getPassword())) {
                 return userEntity;

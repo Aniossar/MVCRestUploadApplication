@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 public class UserEditRequest {
 
     public enum NewRole {
-        ADMIN, MODERATOR, SUPPLIER, SHOP, USER
+        ADMIN, MODERATOR, SUPPLIER, KEYMANAGER, SHOP, USER
     }
 
     private int userId;

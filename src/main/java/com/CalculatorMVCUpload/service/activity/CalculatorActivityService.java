@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class CalculatorActivityService {
         return request;
     }
 
+    @Transactional
     public List<CalculatorActivityEntity> getActivitiesByFilter(CalcActivityFilterRequest request) {
         return calculatorActivityEntityRepository.selectByFilterFields(request.getDateFrom(), request.getDateTo(),
                 request.getCompanyName(), request.getCertainPlaceAddress(),
@@ -77,5 +79,9 @@ public class CalculatorActivityService {
                 request.getAddPriceFrom(), request.getAddPriceTo(),
                 request.getAllPriceFrom(), request.getAllPriceTo(),
                 request.getMaterials());
+    }
+
+    public List<CalculatorActivityEntity> getActivitiesByTypeAndTime(Instant startTime, Instant endTime, String type) {
+        return calculatorActivityEntityRepository.selectByTypeAndTime(startTime, endTime, type);
     }
 }

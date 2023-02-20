@@ -26,16 +26,16 @@ public class LoggingAspect {
     @Autowired
     private UserService userService;
 
-    private final String userTypeActivity = "User Activity";
-    private final String updateFileTypeActivity = "Update file";
-    private final String priceListFileTypeActivity = "Price list file";
+    private final String userTypeActivity = "Пользовательская активность";
+    private final String updateFileTypeActivity = "Файл обновления";
+    private final String priceListFileTypeActivity = "Прайс-лист";
 
     @AfterReturning("execution(* com.CalculatorMVCUpload.configuration.jwt.JwtProvider.generateAccessToken(..))"
             + "&&args(id)")
     public void loginUserAdvice(JoinPoint joinPoint, int id) {
         Instant timeStamp = Instant.now();
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, id,
-                "User logins into system");
+                "Пользователь залогинился");
         activityService.saveActivity(activityEntity);
     }
 
@@ -46,7 +46,7 @@ public class LoggingAspect {
         UserEntity userEntity = userService.findByLogin(logoutName);
 
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, userEntity.getId(),
-                "User logout from system");
+                "Пользователь разлогинился");
         activityService.saveActivity(activityEntity);
     }
 
@@ -54,18 +54,18 @@ public class LoggingAspect {
     public void saveNewUserAdvice(JoinPoint joinPoint, UserEntity userEntity) {
         Instant timeStamp = Instant.now();
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, userEntity.getId(),
-                "New user registered with email: " + userEntity.getEmail());
+                "Зарегистрирован новый пользователь с почтой: " + userEntity.getEmail());
         activityService.saveActivity(activityEntity);
     }
 
-    @AfterReturning("execution(* com.CalculatorMVCUpload.service.users.UserService.deleteUser(..))" + "&&args(id,..)")
+    /*@AfterReturning("execution(* com.CalculatorMVCUpload.service.users.UserService.deleteUser(..))" + "&&args(id,..)")
     public void deleteUserAdvice(JoinPoint joinPoint, int id) {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, id,
                 "Deleted user with id: " + id);
         activityService.saveActivity(activityEntity);
-    }
+    }*/
 
     @AfterReturning("execution(* com.CalculatorMVCUpload.service.users.UserService.updateUser(..))" + "&&args(userEntity,..)")
     public void editUserAdvice(JoinPoint joinPoint, UserEntity userEntity) {
@@ -79,7 +79,7 @@ public class LoggingAspect {
             authorEntityId = userEntity.getId();
         }
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, userTypeActivity, authorEntityId,
-                "Edited user: " + userEntity.getLogin());
+                "Отредактирован пользователь: " + userEntity.getLogin());
         activityService.saveActivity(activityEntity);
     }
 
@@ -88,7 +88,7 @@ public class LoggingAspect {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, updateFileTypeActivity, uploadedFile.getAuthorId(),
-                "New update file uploaded by " + userName);
+                "Новый файл обновления загружен пользователем " + userName);
         activityService.saveActivity(activityEntity);
     }
 
@@ -98,7 +98,7 @@ public class LoggingAspect {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity userEntity = userService.findByLogin(userName);
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, updateFileTypeActivity, userEntity.getId(),
-                "Update file deleted by " + userName);
+                "Файл обновления удален пользователем " + userName);
         activityService.saveActivity(activityEntity);
     }
 
@@ -107,7 +107,7 @@ public class LoggingAspect {
         Instant timeStamp = Instant.now();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, priceListFileTypeActivity, priceListEntity.getAuthorId(),
-                "New price list file uploaded by " + userName);
+                "Новый прайс-лист загружен пользователем " + userName);
         activityService.saveActivity(activityEntity);
     }
 
@@ -117,7 +117,7 @@ public class LoggingAspect {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity userEntity = userService.findByLogin(userName);
         ActivityEntity activityEntity = new ActivityEntity(timeStamp, priceListFileTypeActivity, userEntity.getId(),
-                "Price list file deleted by " + userName);
+                "Прайс-лист удален пользователем " + userName);
         activityService.saveActivity(activityEntity);
     }
 

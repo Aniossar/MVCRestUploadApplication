@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +57,9 @@ public class AuthController {
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         UserEntity userEntity = new UserEntity();
         if (userService.findByLogin(registrationRequest.getLogin()) != null
-                || userService.findByEmail(registrationRequest.getEmail()) != null) {
+                || userService.findByEmail(registrationRequest.getEmail()) != null
+                || userService.findByLogin(registrationRequest.getEmail()) != null
+                || userService.findByEmail(registrationRequest.getLogin()) != null) {
             log.warning("Trying to register user with existing email or login");
             throw new ExistingLoginEmailRegisterException("This login or email is already registered");
         }
@@ -69,6 +72,7 @@ public class AuthController {
         userEntity.setAddress(registrationRequest.getAddress());
         userEntity.setCertainPlaceAddress(registrationRequest.getCertainPlaceAddress());
         userEntity.setAppAccess(registrationRequest.getAppAccess());
+        userEntity.setRegistrationTime(Instant.now());
         userEntity.setEnabled(true);
         userService.saveUser(userEntity, registrationRequest.getDesiredRole());
         return "OK";

@@ -94,7 +94,7 @@ public class FileController {
     }
 
 
-    public ResponseEntity<Resource> downloadFile (Resource resource, HttpServletRequest request) {
+    public ResponseEntity<Resource> downloadFile(Resource resource, HttpServletRequest request) {
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
@@ -141,11 +141,13 @@ public class FileController {
     @GetMapping("/lastFile/{forClients}")
     public UploadedFile getLastUploadedFileForClients(@PathVariable String forClients) {
         UploadedFile lastFileForAll = uploadFileService.getLastFileByForClients(markFileForAll);
-        try {
-            UploadedFile lastFileForClients = uploadFileService.getLastFileByForClients(forClients);
-            return (lastFileForClients.getId() > lastFileForAll.getId() ? lastFileForClients : lastFileForAll);
-        } catch (Exception e) {
+        UploadedFile lastFileForClients = uploadFileService.getLastFileByForClients(forClients);
+        if (lastFileForAll == null) {
+            return lastFileForClients;
+        } else if (lastFileForClients == null) {
             return lastFileForAll;
+        } else {
+            return (lastFileForClients.getId() > lastFileForAll.getId() ? lastFileForClients : lastFileForAll);
         }
     }
 
