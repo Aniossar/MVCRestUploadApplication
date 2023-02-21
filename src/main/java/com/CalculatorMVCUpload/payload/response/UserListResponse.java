@@ -25,4 +25,6 @@ public class UserListResponse {
     private String companyName;
 
     private String certainPlaceAddress;
+
+    private int keyManagerId;
 }

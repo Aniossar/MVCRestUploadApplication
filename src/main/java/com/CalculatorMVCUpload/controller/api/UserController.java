@@ -174,7 +174,7 @@ public class UserController {
         String token = jwtProvider.getTokenFromBearer(bearer);
         int idFromAccessToken = jwtProvider.getIdFromAccessToken(token);
         List<UserListResponse> resultList = new ArrayList<>();
-        List<ManagerAndUsersEntity> managerViaUserId = keyManagerService.getManagerViaUserId(idFromAccessToken);
+        List<ManagerAndUsersEntity> managerViaUserId = keyManagerService.getManagerLinesViaManagerId(idFromAccessToken);
         for (ManagerAndUsersEntity entity : managerViaUserId) {
             resultList.add(userManagementService.transferSingleUserEntityToUserResponse(entity.getUser()));
         }

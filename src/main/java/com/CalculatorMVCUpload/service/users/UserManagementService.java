@@ -1,5 +1,6 @@
 package com.CalculatorMVCUpload.service.users;
 
+import com.CalculatorMVCUpload.entity.users.ManagerAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.RoleEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
@@ -21,6 +22,9 @@ public class UserManagementService {
     @Autowired
     private UserEntityRepository userEntityRepository;
 
+    @Autowired
+    private KeyManagerService keyManagerService;
+
     private final Map<String, Integer> userRolesMap;
 
     @Autowired
@@ -41,12 +45,7 @@ public class UserManagementService {
     public List<UserListResponse> transferUserEntitiesToUserListResponse(List<UserEntity> entityList) {
         List<UserListResponse> userListResponse = new ArrayList<>();
         for (UserEntity user : entityList) {
-            UserListResponse userResponse = new UserListResponse();
-            userResponse.setId(user.getId());
-            userResponse.setLogin(user.getLogin());
-            userResponse.setFullName(user.getFullName());
-            userResponse.setCompanyName(user.getCompanyName());
-            userResponse.setCertainPlaceAddress(user.getCertainPlaceAddress());
+            UserListResponse userResponse = transferSingleUserEntityToUserResponse(user);
             userListResponse.add(userResponse);
         }
         return userListResponse;
@@ -59,6 +58,10 @@ public class UserManagementService {
         userResponse.setFullName(userEntity.getFullName());
         userResponse.setCompanyName(userEntity.getCompanyName());
         userResponse.setCertainPlaceAddress(userEntity.getCertainPlaceAddress());
+        ManagerAndUsersEntity managerViaUserId = keyManagerService.getManagerViaUserId(userEntity.getId());
+        if (managerViaUserId != null) {
+            userResponse.setKeyManagerId(managerViaUserId.getKeyManager().getId());
+        }
         return userResponse;
     }
 
@@ -75,7 +78,10 @@ public class UserManagementService {
         userInfoResponse.setAppAccess(userEntity.getAppAccess());
         userInfoResponse.setRoleEntity(userEntity.getRoleEntity());
         userInfoResponse.setEnabled(userEntity.isEnabled());
-
+        ManagerAndUsersEntity managerViaUserId = keyManagerService.getManagerViaUserId(userEntity.getId());
+        if (managerViaUserId != null) {
+            userInfoResponse.setKeyManagerId(managerViaUserId.getKeyManager().getId());
+        }
         return userInfoResponse;
     }
 }

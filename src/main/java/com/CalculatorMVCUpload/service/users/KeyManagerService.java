@@ -31,8 +31,13 @@ public class KeyManagerService {
     }
 
     @Transactional
-    public List<ManagerAndUsersEntity> getManagerViaUserId(int managerId) {
+    public List<ManagerAndUsersEntity> getManagerLinesViaManagerId(int managerId) {
         return managerAndUsersEntityRepository.findAllByKeyManager_Id(managerId);
+    }
+
+    @Transactional
+    public ManagerAndUsersEntity getManagerViaUserId(int userId) {
+        return managerAndUsersEntityRepository.findByUser_Id(userId);
     }
 
     public void connectUserAndManager(UserEntity manager, UserEntity user) {

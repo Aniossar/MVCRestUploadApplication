@@ -32,5 +32,7 @@ public class UserInfoResponse {
 
     private RoleEntity roleEntity;
 
+    private int keyManagerId;
+
     private boolean enabled;
 }
