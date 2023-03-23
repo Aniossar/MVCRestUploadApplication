@@ -41,7 +41,7 @@ public class FileController {
     @Autowired
     private UserService userService;
 
-    private final String markFileForAll = "ALL";
+    private final String markFileForAll = "all";
 
     @GetMapping("/allFiles")
     public List<UploadedFile> getAllFiles() {
