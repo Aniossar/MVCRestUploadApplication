@@ -62,7 +62,7 @@ REST Endpoint for user online status management:
 1. GET /api/pingAlive - request from client to ping that user is active
 2. GET /api/showUserStats - get all active users for the last N minutes
 
-Docker:
+### Docker:
 
 1. Dockerfile - template for app image
 2. docker-compose_dev.yml, docker-compose_test.yml, 
@@ -84,7 +84,7 @@ different pack of containers, for dev, test and production.
 - check ports it cat be uses another servises: ```sudo netstat -ntlp | grep 80```
 - check permissions for volume folders
 
-portal:
+### portal:
 
 vm:
 portal.koreanika.ru

@@ -12,7 +12,7 @@ services:
       - 'POSTGRES_DB=productionDb'
       - 'PGDATA=/var/lib/postgresql/data/pgdata'
     volumes:
-      - sql:/docker-entrypoint-initdb.d/
+      - ./sql:/docker-entrypoint-initdb.d/
       - db_production:/var/lib/postgresql/data/
     ports:
       - 5432:5432
@@ -23,7 +23,8 @@ services:
 
   pgadmin:
     container_name: pgadmin_container
-    image: dpage/pgadmin4:5.7
+    image: dpage/pgadmin4:6.20
+
     privileged: true
     user: root
     environment:
@@ -32,6 +33,8 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: "False"
     volumes:
       - pgadmin:/var/lib/pgadmin
+#      - db_prod_backups:/root/backups
+      - ./db_prod_backup:/root/backups
     ports:
       - 5050:80
     restart: unless-stopped
@@ -67,3 +70,4 @@ volumes:
   Upload_prod: null
   pgadmin: null
   db_production: null
+  db_prod_backups: null
