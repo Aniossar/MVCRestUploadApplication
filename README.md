@@ -52,14 +52,21 @@ REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities
 
 REST Endpoints for managing user claims:
-1. GET /api/claims/allClaims - get all claims
-2. GET /api/claims/allNotSolvedClaims - get all not-solved claims
+1. GET /api/claims/allClaims - get all claims (only for admin and moderator)
+2. GET /api/claims/allNotSolvedClaims - get all not-solved claims (only for admin and moderator)
+3. GET /api/claims/getClaim/{id} - get claim via id (only for admin and moderator)
+4. PUT /api/claims/setResponsibleForClaim/{id} - set responsible for claim (someId" {responsibleId}, only for admin and moderator)
+5. GET /api/claims/markClaimAsSolved/{id} - mark claim solved = true (only for admin and moderator)
+6. POST /api/claims/saveClaim - add claim to db and in .txt file
+7. GET /api/claims/downloadFile/{fileName} — download claim with {filename}
+8. DELETE /api/claims/deleteClaim/{id} - delete claim with id (only for admin and moderator)
 
 REST Endpoints for logging application activities:
 1. GET /api/app/allCalcActivities - get all activities from calculator app
-2. POST /api/app/saveCalcActivity - saves activity from calculator app
-3. POST /api/app/calcActivityFilter - returns filtered calculator activities
-4. POST /api/app/calcActivityFilterFile - returns filtered calculator activities in .xlsx
+2. GET /api/app/allCalcActivitiesByType/{type} - get all activities by type
+3. POST /api/app/saveCalcActivity - saves activity from calculator app
+4. POST /api/app/calcActivityFilter - returns filtered calculator activities
+5. POST /api/app/calcActivityFilterFile - returns filtered calculator activities in .xlsx
 
 REST Endpoints for system information:
 1. GET /api/getApplicationStart - get time the app started

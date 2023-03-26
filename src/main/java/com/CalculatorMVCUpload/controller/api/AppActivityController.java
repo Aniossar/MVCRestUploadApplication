@@ -42,6 +42,11 @@ public class AppActivityController {
         return calculatorActivityService.getAllActivities();
     }
 
+    @GetMapping("/allCalcActivitiesByType/{type}")
+    public List<CalculatorActivityEntity> getAllCalculatorActivitiesByType(@PathVariable String type) {
+        return calculatorActivityService.getActivitiesByType(type);
+    }
+
     @PostMapping("/saveCalcActivity")
     public String saveCalculatorActivity(@RequestBody CalcActivitySaveRequest request) {
 

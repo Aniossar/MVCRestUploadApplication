@@ -81,7 +81,13 @@ public class CalculatorActivityService {
                 request.getMaterials());
     }
 
+    @Transactional
     public List<CalculatorActivityEntity> getActivitiesByTypeAndTime(Instant startTime, Instant endTime, String type) {
         return calculatorActivityEntityRepository.selectByTypeAndTime(startTime, endTime, type);
+    }
+
+    @Transactional
+    public List<CalculatorActivityEntity> getActivitiesByType(String type) {
+        return calculatorActivityEntityRepository.findAllByType(type);
     }
 }
