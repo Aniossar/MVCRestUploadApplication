@@ -7,6 +7,7 @@ import com.CalculatorMVCUpload.payload.request.FileInfoChangeRequest;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.files.PriceListStorageService;
 import com.CalculatorMVCUpload.service.files.PriceListUploadService;
+import com.CalculatorMVCUpload.service.files.UploadFileService;
 import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class PriceListController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UploadFileService uploadFileService;
+
     private final String markFileForAll = "ALL";
 
     @GetMapping("/allFiles")
@@ -73,7 +77,7 @@ public class PriceListController {
             priceList.setUploadTime(timeNow);
             priceList.setUrl(fileDownloadUri);
             priceList.setInfo(info);
-            priceList.setForClients(forClients);
+            priceList.setForClients(uploadFileService.transformForClientsString(forClients).toLowerCase());
 
             String author = SecurityContextHolder.getContext().getAuthentication().getName();
             UserEntity userEntity = userService.findByLogin(author);
@@ -122,11 +126,14 @@ public class PriceListController {
     @GetMapping("/lastFile/{forClients}")
     public PriceListEntity getLastPriceListForClients(@PathVariable String forClients) {
         PriceListEntity priceListForAll = priceListUploadService.getLastPriceListByForClients(markFileForAll);
-        try {
-            PriceListEntity priceListForClients = priceListUploadService.getLastPriceListByForClients(forClients);
-            return (priceListForClients.getId() > priceListForAll.getId() ? priceListForClients : priceListForAll);
-        } catch (Exception e) {
+        PriceListEntity priceListForClients = priceListUploadService
+                .getLastPriceListByForClients("+" + forClients.toLowerCase() + "+");
+        if (priceListForAll == null) {
+            return priceListForClients;
+        } else if (priceListForClients == null) {
             return priceListForAll;
+        } else {
+            return (priceListForClients.getId() > priceListForAll.getId() ? priceListForClients : priceListForAll);
         }
     }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class UploadFileService {
@@ -49,4 +50,13 @@ public class UploadFileService {
         uploadedFileRepository.save(uploadedFile);
     }
 
+    public String transformForClientsString(String forClients) {
+        Pattern pattern = Pattern.compile(",");
+        String[] str = pattern.split(forClients);
+        String newForClients = "";
+        for (String strElement : str) {
+            newForClients = newForClients + "+" + strElement + "+";
+        }
+        return newForClients;
+    }
 }

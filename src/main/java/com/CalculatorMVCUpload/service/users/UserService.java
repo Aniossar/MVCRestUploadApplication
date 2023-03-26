@@ -9,6 +9,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,6 +28,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Transactional
     public UserEntity saveUser(UserEntity userEntity, RegistrationRequest.DesiredRole desiredRole) {
         log.info("Saving new user to database " + userEntity.getLogin());
         RoleEntity userRole = roleEntityRepository.findByName("ROLE_" + desiredRole);
@@ -35,15 +37,18 @@ public class UserService {
         return userEntityRepository.save(userEntity);
     }
 
+    @Transactional
     public UserEntity updateUserPassword(UserEntity userEntity) {
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         return userEntityRepository.save(userEntity);
     }
 
+    @Transactional
     public UserEntity updateUser(UserEntity userEntity) {
         return userEntityRepository.save(userEntity);
     }
 
+    @Transactional
     public List<UserEntity> getNewRegisteredUsersByTime(Instant startTime, Instant endTime) {
         return userEntityRepository.selectByRegistrationTime(startTime, endTime);
     }
@@ -53,14 +58,25 @@ public class UserService {
         userEntityRepository.delete(userEntity);
     }
 
+    @Transactional
+    public void batchUserBlocking(List<UserEntity> listOfBlockingUsers) {
+        for (UserEntity userEntity : listOfBlockingUsers) {
+            userEntity.setEnabled(false);
+        }
+        userEntityRepository.saveAllAndFlush(listOfBlockingUsers);
+    }
+
+    @Transactional
     public UserEntity findByLogin(String login) {
         return userEntityRepository.findByLogin(login);
     }
 
+    @Transactional
     public UserEntity findByEmail(String email) {
         return userEntityRepository.findByEmail(email);
     }
 
+    @Transactional
     public UserEntity findById(int id) {
         Optional<UserEntity> optionalUserEntity = userEntityRepository.findById(id);
         UserEntity userEntity = null;
@@ -70,6 +86,7 @@ public class UserService {
         return userEntity;
     }
 
+    @Transactional
     public UserEntity findByLoginAndPassword(String login, String password) {
         UserEntity userEntity = findByLogin(login);
         if (userEntity != null) {
@@ -80,6 +97,7 @@ public class UserService {
         return null;
     }
 
+    @Transactional
     public UserEntity findByIdAndPassword(int id, String password) {
         UserEntity userEntity = findById(id);
         if (userEntity != null) {
@@ -90,6 +108,7 @@ public class UserService {
         return null;
     }
 
+    @Transactional
     public UserEntity findByEmailAndPassword(String email, String password) {
         UserEntity userEntity = findByEmail(email);
         if (userEntity != null) {

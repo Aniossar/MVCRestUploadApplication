@@ -3,7 +3,6 @@ package com.CalculatorMVCUpload.controller.api;
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
-import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.WrongPasswordUserMovesException;
 import com.CalculatorMVCUpload.payload.request.users.PasswordChangeRequest;
 import com.CalculatorMVCUpload.payload.request.users.RefreshTokenRequest;
@@ -76,38 +75,7 @@ public class AuthSecuredController {
         int userId = jwtProvider.getIdFromAccessToken(token);
         UserEntity userEntity = userService.findById(userId);
 
-        if (request.getLogin() != null) {
-            if (userService.findByLogin(request.getLogin()) == null) {
-                userEntity.setLogin(request.getLogin());
-            } else {
-                log.severe("Trying to use existing login " + request.getLogin() + " for another user");
-                throw new ExistingLoginEmailRegisterException("This login is already registered");
-            }
-        }
-        if (request.getEmail() != null) {
-            if (userService.findByEmail(request.getEmail()) == null) {
-                userEntity.setEmail(request.getEmail());
-            } else {
-                log.severe("Trying to use existing email " + request.getEmail() + " for another user");
-                throw new ExistingLoginEmailRegisterException("This email is already registered");
-            }
-        }
-        if (request.getFullName() != null) {
-            userEntity.setFullName(request.getFullName());
-        }
-        if (request.getCompanyName() != null) {
-            userEntity.setCompanyName(request.getCompanyName());
-        }
-        if (request.getPhoneNumber() != null) {
-            userEntity.setPhoneNumber(request.getPhoneNumber());
-        }
-        if (request.getAddress() != null) {
-            userEntity.setAddress(request.getAddress());
-        }
-        if (request.getCertainPlaceAddress() != null) {
-            userEntity.setCertainPlaceAddress(request.getCertainPlaceAddress());
-        }
-
+        userManagementService.editUserFields(userEntity, request);
         userService.updateUser(userEntity);
     }
 

@@ -40,12 +40,20 @@ REST Endpoints for user management:
 4. POST /api/users/connectUserAndManager - connect user with key-manager (only for admin and moderator)
 5. GET /api/users/getAllUsersWithoutKeyManagers - get all users (shops, suppliers and users) without key-manager (only for admin and moderator)
 6. GET /api/users/getMyUsers - get all users associated with this key-manager (only for user itself, only for key-manager)
-7. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
-8. GET /api/getUserInfo - get user fields (only for user itself)
-9. PUT /api/editOwnInfo - edit user fields (only for user itself)
+7. POST /api/users/connectUserAndShop - connect user with shop (only for admin and moderator)
+8. GET /api/users/getMyShopEmployees - get all users associated with this shop (only for user itself, only for shop)
+9. PUT /api/users/editShopEmployee - edit user fields (only for employees of current shop + only for role shop)
+10. POST /api/users/blockShop - block all employees of certain shop (only for admin and moderator)
+11. PUT /api/changeOwnPassword - change password of authenticated user (only for user itself)
+12. GET /api/getUserInfo - get user fields (only for user itself)
+13. PUT /api/editOwnInfo - edit user fields (only for user itself)
 
 REST Endpoints for logging activity:
 1. GET /api/allActivities - get all user activities
+
+REST Endpoints for managing user claims:
+1. GET /api/claims/allClaims - get all claims
+2. GET /api/claims/allNotSolvedClaims - get all not-solved claims
 
 REST Endpoints for logging application activities:
 1. GET /api/app/allCalcActivities - get all activities from calculator app

@@ -2,16 +2,17 @@ package com.CalculatorMVCUpload.controller.api;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.ManagerAndUsersEntity;
-import com.CalculatorMVCUpload.entity.users.RoleEntity;
+import com.CalculatorMVCUpload.entity.users.ShopAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
-import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
+import com.CalculatorMVCUpload.payload.request.SingleIdRequest;
 import com.CalculatorMVCUpload.payload.request.users.ConnectTwoUsersRequest;
 import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
 import com.CalculatorMVCUpload.payload.response.UserListResponse;
 import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.service.users.KeyManagerService;
+import com.CalculatorMVCUpload.service.users.ShopUsersService;
 import com.CalculatorMVCUpload.service.users.UserManagementService;
 import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.extern.java.Log;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -37,10 +39,10 @@ public class UserController {
     private UserManagementService userManagementService;
 
     @Autowired
-    private RoleEntityRepository roleEntityRepository;
+    private KeyManagerService keyManagerService;
 
     @Autowired
-    private KeyManagerService keyManagerService;
+    private ShopUsersService shopUsersService;
 
     /*@DeleteMapping("/deleteUser")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
@@ -90,44 +92,7 @@ public class UserController {
 
         if (userToEdit != null && userManagementService.isFirstUserCoolerOrEqualThanSecond(roleFromToken,
                 userToEdit.getRoleEntity().getName())) {
-            if (request.getEmail() != null) {
-                if (userService.findByEmail(request.getEmail()) == null) {
-                    userToEdit.setEmail(request.getEmail());
-                } else throw new ExistingLoginEmailRegisterException("This email is already registered");
-            }
-            if (request.getLogin() != null) {
-                if (userService.findByLogin(request.getLogin()) == null) {
-                    userToEdit.setLogin(request.getLogin());
-                } else {
-                    log.severe("Trying to use existing login " + request.getLogin() + " for another user");
-                    throw new ExistingLoginEmailRegisterException("This login is already registered");
-                }
-            }
-            if (request.getFullName() != null) {
-                userToEdit.setFullName(request.getFullName());
-            }
-            if (request.getCompanyName() != null) {
-                userToEdit.setCompanyName(request.getCompanyName());
-            }
-            if (request.getPhoneNumber() != null) {
-                userToEdit.setPhoneNumber(request.getPhoneNumber());
-            }
-            if (request.getAddress() != null) {
-                userToEdit.setAddress(request.getAddress());
-            }
-            if (request.getCertainPlaceAddress() != null) {
-                userToEdit.setCertainPlaceAddress(request.getCertainPlaceAddress());
-            }
-            if (request.getAppAccess() != null) {
-                userToEdit.setAppAccess(request.getAppAccess());
-            }
-            if (request.getNewRole() != null) {
-                RoleEntity userRole = roleEntityRepository.findByName("ROLE_" + request.getNewRole());
-                userToEdit.setRoleEntity(userRole);
-            }
-            if (request.getEnabled() != null) {
-                userToEdit.setEnabled(request.getEnabled());
-            }
+            userManagementService.editUserFields(userToEdit, request);
 
             userService.updateUser(userToEdit);
         } else throw new IncorrectPayloadException("Bad user change request");
@@ -135,12 +100,14 @@ public class UserController {
 
     @PostMapping("/connectUserAndManager")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public void connectUserWithManager(@RequestBody ConnectTwoUsersRequest request) {
+    public String connectUserWithManager(@RequestBody ConnectTwoUsersRequest request) {
         UserEntity manager = userService.findById(request.getUserIdMain());
         UserEntity user = userService.findById(request.getUserIdNonMain());
         if (manager.getRoleEntity().getName().contains("KEYMANAGER")) {
             keyManagerService.connectUserAndManager(manager, user);
+            return "OK";
         }
+        return null;
     }
 
     @GetMapping("/getAllUsersWithoutKeyManagers")
@@ -179,6 +146,59 @@ public class UserController {
             resultList.add(userManagementService.transferSingleUserEntityToUserResponse(entity.getUser()));
         }
         return resultList;
+    }
+
+    @PostMapping("/connectUserAndShop")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public String connectUserWithShop(@RequestBody ConnectTwoUsersRequest request) {
+        UserEntity shop = userService.findById(request.getUserIdMain());
+        UserEntity user = userService.findById(request.getUserIdNonMain());
+        if (shop.getRoleEntity().getName().contains("SHOP")) {
+            shopUsersService.connectShopAndUser(shop, user);
+            return "OK";
+        }
+        return "NOK";
+    }
+
+    @GetMapping("/getMyShopEmployees")
+    @RolesAllowed({"ROLE_SHOP"})
+    public List<UserListResponse> getAllUsersFromMyShop(@RequestHeader(name = "Authorization") String bearer) {
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        int idFromAccessToken = jwtProvider.getIdFromAccessToken(token);
+        List<UserListResponse> resultList = new ArrayList<>();
+        List<ShopAndUsersEntity> shopViaUserId = shopUsersService.getShopLinesViaShopId(idFromAccessToken);
+        for (ShopAndUsersEntity entity : shopViaUserId) {
+            resultList.add(userManagementService.transferSingleUserEntityToUserResponse(entity.getUser()));
+        }
+        return resultList;
+    }
+
+    @PutMapping("/editShopEmployee")
+    @RolesAllowed({"ROLE_SHOP"})
+    public String editShopEmployee(@RequestHeader(name = "Authorization") String bearer,
+                                   @RequestBody UserEditRequest request) {
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        int idFromAccessToken = jwtProvider.getIdFromAccessToken(token);
+        int userIdToEdit = request.getUserId();
+        UserEntity userToEdit = userService.findById(userIdToEdit);
+        if (shopUsersService.getShopViaUserId(userIdToEdit).getShop().getId() == idFromAccessToken
+                && idFromAccessToken != 0) {
+            userManagementService.editUserFields(userToEdit, request);
+            userService.updateUser(userToEdit);
+            return "OK";
+        } else throw new IncorrectPayloadException("Bad user change request");
+    }
+
+    @PostMapping("/blockShop")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public void blockShop(@RequestBody SingleIdRequest request) {
+        int idShopToBlock = request.getSomeId();
+        List<ShopAndUsersEntity> shopLinesViaShopId = shopUsersService.getShopLinesViaShopId(idShopToBlock);
+        List<UserEntity> shopEmployees = shopLinesViaShopId.stream()
+                .map(ShopAndUsersEntity::getUser)
+                .collect(Collectors.toList());
+        shopEmployees.add(shopUsersService.getShopViaUserId(idShopToBlock).getShop());
+        userService.batchUserBlocking(shopEmployees);
     }
 
 }

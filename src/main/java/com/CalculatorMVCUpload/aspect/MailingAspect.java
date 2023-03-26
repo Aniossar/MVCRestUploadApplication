@@ -1,6 +1,7 @@
 package com.CalculatorMVCUpload.aspect;
 
 import com.CalculatorMVCUpload.entity.EmailContext;
+import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
 import com.CalculatorMVCUpload.service.EmailService;
 import lombok.extern.java.Log;
@@ -36,6 +37,22 @@ public class MailingAspect {
             emailContext.setContext(context);
             emailService.sendMail(emailContext);
             log.info("Sent welcome letter to email " + registrationRequest.getEmail());
+        } catch (MessagingException e) {
+            log.severe("Error while sending out email — " + e.getLocalizedMessage());
+        }
+    }
+
+    @AfterReturning("execution(* com.CalculatorMVCUpload.service.users.UserManagementService.editUserFields(..))"
+            + "&&args(userEntity)")
+    public void editUserAdvice(JoinPoint joinPoint, UserEntity userEntity) {
+        try {
+            EmailContext emailContext = new EmailContext();
+            emailContext.setFrom("noreply@koreanika.ru");
+            emailContext.setSubject("Уведомление о изменении данных на портале");
+            emailContext.setTo(userEntity.getEmail());
+            emailContext.setTemplateLocation("notificationUserLetter");
+            emailService.sendMail(emailContext);
+            log.info("Sent notification user letter to email " + userEntity.getEmail());
         } catch (MessagingException e) {
             log.severe("Error while sending out email — " + e.getLocalizedMessage());
         }

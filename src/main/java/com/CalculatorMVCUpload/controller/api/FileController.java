@@ -80,7 +80,7 @@ public class FileController {
         UserEntity userEntity = userService.findByLogin(author);
         uploadedFile.setAuthorId(userEntity.getId());
         uploadedFile.setInfo(info);
-        uploadedFile.setForClients(forClients);
+        uploadedFile.setForClients(uploadFileService.transformForClientsString(forClients).toLowerCase());
         uploadFileService.addNewFile(uploadedFile);
 
         return new UploadFileResponse(fileName, fileDownloadUri,
@@ -141,7 +141,8 @@ public class FileController {
     @GetMapping("/lastFile/{forClients}")
     public UploadedFile getLastUploadedFileForClients(@PathVariable String forClients) {
         UploadedFile lastFileForAll = uploadFileService.getLastFileByForClients(markFileForAll);
-        UploadedFile lastFileForClients = uploadFileService.getLastFileByForClients(forClients);
+        UploadedFile lastFileForClients = uploadFileService
+                .getLastFileByForClients("+" + forClients.toLowerCase() + "+");
         if (lastFileForAll == null) {
             return lastFileForClients;
         } else if (lastFileForClients == null) {
