@@ -90,6 +90,7 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
+
     @GetMapping("/me")
     public MeResponse checkUserAuth(@RequestHeader(name = "Authorization") String bearer) {
         String token = null;

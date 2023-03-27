@@ -36,12 +36,14 @@ public class AuthSecuredController {
     @Autowired
     private JwtProvider jwtProvider;
 
+    @CrossOrigin
     @PostMapping("/refreshToken")
     public ResponseEntity<AuthentificationResponse> getNewRefreshToken(@RequestBody RefreshTokenRequest request) {
         AuthentificationResponse authResponse = authService.getNewRefreshToken(request.getRefreshToken());
         return ResponseEntity.ok(authResponse);
     }
 
+    @CrossOrigin
     @PutMapping("/changeOwnPassword")
     public void changePasswordByUser(@RequestHeader(name = "Authorization") String bearer,
                                      @RequestBody PasswordChangeRequest request) {
@@ -56,6 +58,7 @@ public class AuthSecuredController {
         } else throw new BadAuthException("No user is authorized");
     }
 
+    @CrossOrigin
     @GetMapping("/getUserInfo")
     public UserInfoResponse changePasswordByUser(@RequestHeader(name = "Authorization") String bearer) {
         String token = jwtProvider.getTokenFromBearer(bearer);
@@ -67,6 +70,7 @@ public class AuthSecuredController {
         } else throw new BadAuthException("No user is authorized");
     }
 
+    @CrossOrigin
     @PutMapping("/editOwnInfo")
     public void editMyself(@RequestHeader(name = "Authorization") String bearer,
                            @RequestBody UserEditRequest request) {
