@@ -19,7 +19,7 @@ public interface CalculatorActivityEntityRepository extends JpaRepository<Calcul
             "AND a.material_price >= :materialPriceFrom AND a.material_price <= :materialPriceTo " +
             "AND a.add_price >= :addPriceFrom AND a.add_price <= :addPriceTo " +
             "AND a.all_price >= :allPriceFrom AND a.all_price <= :allPriceTo " +
-            "AND a.materials LIKE :materials", nativeQuery = true)
+            "AND a.materials LIKE :materials and a.type LIKE :type", nativeQuery = true)
     List<CalculatorActivityEntity> selectByFilterFields(@Param("dateFrom") LocalDate dateFrom,
                                                         @Param("dateTo") LocalDate dateTo,
                                                         @Param("companyName") String companyName,
@@ -30,7 +30,8 @@ public interface CalculatorActivityEntityRepository extends JpaRepository<Calcul
                                                         @Param("addPriceTo") Double addPriceTo,
                                                         @Param("allPriceFrom") Double allPriceFrom,
                                                         @Param("allPriceTo") Double allPriceTo,
-                                                        @Param("materials") String materials);
+                                                        @Param("materials") String materials,
+                                                        @Param("type") String type);
 
     @Query(value = "SELECT * FROM users_receipt_summary a " +
             "WHERE a.activity_time > :timeFrom AND a.activity_time < :timeTo " +

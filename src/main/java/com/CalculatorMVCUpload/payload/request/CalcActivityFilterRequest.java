@@ -35,4 +35,5 @@ public class CalcActivityFilterRequest {
 
     private String materials;
 
+    private String type;
 }

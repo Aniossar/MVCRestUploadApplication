@@ -78,7 +78,7 @@ public class CalculatorActivityService {
                 request.getMaterialPriceFrom(), request.getMaterialPriceTo(),
                 request.getAddPriceFrom(), request.getAddPriceTo(),
                 request.getAllPriceFrom(), request.getAllPriceTo(),
-                request.getMaterials());
+                request.getMaterials(), request.getType());
     }
 
     @Transactional
