@@ -27,7 +27,6 @@ public class SystemStatisticsController {
 
     private final String patternFormat = "dd.MM.yyyy hh:mm:ss";
 
-    @CrossOrigin
     @GetMapping("/getApplicationStart")
     public String getApplicationStart() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patternFormat).withZone(ZoneId.systemDefault());
@@ -35,7 +34,6 @@ public class SystemStatisticsController {
         return formattedApplicationStart;
     }
 
-    @CrossOrigin
     @GetMapping("/getApplicationWorkingTime")
     public String getApplicationWorkingTime() {
         Instant timeNow = Instant.now();
@@ -50,7 +48,6 @@ public class SystemStatisticsController {
         return dayStr + hourStr + minutes + " минут " + seconds + " секунд";
     }
 
-    @CrossOrigin
     @PostMapping("/getUserStatistics")
     public StatisticsResponse getUserStatistics(@RequestBody StatisticsRequest statisticsRequest) {
 

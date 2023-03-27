@@ -39,7 +39,6 @@ public class ClaimController {
     @Autowired
     private FileController fileController;
 
-    @CrossOrigin
     @GetMapping("/allClaims")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public List<ClaimEntity> getAllClaims() {
@@ -47,7 +46,6 @@ public class ClaimController {
         return allClaims;
     }
 
-    @CrossOrigin
     @GetMapping("/allNotSolvedClaims")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public List<ClaimEntity> getAllNotSolvedClaims() {
@@ -55,7 +53,6 @@ public class ClaimController {
         return claims;
     }
 
-    @CrossOrigin
     @GetMapping("/getClaim/{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ClaimEntity getClaimViaId(@PathVariable int id) {
@@ -63,7 +60,6 @@ public class ClaimController {
         return claim;
     }
 
-    @CrossOrigin
     @PutMapping("/setResponsibleForClaim/{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void setResponsibleForClaim(@PathVariable int id,
@@ -75,7 +71,6 @@ public class ClaimController {
         claimService.addNewClaim(claim);
     }
 
-    @CrossOrigin
     @GetMapping("/markClaimAsSolved/{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void markClaimAsSolved(@PathVariable int id) {
@@ -86,7 +81,6 @@ public class ClaimController {
         claimService.addNewClaim(claim);
     }
 
-    @CrossOrigin
     @PostMapping("/saveClaim")
     public UploadFileResponse saveClaim(@RequestBody ClaimRequest request,
                                         @RequestHeader(name = "Authorization") String bearer) {
@@ -115,7 +109,6 @@ public class ClaimController {
         return new UploadFileResponse(fileName, fileDownloadUri, null, 0);
     }
 
-    @CrossOrigin
     @GetMapping("/downloadClaim/{fileName:.+}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Resource> downloadClaimController(@PathVariable String fileName, HttpServletRequest request) {
@@ -123,7 +116,6 @@ public class ClaimController {
         return fileController.downloadFile(resource, request);
     }
 
-    @CrossOrigin
     @DeleteMapping("/deleteClaim/{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void deleteClaim(@PathVariable int id) {

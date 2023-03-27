@@ -60,7 +60,6 @@ public class UserController {
         } else throw new IncorrectPayloadException("Bad user change request");
     }*/
 
-    @CrossOrigin
     @GetMapping("/getUser/{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public UserInfoResponse getUser(@PathVariable int id) {
@@ -72,7 +71,6 @@ public class UserController {
         return userInfoResponse;
     }
 
-    @CrossOrigin
     @GetMapping("/getAllUsers")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public List<UserListResponse> getAllUsers() {
@@ -81,7 +79,7 @@ public class UserController {
         return userListResponses;
     }
 
-    @CrossOrigin
+
     @PutMapping("/editUser")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void editUser(@RequestHeader(name = "Authorization") String bearer,
@@ -100,7 +98,6 @@ public class UserController {
         } else throw new IncorrectPayloadException("Bad user change request");
     }
 
-    @CrossOrigin
     @PostMapping("/connectUserAndManager")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public String connectUserWithManager(@RequestBody ConnectTwoUsersRequest request) {
@@ -113,7 +110,6 @@ public class UserController {
         return null;
     }
 
-    @CrossOrigin
     @GetMapping("/getAllUsersWithoutKeyManagers")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public List<UserListResponse> getAllUsersWithoutKeyManagers() {
@@ -139,7 +135,6 @@ public class UserController {
         return resultList;
     }
 
-    @CrossOrigin
     @GetMapping("/getMyUsers")
     @RolesAllowed({"ROLE_KEYMANAGER"})
     public List<UserListResponse> getAllUsersThatHaveThisManager(@RequestHeader(name = "Authorization") String bearer) {
@@ -153,7 +148,6 @@ public class UserController {
         return resultList;
     }
 
-    @CrossOrigin
     @PostMapping("/connectUserAndShop")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public String connectUserWithShop(@RequestBody ConnectTwoUsersRequest request) {
@@ -166,7 +160,6 @@ public class UserController {
         return "NOK";
     }
 
-    @CrossOrigin
     @GetMapping("/getMyShopEmployees")
     @RolesAllowed({"ROLE_SHOP"})
     public List<UserListResponse> getAllUsersFromMyShop(@RequestHeader(name = "Authorization") String bearer) {
@@ -180,7 +173,6 @@ public class UserController {
         return resultList;
     }
 
-    @CrossOrigin
     @PutMapping("/editShopEmployee")
     @RolesAllowed({"ROLE_SHOP"})
     public String editShopEmployee(@RequestHeader(name = "Authorization") String bearer,
@@ -197,7 +189,6 @@ public class UserController {
         } else throw new IncorrectPayloadException("Bad user change request");
     }
 
-    @CrossOrigin
     @PostMapping("/blockShop")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void blockShop(@RequestBody SingleIdRequest request) {

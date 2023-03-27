@@ -37,19 +37,16 @@ public class AppActivityController {
     @Autowired
     private FileController fileController;
 
-    @CrossOrigin
     @GetMapping("/allCalcActivities")
     public List<CalculatorActivityEntity> getAllCalculatorActivities() {
         return calculatorActivityService.getAllActivities();
     }
 
-    @CrossOrigin
     @GetMapping("/allCalcActivitiesByType/{type}")
     public List<CalculatorActivityEntity> getAllCalculatorActivitiesByType(@PathVariable String type) {
         return calculatorActivityService.getActivitiesByType(type);
     }
 
-    @CrossOrigin
     @PostMapping("/saveCalcActivity")
     public String saveCalculatorActivity(@RequestBody CalcActivitySaveRequest request) {
 
@@ -81,14 +78,12 @@ public class AppActivityController {
         }
     }
 
-    @CrossOrigin
     @PostMapping("/calcActivityFilter")
     public List<CalculatorActivityEntity> getActivitiesByFilter(@RequestBody CalcActivityFilterRequest request) {
         CalcActivityFilterRequest filterRequest = calculatorActivityService.manageRequestForFilter(request);
         return calculatorActivityService.getActivitiesByFilter(filterRequest);
     }
 
-    @CrossOrigin
     @PostMapping("/calcActivityFilterFile")
     public ResponseEntity<UploadFileResponse> getActivitiesByFilterToFile(@RequestBody CalcActivityFilterRequest request) {
         CalcActivityFilterRequest filterRequest = calculatorActivityService.manageRequestForFilter(request);
@@ -109,7 +104,6 @@ public class AppActivityController {
         return null;
     }
 
-    @CrossOrigin
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = excelWriterService.loadFileAsResource(fileName);

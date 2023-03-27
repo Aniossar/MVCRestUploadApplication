@@ -43,21 +43,18 @@ public class FileController {
 
     private final String markFileForAll = "all";
 
-    @CrossOrigin
     @GetMapping("/allFiles")
     public List<UploadedFile> getAllFiles() {
         List<UploadedFile> allFiles = uploadFileService.getAllFiles();
         return allFiles;
     }
 
-    @CrossOrigin
     @GetMapping("/getFile/{id}")
     public UploadedFile getFileViaId(@PathVariable int id) {
         UploadedFile uploadedFile = uploadFileService.getFileViaId(id);
         return uploadedFile;
     }
 
-    @CrossOrigin
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file,
                                          @RequestParam("info") String info,
@@ -90,7 +87,6 @@ public class FileController {
                 file.getContentType(), file.getSize());
     }
 
-    @CrossOrigin
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFileController(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = fileStorageService.loadFileAsResource(fileName);
@@ -117,7 +113,6 @@ public class FileController {
     }
 
 
-    @CrossOrigin
     @DeleteMapping("/deleteFile/{id}")
     @RolesAllowed("ROLE_ADMIN")
     public void deleteFile(@PathVariable int id) {
@@ -133,7 +128,6 @@ public class FileController {
         }
     }
 
-    @CrossOrigin
     @GetMapping("/lastFile")
     public UploadedFile getLastUploadedFile() {
         try {
@@ -144,7 +138,6 @@ public class FileController {
         }
     }
 
-    @CrossOrigin
     @GetMapping("/lastFile/{forClients}")
     public UploadedFile getLastUploadedFileForClients(@PathVariable String forClients) {
         UploadedFile lastFileForAll = uploadFileService.getLastFileByForClients(markFileForAll);
@@ -159,7 +152,6 @@ public class FileController {
         }
     }
 
-    @CrossOrigin
     @PostMapping("/editFileInfo/{id}")
     public void editFileInfo(@RequestBody FileInfoChangeRequest request,
                              @PathVariable int id) {

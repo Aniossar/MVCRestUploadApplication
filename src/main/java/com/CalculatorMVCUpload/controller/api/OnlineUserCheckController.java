@@ -5,7 +5,10 @@ import com.CalculatorMVCUpload.entity.users.OnlineUserEntity;
 import com.CalculatorMVCUpload.service.users.OnlineUserService;
 import com.CalculatorMVCUpload.service.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -24,7 +27,7 @@ public class OnlineUserCheckController {
 
     private final long activityPeriodInMinutes = 15;
 
-    @CrossOrigin
+
     @GetMapping("/pingAlive")
     public void pingAliveUser(@RequestHeader(name = "Authorization") String bearer) {
         String token = jwtProvider.getTokenFromBearer(bearer);
@@ -43,7 +46,6 @@ public class OnlineUserCheckController {
         }
     }
 
-    @CrossOrigin
     @GetMapping("/showUserStats")
     public List<OnlineUserEntity> getAllUserOnlineStats(){
         List<OnlineUserEntity> allUsers = onlineUserService.getAllUsers();

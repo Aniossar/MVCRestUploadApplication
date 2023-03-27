@@ -47,19 +47,16 @@ public class PriceListController {
 
     private final String markFileForAll = "ALL";
 
-    @CrossOrigin
     @GetMapping("/allFiles")
     public List<PriceListEntity> getAllPrices() {
         return priceListUploadService.getAllFiles();
     }
 
-    @CrossOrigin
     @GetMapping("/getFile/{id}")
     public PriceListEntity getPricelistViaId(@PathVariable int id) {
         return priceListUploadService.getFileViaId(id);
     }
 
-    @CrossOrigin
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadPriceFile(@RequestParam("file") MultipartFile file,
                                               @RequestParam("info") String info,
@@ -96,14 +93,12 @@ public class PriceListController {
         return null;
     }
 
-    @CrossOrigin
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadPriceFile(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = priceListStorageService.loadPriceFileAsResource(fileName);
         return fileController.downloadFile(resource, request);
     }
 
-    @CrossOrigin
     @DeleteMapping("/deleteFile/{id}")
     @RolesAllowed("ROLE_ADMIN")
     public void deletePriceFile(@PathVariable int id) {
@@ -119,7 +114,6 @@ public class PriceListController {
         }
     }
 
-    @CrossOrigin
     @GetMapping("/lastFile")
     public PriceListEntity getLastUploadedFile() {
         try {
@@ -129,7 +123,6 @@ public class PriceListController {
         }
     }
 
-    @CrossOrigin
     @GetMapping("/lastFile/{forClients}")
     public PriceListEntity getLastPriceListForClients(@PathVariable String forClients) {
         PriceListEntity priceListForAll = priceListUploadService.getLastPriceListByForClients(markFileForAll);
