@@ -47,16 +47,19 @@ public class PriceListController {
 
     private final String markFileForAll = "ALL";
 
+    @CrossOrigin
     @GetMapping("/allFiles")
     public List<PriceListEntity> getAllPrices() {
         return priceListUploadService.getAllFiles();
     }
 
+    @CrossOrigin
     @GetMapping("/getFile/{id}")
     public PriceListEntity getPricelistViaId(@PathVariable int id) {
         return priceListUploadService.getFileViaId(id);
     }
 
+    @CrossOrigin
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadPriceFile(@RequestParam("file") MultipartFile file,
                                               @RequestParam("info") String info,
