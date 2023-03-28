@@ -96,12 +96,14 @@ public class PriceListController {
         return null;
     }
 
+    @CrossOrigin
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadPriceFile(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = priceListStorageService.loadPriceFileAsResource(fileName);
         return fileController.downloadFile(resource, request);
     }
 
+    @CrossOrigin
     @DeleteMapping("/deleteFile/{id}")
     @RolesAllowed("ROLE_ADMIN")
     public void deletePriceFile(@PathVariable int id) {
@@ -117,6 +119,7 @@ public class PriceListController {
         }
     }
 
+    @CrossOrigin
     @GetMapping("/lastFile")
     public PriceListEntity getLastUploadedFile() {
         try {
@@ -126,6 +129,7 @@ public class PriceListController {
         }
     }
 
+    @CrossOrigin
     @GetMapping("/lastFile/{forClients}")
     public PriceListEntity getLastPriceListForClients(@PathVariable String forClients) {
         PriceListEntity priceListForAll = priceListUploadService.getLastPriceListByForClients(markFileForAll);
