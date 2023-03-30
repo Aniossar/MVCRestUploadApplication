@@ -53,6 +53,7 @@ public class AuthController {
     @Autowired
     private JwtProvider jwtProvider;
 
+    @CrossOrigin
     @PostMapping("/register")
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         UserEntity userEntity = new UserEntity();
@@ -78,19 +79,21 @@ public class AuthController {
         return "OK";
     }
 
+    @CrossOrigin
     @PostMapping("/auth")
     public ResponseEntity<AuthentificationResponse> auth(@RequestBody AuthentificationRequest request) {
         AuthentificationResponse authResponse = authService.authenticate(request);
         return ResponseEntity.ok(authResponse);
     }
 
+    @CrossOrigin
     @PostMapping("/token")
     public ResponseEntity<AuthentificationResponse> getNewAccessToken(@RequestBody RefreshTokenRequest request) {
         AuthentificationResponse authResponse = authService.getAccessToken(request.getRefreshToken());
         return ResponseEntity.ok(authResponse);
     }
 
-
+    @CrossOrigin
     @GetMapping("/me")
     public MeResponse checkUserAuth(@RequestHeader(name = "Authorization") String bearer) {
         String token = null;
@@ -107,6 +110,7 @@ public class AuthController {
         } else throw new BadAuthException("No user is authorized");
     }
 
+    @CrossOrigin
     @PostMapping("/forgottenPassword")
     public String situationWithTheForgottenPassword(@RequestBody SingleMessageRequest request) {
         String usersMail = request.getMessage();
@@ -136,6 +140,7 @@ public class AuthController {
         return "NOK";
     }
 
+    @CrossOrigin
     @PutMapping("/resetPassword")
     public void resetPassword(@RequestBody PasswordResetRequest request) {
         int idFromRestoreToken = authService.getIdFromRestoreToken(request.getRestoreToken());

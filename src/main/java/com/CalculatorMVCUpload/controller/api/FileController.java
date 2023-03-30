@@ -168,7 +168,7 @@ public class FileController {
             uploadedFile.setInfo(request.getInfo());
         }
         if (request.getForClients() != null) {
-            uploadedFile.setForClients(request.getForClients());
+            uploadedFile.setForClients(uploadFileService.transformForClientsString(request.getForClients()).toLowerCase());
         }
         uploadFileService.addNewFile(uploadedFile);
     }

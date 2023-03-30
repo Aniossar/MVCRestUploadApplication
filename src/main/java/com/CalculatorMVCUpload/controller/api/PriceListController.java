@@ -152,7 +152,7 @@ public class PriceListController {
             priceListEntity.setInfo(request.getInfo());
         }
         if (request.getForClients() != null) {
-            priceListEntity.setForClients(request.getForClients());
+            priceListEntity.setForClients(uploadFileService.transformForClientsString(request.getForClients()).toLowerCase());
         }
         priceListUploadService.addNewFile(priceListEntity);
     }
