@@ -107,6 +107,27 @@ log:root
 pw: koreanikaPortal76!
 
 
+# DEPLOY
+### On dev folder:
+```mvn clean```
+
+```mvn package```
+
+```docker login```
+
+```docker build -t florence76/koreanikaserverapp .```
+
+```docker image push florence76/koreanikaserverapp```
+
+###Next on server:
+
+```docker compose -f docker-compose_production.yml down```
+
+```docker rmi florence76/koreanikaserverapp:latest```
+
+```docker compose -f docker-compose_production.yml up -d```
+
+
 ##About the filter into calculator event table:
 
 ### GET ALL EVENTS

@@ -65,9 +65,3 @@ services:
 networks:
   postgres:
     driver: bridge
-
-volumes:
-  Upload_prod: null
-  pgadmin: null
-  db_production: null
-  db_prod_backups: null
