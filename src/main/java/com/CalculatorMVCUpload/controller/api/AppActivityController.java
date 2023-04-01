@@ -92,10 +92,14 @@ public class AppActivityController {
                     .getActivitiesByPreliminaryFilter(filterRequest);
             List<CalculatorActivityEntity> resultActivitiesList = new ArrayList<>();
             for (CalculatorActivityEntity entity : activitiesByPreliminaryFilter) {
-                if (filterRequest.getCompanyName().contains(entity.getCompanyName()) &&
-                        filterRequest.getCertainPlaceAddress().contains(entity.getCertainPlaceAddress()) &&
-                        filterRequest.getMaterials().contains(entity.getMaterials()) &&
-                        filterRequest.getType().contains(entity.getType())) {
+                if (calculatorActivityService.addPluses(filterRequest.getCompanyName())
+                        .contains(calculatorActivityService.addPluses(entity.getCompanyName())) &&
+                        calculatorActivityService.addPluses(filterRequest.getCertainPlaceAddress())
+                                .contains(calculatorActivityService.addPluses(entity.getCertainPlaceAddress())) &&
+                        calculatorActivityService.addPluses(filterRequest.getMaterials())
+                                .contains(calculatorActivityService.addPluses(entity.getMaterials())) &&
+                        calculatorActivityService.addPluses(filterRequest.getType())
+                                .contains(calculatorActivityService.addPluses(entity.getType()))) {
                     resultActivitiesList.add(entity);
                 }
             }

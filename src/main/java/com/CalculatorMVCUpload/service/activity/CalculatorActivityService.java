@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class CalculatorActivityService {
@@ -29,6 +30,20 @@ public class CalculatorActivityService {
     public void saveNewCalculatorActivity(CalculatorActivityEntity calculatorActivityEntity) {
         calculatorActivityEntityRepository.saveAndFlush(calculatorActivityEntity);
     }
+
+    public String addPluses(String originalString) {
+        if (!originalString.contains(",")) {
+            return "+" + originalString + "+";
+        }
+        Pattern pattern = Pattern.compile(",");
+        String[] str = pattern.split(originalString);
+        String resultString = "";
+        for (String strElement : str) {
+            resultString = resultString + "+" + strElement + "+";
+        }
+        return resultString;
+    }
+
 
     public CalcActivityFilterRequest manageRequestForFilter(CalcActivityFilterRequest request) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
