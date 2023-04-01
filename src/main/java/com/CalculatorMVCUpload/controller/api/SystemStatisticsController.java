@@ -8,6 +8,9 @@ import com.CalculatorMVCUpload.repository.StatisticsEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +51,27 @@ public class SystemStatisticsController {
         String dayStr = (days != 0) ? days + " дней " : "";
         String hourStr = (hours != 0) ? hours + " часов " : "";
         return dayStr + hourStr + minutes + " минут " + seconds + " секунд";
+    }
+
+    //returns used memory by heap / max memory available for jvm
+    @CrossOrigin
+    @GetMapping("/getMemoryInfo")
+    public String getMemoryInfo() {
+        MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+        double usedMemoryMb = (double) memoryMXBean.getHeapMemoryUsage().getUsed() / 1048576;
+        double maxMemoryMb = (double) memoryMXBean.getHeapMemoryUsage().getMax() / 1048576;
+        return String.format("%.2f MB / %.2f MB", usedMemoryMb, maxMemoryMb);
+    }
+
+    //returns free space available for using / total space
+    @CrossOrigin
+    @GetMapping("/getHDDSpace")
+    public String getHDDSpace() {
+        String volume = "/";
+        File file = new File(volume);
+        double totalSpaceMb = (double) file.getTotalSpace() / 1048576;
+        double usableSpaceMb = (double) file.getUsableSpace() / 1048576;
+        return String.format("%.2f MB / %.2f MB", usableSpaceMb, totalSpaceMb);
     }
 
     @CrossOrigin

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface CalculatorActivityEntityRepository extends JpaRepository<CalculatorActivityEntity, Integer> {
@@ -41,4 +42,18 @@ public interface CalculatorActivityEntityRepository extends JpaRepository<Calcul
                                                        @Param("searchingType") String searchingType);
 
     List<CalculatorActivityEntity> findAllByType(String type);
+
+    @Query(value = "SELECT * FROM users_receipt_summary a " +
+            "WHERE a.activity_time > :dateFrom AND a.activity_time < :dateTo " +
+            "AND a.material_price >= :materialPriceFrom AND a.material_price <= :materialPriceTo " +
+            "AND a.add_price >= :addPriceFrom AND a.add_price <= :addPriceTo " +
+            "AND a.all_price >= :allPriceFrom AND a.all_price <= :allPriceTo ", nativeQuery = true)
+    List<CalculatorActivityEntity> selectByPreliminaryFilter(@Param("dateFrom") LocalDate dateFrom,
+                                                             @Param("dateTo") LocalDate dateTo,
+                                                             @Param("materialPriceFrom") Double materialPriceFrom,
+                                                             @Param("materialPriceTo") Double materialPriceTo,
+                                                             @Param("addPriceFrom") Double addPriceFrom,
+                                                             @Param("addPriceTo") Double addPriceTo,
+                                                             @Param("allPriceFrom") Double allPriceFrom,
+                                                             @Param("allPriceTo") Double allPriceTo);
 }

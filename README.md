@@ -71,7 +71,9 @@ REST Endpoints for logging application activities:
 REST Endpoints for system information:
 1. GET /api/getApplicationStart - get time the app started
 2. GET /api/getApplicationWorkingTime - calculates the period the app is working
-3. POST /api/getUserStatistics - returns statistics of new users, online users and new receipts for day, week and month
+3. GET /api/getMemoryInfo - returns "used memory by heap Mb / max memory available for jvm Mb"
+4. GET /api/getHDDSpace - returns "free space available for using Mb / total space Mb"
+5. POST /api/getUserStatistics - returns statistics of new users, online users and new receipts for day, week and month
 
 REST Endpoint for user online status management:
 1. GET /api/pingAlive - request from client to ping that user is active

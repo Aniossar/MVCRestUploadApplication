@@ -82,6 +82,14 @@ public class CalculatorActivityService {
     }
 
     @Transactional
+    public List<CalculatorActivityEntity> getActivitiesByPreliminaryFilter(CalcActivityFilterRequest request) {
+        return calculatorActivityEntityRepository.selectByPreliminaryFilter(request.getDateFrom(), request.getDateTo(),
+                request.getMaterialPriceFrom(), request.getMaterialPriceTo(),
+                request.getAddPriceFrom(), request.getAddPriceTo(),
+                request.getAllPriceFrom(), request.getAllPriceTo());
+    }
+
+    @Transactional
     public List<CalculatorActivityEntity> getActivitiesByTypeAndTime(Instant startTime, Instant endTime, String type) {
         return calculatorActivityEntityRepository.selectByTypeAndTime(startTime, endTime, type);
     }

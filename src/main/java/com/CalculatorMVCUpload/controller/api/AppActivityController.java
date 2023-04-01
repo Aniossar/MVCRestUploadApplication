@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -85,15 +86,28 @@ public class AppActivityController {
     @PostMapping("/calcActivityFilter")
     public List<CalculatorActivityEntity> getActivitiesByFilter(@RequestBody CalcActivityFilterRequest request) {
         CalcActivityFilterRequest filterRequest = calculatorActivityService.manageRequestForFilter(request);
+        if (filterRequest.getCompanyName().contains(",") || filterRequest.getCertainPlaceAddress().contains(",")
+                || filterRequest.getMaterials().contains(",") || filterRequest.getType().contains(",")) {
+            List<CalculatorActivityEntity> activitiesByPreliminaryFilter = calculatorActivityService
+                    .getActivitiesByPreliminaryFilter(filterRequest);
+            List<CalculatorActivityEntity> resultActivitiesList = new ArrayList<>();
+            for (CalculatorActivityEntity entity : activitiesByPreliminaryFilter) {
+                if (filterRequest.getCompanyName().contains(entity.getCompanyName()) &&
+                        filterRequest.getCertainPlaceAddress().contains(entity.getCertainPlaceAddress()) &&
+                        filterRequest.getMaterials().contains(entity.getMaterials()) &&
+                        filterRequest.getType().contains(entity.getType())) {
+                    resultActivitiesList.add(entity);
+                }
+            }
+            return resultActivitiesList;
+        }
         return calculatorActivityService.getActivitiesByFilter(filterRequest);
     }
 
     @CrossOrigin
     @PostMapping("/calcActivityFilterFile")
     public ResponseEntity<UploadFileResponse> getActivitiesByFilterToFile(@RequestBody CalcActivityFilterRequest request) {
-        CalcActivityFilterRequest filterRequest = calculatorActivityService.manageRequestForFilter(request);
-        List<CalculatorActivityEntity> activitiesByFilter = calculatorActivityService.getActivitiesByFilter(filterRequest);
-
+        List<CalculatorActivityEntity> activitiesByFilter = getActivitiesByFilter(request);
         String fileName = excelWriterService.writeExcelFile(activitiesByFilter);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
