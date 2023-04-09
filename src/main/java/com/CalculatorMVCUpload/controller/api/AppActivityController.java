@@ -74,8 +74,22 @@ public class AppActivityController {
             activityEntity.setSlabs(request.getSlabs());
             activityEntity.setProductSquare(request.getProductSquare());
 
-            calculatorActivityService.saveNewCalculatorActivity(activityEntity);
-            return "OK";
+            List<CalculatorActivityEntity> existingList = calculatorActivityService
+                    .checkExistingActivitiesByMaterialAndPrice(activityEntity.getMaterials(), activityEntity.getAllPrice());
+            int counterNotLastDay = 0;
+            if (existingList.size() != 0) {
+                for (CalculatorActivityEntity existingEntity : existingList) {
+                    long difference = activityEntity.getActivityTime().getEpochSecond()
+                            - existingEntity.getActivityTime().getEpochSecond();
+                    if (difference > 86400) counterNotLastDay++;
+                }
+            }
+            if (existingList.size() == counterNotLastDay) {
+                calculatorActivityService.saveNewCalculatorActivity(activityEntity);
+                return "OK";
+            }
+            return "This line already exists";
+
         } catch (Exception e) {
             log.warning("Failed to deliver calculator activity from " + loginName);
             return "FAIL";

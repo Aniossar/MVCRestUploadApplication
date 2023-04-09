@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public interface CalculatorActivityEntityRepository extends JpaRepository<CalculatorActivityEntity, Integer> {
@@ -56,4 +55,9 @@ public interface CalculatorActivityEntityRepository extends JpaRepository<Calcul
                                                              @Param("addPriceTo") Double addPriceTo,
                                                              @Param("allPriceFrom") Double allPriceFrom,
                                                              @Param("allPriceTo") Double allPriceTo);
+
+    @Query(value = "SELECT * FROM users_receipt_summary a " +
+            "WHERE a.materials LIKE :materials AND a.all_price = :allPrice", nativeQuery = true)
+    List<CalculatorActivityEntity> selectByMaterialsAndAllPrice(@Param("materials") String materials,
+                                                                @Param("allPrice") Double allPrice);
 }

@@ -7,7 +7,7 @@ import com.CalculatorMVCUpload.payload.request.ClaimRequest;
 import com.CalculatorMVCUpload.payload.request.SingleIdRequest;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.ClaimService;
-import com.CalculatorMVCUpload.service.TxtWriterService;
+import com.CalculatorMVCUpload.service.files.TxtWriterService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;

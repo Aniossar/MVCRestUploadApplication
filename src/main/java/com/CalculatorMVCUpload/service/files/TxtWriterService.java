@@ -1,24 +1,21 @@
-package com.CalculatorMVCUpload.service;
+package com.CalculatorMVCUpload.service.files;
 
-import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
+import com.CalculatorMVCUpload.service.GeneralFileService;
 import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
@@ -28,6 +25,9 @@ public class TxtWriterService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GeneralFileService generalFileService;
 
     private Path fileStorageLocation;
 
@@ -73,17 +73,7 @@ public class TxtWriterService {
     }
 
     public Resource loadFileAsResource(String fileName) {
-        try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) {
-                return resource;
-            } else {
-                throw new FileNotFoundException("File not found " + fileName);
-            }
-        } catch (MalformedURLException ex) {
-            throw new FileNotFoundException("File not found " + fileName, ex);
-        }
+        return generalFileService.loadFileAsResource(this.fileStorageLocation, fileName);
     }
 
 }

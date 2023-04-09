@@ -75,6 +75,10 @@ REST Endpoints for system information:
 4. GET /api/getHDDSpace - returns "free space available for using Mb / total space Mb"
 5. POST /api/getUserStatistics - returns statistics of new users, online users and new receipts for day, week and month
 
+REST Endpoints for clients distributive:
+1. GET /api/client/getAllFiles - get all files from directory /Clients/
+2. GET /api/client/downloadClient/{fileName} - download file with {fileName} 
+
 REST Endpoint for user online status management:
 1. GET /api/pingAlive - request from client to ping that user is active
 2. GET /api/showUserStats - get all active users for the last N minutes

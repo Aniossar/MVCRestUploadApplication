@@ -4,6 +4,7 @@ import com.CalculatorMVCUpload.exception.BadNamingException;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
+import com.CalculatorMVCUpload.service.GeneralFileService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -23,6 +24,9 @@ import java.nio.file.StandardCopyOption;
 @Service
 @Log
 public class FileStorageService {
+
+    @Autowired
+    private GeneralFileService generalFileService;
 
     private final String fileNamePrefix = "KPD_";
     private final String fileNameSuffix = "zip";
@@ -55,8 +59,8 @@ public class FileStorageService {
                 throw new BadNamingException("Filename contains invalid path sequence " + fileName);
             }
 
-            if (!fileName.substring(0,4).equals(fileNamePrefix)||
-                    !fileName.substring(fileName.length()-3).equals(fileNameSuffix)){
+            if (!fileName.substring(0, 4).equals(fileNamePrefix) ||
+                    !fileName.substring(fileName.length() - 3).equals(fileNameSuffix)) {
                 throw new BadNamingException("Filename should be like 'KPD_*.zip'. Rename the file " + fileName);
             }
 
@@ -72,16 +76,6 @@ public class FileStorageService {
     }
 
     public Resource loadFileAsResource(String fileName) {
-        try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) {
-                return resource;
-            } else {
-                throw new FileNotFoundException("File not found " + fileName);
-            }
-        } catch (MalformedURLException ex) {
-            throw new FileNotFoundException("File not found " + fileName, ex);
-        }
+        return generalFileService.loadFileAsResource(this.fileStorageLocation, fileName);
     }
 }

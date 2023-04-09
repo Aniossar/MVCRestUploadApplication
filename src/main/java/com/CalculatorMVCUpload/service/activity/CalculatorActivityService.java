@@ -113,4 +113,9 @@ public class CalculatorActivityService {
     public List<CalculatorActivityEntity> getActivitiesByType(String type) {
         return calculatorActivityEntityRepository.findAllByType(type);
     }
+
+    @Transactional
+    public List<CalculatorActivityEntity> checkExistingActivitiesByMaterialAndPrice(String materials, Double allPrice) {
+        return calculatorActivityEntityRepository.selectByMaterialsAndAllPrice(materials, allPrice);
+    }
 }

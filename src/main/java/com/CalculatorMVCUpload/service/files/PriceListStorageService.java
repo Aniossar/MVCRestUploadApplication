@@ -4,6 +4,7 @@ import com.CalculatorMVCUpload.exception.BadNamingException;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
+import com.CalculatorMVCUpload.service.GeneralFileService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -27,6 +28,9 @@ import java.time.format.DateTimeFormatter;
 @Log
 public class PriceListStorageService {
 
+    @Autowired
+    private GeneralFileService generalFileService;
+
     private final String fileNamePrefix = "KPR_";
     private final String fileNameSuffixA = "xls";
     private final String fileNameSuffixB = "lsx";
@@ -47,7 +51,7 @@ public class PriceListStorageService {
             Files.createDirectories(this.fileStorageLocation);
             log.info("Price lists will be stored in directory: " + fileStorageLocation.toAbsolutePath().normalize());
         } catch (Exception ex) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+            throw new FileStorageException("Could not create the directory where the pricelist files will be stored.", ex);
         }
     }
 
@@ -84,16 +88,6 @@ public class PriceListStorageService {
     }
 
     public Resource loadPriceFileAsResource(String fileName) {
-        try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) {
-                return resource;
-            } else {
-                throw new FileNotFoundException("File not found " + fileName);
-            }
-        } catch (MalformedURLException ex) {
-            throw new FileNotFoundException("File not found " + fileName, ex);
-        }
+        return generalFileService.loadFileAsResource(this.fileStorageLocation, fileName);
     }
 }
