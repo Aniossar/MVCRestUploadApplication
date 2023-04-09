@@ -4,6 +4,7 @@ import com.CalculatorMVCUpload.entity.CalculatorActivityEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.payload.request.CalcActivityFilterRequest;
 import com.CalculatorMVCUpload.payload.request.CalcActivitySaveRequest;
+import com.CalculatorMVCUpload.payload.response.CalculatorActivityResponse;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.ExcelWriterService;
 import com.CalculatorMVCUpload.service.activity.CalculatorActivityService;
@@ -40,8 +41,28 @@ public class AppActivityController {
 
     @CrossOrigin
     @GetMapping("/allCalcActivities")
-    public List<CalculatorActivityEntity> getAllCalculatorActivities() {
-        return calculatorActivityService.getAllActivities();
+    public List<CalculatorActivityResponse> getAllCalculatorActivities() {
+        List<CalculatorActivityResponse> activityResponses = new ArrayList<>();
+        List<CalculatorActivityEntity> allActivities = calculatorActivityService.getAllActivities();
+        allActivities.forEach(activityEntity -> {
+            CalculatorActivityResponse response = new CalculatorActivityResponse();
+            response.setActivityTime(activityEntity.getActivityTime());
+            response.setUserId(activityEntity.getUserId());
+            response.setUserLogin(userService.findById(activityEntity.getUserId()).getLogin());
+            response.setCompanyName(activityEntity.getCompanyName());
+            response.setCertainPlaceAddress(activityEntity.getCertainPlaceAddress());
+            response.setType(activityEntity.getType());
+            response.setMaterials(activityEntity.getMaterials());
+            response.setMaterialPrice(activityEntity.getMaterialPrice());
+            response.setAddPrice(activityEntity.getAddPrice());
+            response.setAllPrice(activityEntity.getAllPrice());
+            response.setMainCoeff(activityEntity.getMainCoeff());
+            response.setMaterialCoeff(activityEntity.getMaterialCoeff());
+            response.setSlabs(activityEntity.getSlabs());
+            response.setProductSquare(activityEntity.getProductSquare());
+            activityResponses.add(response);
+        });
+        return activityResponses;
     }
 
     @CrossOrigin
