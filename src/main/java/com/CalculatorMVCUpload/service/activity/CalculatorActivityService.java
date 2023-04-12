@@ -83,6 +83,10 @@ public class CalculatorActivityService {
             request.setMaterials("%%");
         } else request.setMaterials("%" + request.getMaterials() + "%");
 
+        if (request.getType() == null) {
+            request.setType("%%");
+        } else request.setType("%" + request.getType() + "%");
+
         return request;
     }
 
