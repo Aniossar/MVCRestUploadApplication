@@ -68,7 +68,9 @@ public class UploadFileService {
         while (matcher.find()) {
             result += forClientsFromDb.substring(matcher.start(), matcher.end()) + ",";
         }
-        result = result.substring(0, result.length() - 1);
+        if (result.length() > 0) {
+            result = result.substring(0, result.length() - 1);
+        }
         return result;
     }
 }
