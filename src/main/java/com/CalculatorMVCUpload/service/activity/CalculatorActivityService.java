@@ -2,7 +2,9 @@ package com.CalculatorMVCUpload.service.activity;
 
 import com.CalculatorMVCUpload.entity.CalculatorActivityEntity;
 import com.CalculatorMVCUpload.payload.request.CalcActivityFilterRequest;
+import com.CalculatorMVCUpload.payload.response.CalculatorActivityResponse;
 import com.CalculatorMVCUpload.repository.CalculatorActivityEntityRepository;
+import com.CalculatorMVCUpload.service.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,9 @@ public class CalculatorActivityService {
 
     @Autowired
     private CalculatorActivityEntityRepository calculatorActivityEntityRepository;
+
+    @Autowired
+    private UserService userService;
 
     private final String datePattern = "yyyy-MM-dd";
 
@@ -121,5 +126,24 @@ public class CalculatorActivityService {
     @Transactional
     public List<CalculatorActivityEntity> checkExistingActivitiesByMaterialAndPrice(String materials, Double allPrice) {
         return calculatorActivityEntityRepository.selectByMaterialsAndAllPrice(materials, allPrice);
+    }
+
+    public CalculatorActivityResponse transformEntityToResponse(CalculatorActivityEntity activityEntity) {
+        CalculatorActivityResponse response = new CalculatorActivityResponse();
+        response.setActivityTime(activityEntity.getActivityTime());
+        response.setUserId(activityEntity.getUserId());
+        response.setUserLogin(userService.findById(activityEntity.getUserId()).getLogin());
+        response.setCompanyName(activityEntity.getCompanyName());
+        response.setCertainPlaceAddress(activityEntity.getCertainPlaceAddress());
+        response.setType(activityEntity.getType());
+        response.setMaterials(activityEntity.getMaterials());
+        response.setMaterialPrice(activityEntity.getMaterialPrice());
+        response.setAddPrice(activityEntity.getAddPrice());
+        response.setAllPrice(activityEntity.getAllPrice());
+        response.setMainCoeff(activityEntity.getMainCoeff());
+        response.setMaterialCoeff(activityEntity.getMaterialCoeff());
+        response.setSlabs(activityEntity.getSlabs());
+        response.setProductSquare(activityEntity.getProductSquare());
+        return response;
     }
 }

@@ -3,6 +3,7 @@ package com.CalculatorMVCUpload.service;
 import com.CalculatorMVCUpload.entity.CalculatorActivityEntity;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.exception.FileStorageException;
+import com.CalculatorMVCUpload.payload.response.CalculatorActivityResponse;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
 import lombok.extern.java.Log;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -47,7 +48,7 @@ public class ExcelWriterService {
         }
     }
 
-    public String writeExcelFile(List<CalculatorActivityEntity> list) {
+    public String writeExcelFile(List<CalculatorActivityResponse> list) {
         XSSFWorkbook workbook = writeFilteredCalculatorService(list);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss");
@@ -67,7 +68,7 @@ public class ExcelWriterService {
         return null;
     }
 
-    public XSSFWorkbook writeFilteredCalculatorService(List<CalculatorActivityEntity> list) {
+    public XSSFWorkbook writeFilteredCalculatorService(List<CalculatorActivityResponse> list) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet1");
 
@@ -82,22 +83,22 @@ public class ExcelWriterService {
             column++;
         }
         int rowNum = 1;
-        for (CalculatorActivityEntity activity : list) {
+        for (CalculatorActivityResponse activity : list) {
             XSSFRow row = sheet.createRow(rowNum);
-            row.createCell(0).setCellValue(activity.getId());
-            row.createCell(1).setCellValue(activity.getActivityTime().toString());
-            row.createCell(2).setCellValue(activity.getUserId());
-            row.createCell(4).setCellValue(activity.getCompanyName());
-            row.createCell(5).setCellValue(activity.getCertainPlaceAddress());
-            row.createCell(6).setCellValue(activity.getType());
-            row.createCell(7).setCellValue(activity.getMaterials());
-            row.createCell(8).setCellValue(activity.getMaterialPrice());
-            row.createCell(9).setCellValue(activity.getAddPrice());
-            row.createCell(10).setCellValue(activity.getAllPrice());
-            row.createCell(11).setCellValue(activity.getMainCoeff());
-            row.createCell(12).setCellValue(activity.getMaterialCoeff());
-            row.createCell(13).setCellValue(activity.getSlabs());
-            row.createCell(14).setCellValue(activity.getProductSquare());
+            row.createCell(0).setCellValue(activity.getActivityTime().toString());
+            row.createCell(1).setCellValue(activity.getUserId());
+            row.createCell(2).setCellValue(activity.getUserLogin());
+            row.createCell(3).setCellValue(activity.getCompanyName());
+            row.createCell(4).setCellValue(activity.getCertainPlaceAddress());
+            row.createCell(5).setCellValue(activity.getType());
+            row.createCell(6).setCellValue(activity.getMaterials());
+            row.createCell(7).setCellValue(activity.getMaterialPrice());
+            row.createCell(8).setCellValue(activity.getAddPrice());
+            row.createCell(9).setCellValue(activity.getAllPrice());
+            row.createCell(10).setCellValue(activity.getMainCoeff());
+            row.createCell(11).setCellValue(activity.getMaterialCoeff());
+            row.createCell(12).setCellValue(activity.getSlabs());
+            row.createCell(13).setCellValue(activity.getProductSquare());
             rowNum++;
         }
         return workbook;

@@ -45,22 +45,7 @@ public class AppActivityController {
         List<CalculatorActivityResponse> activityResponses = new ArrayList<>();
         List<CalculatorActivityEntity> allActivities = calculatorActivityService.getAllActivities();
         allActivities.forEach(activityEntity -> {
-            CalculatorActivityResponse response = new CalculatorActivityResponse();
-            response.setActivityTime(activityEntity.getActivityTime());
-            response.setUserId(activityEntity.getUserId());
-            response.setUserLogin(userService.findById(activityEntity.getUserId()).getLogin());
-            response.setCompanyName(activityEntity.getCompanyName());
-            response.setCertainPlaceAddress(activityEntity.getCertainPlaceAddress());
-            response.setType(activityEntity.getType());
-            response.setMaterials(activityEntity.getMaterials());
-            response.setMaterialPrice(activityEntity.getMaterialPrice());
-            response.setAddPrice(activityEntity.getAddPrice());
-            response.setAllPrice(activityEntity.getAllPrice());
-            response.setMainCoeff(activityEntity.getMainCoeff());
-            response.setMaterialCoeff(activityEntity.getMaterialCoeff());
-            response.setSlabs(activityEntity.getSlabs());
-            response.setProductSquare(activityEntity.getProductSquare());
-            activityResponses.add(response);
+            activityResponses.add(calculatorActivityService.transformEntityToResponse(activityEntity));
         });
         return activityResponses;
     }
@@ -119,13 +104,13 @@ public class AppActivityController {
 
     @CrossOrigin
     @PostMapping("/calcActivityFilter")
-    public List<CalculatorActivityEntity> getActivitiesByFilter(@RequestBody CalcActivityFilterRequest request) {
+    public List<CalculatorActivityResponse> getActivitiesByFilter(@RequestBody CalcActivityFilterRequest request) {
         CalcActivityFilterRequest filterRequest = calculatorActivityService.manageRequestForFilter(request);
         if (filterRequest.getCompanyName().contains(",") || filterRequest.getCertainPlaceAddress().contains(",")
                 || filterRequest.getMaterials().contains(",") || filterRequest.getType().contains(",")) {
             List<CalculatorActivityEntity> activitiesByPreliminaryFilter = calculatorActivityService
                     .getActivitiesByPreliminaryFilter(filterRequest);
-            List<CalculatorActivityEntity> resultActivitiesList = new ArrayList<>();
+            List<CalculatorActivityResponse> resultActivitiesList = new ArrayList<>();
             for (CalculatorActivityEntity entity : activitiesByPreliminaryFilter) {
                 if (calculatorActivityService.addPluses(filterRequest.getCompanyName())
                         .contains(calculatorActivityService.addPluses(entity.getCompanyName())) &&
@@ -135,18 +120,23 @@ public class AppActivityController {
                                 .contains(calculatorActivityService.addPluses(entity.getMaterials())) &&
                         calculatorActivityService.addPluses(filterRequest.getType())
                                 .contains(calculatorActivityService.addPluses(entity.getType()))) {
-                    resultActivitiesList.add(entity);
+                    resultActivitiesList.add(calculatorActivityService.transformEntityToResponse(entity));
                 }
             }
             return resultActivitiesList;
         }
-        return calculatorActivityService.getActivitiesByFilter(filterRequest);
+        List<CalculatorActivityResponse> activityResponses = new ArrayList<>();
+        List<CalculatorActivityEntity> activitiesByFilter = calculatorActivityService.getActivitiesByFilter(filterRequest);
+        activitiesByFilter.forEach(activityEntity -> {
+            activityResponses.add(calculatorActivityService.transformEntityToResponse(activityEntity));
+        });
+        return activityResponses;
     }
 
     @CrossOrigin
     @PostMapping("/calcActivityFilterFile")
     public ResponseEntity<UploadFileResponse> getActivitiesByFilterToFile(@RequestBody CalcActivityFilterRequest request) {
-        List<CalculatorActivityEntity> activitiesByFilter = getActivitiesByFilter(request);
+        List<CalculatorActivityResponse> activitiesByFilter = getActivitiesByFilter(request);
         String fileName = excelWriterService.writeExcelFile(activitiesByFilter);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
