@@ -146,4 +146,5 @@ public class CalculatorActivityService {
         response.setProductSquare(activityEntity.getProductSquare());
         return response;
     }
+
 }

@@ -50,13 +50,19 @@ public class PriceListController {
     @CrossOrigin
     @GetMapping("/allFiles")
     public List<PriceListEntity> getAllPrices() {
-        return priceListUploadService.getAllFiles();
+        List<PriceListEntity> allFiles = priceListUploadService.getAllFiles();
+        allFiles.forEach(file -> {
+            file.setForClients(uploadFileService.transformForClientsOutput(file.getForClients()));
+        });
+        return allFiles;
     }
 
     @CrossOrigin
     @GetMapping("/getFile/{id}")
     public PriceListEntity getPricelistViaId(@PathVariable int id) {
-        return priceListUploadService.getFileViaId(id);
+        PriceListEntity fileViaId = priceListUploadService.getFileViaId(id);
+        fileViaId.setForClients(uploadFileService.transformForClientsOutput(fileViaId.getForClients()));
+        return fileViaId;
     }
 
     @CrossOrigin
@@ -123,7 +129,9 @@ public class PriceListController {
     @GetMapping("/lastFile")
     public PriceListEntity getLastUploadedFile() {
         try {
-            return priceListUploadService.getLastFile();
+            PriceListEntity lastFile = priceListUploadService.getLastFile();
+            lastFile.setForClients(uploadFileService.transformForClientsOutput(lastFile.getForClients()));
+            return lastFile;
         } catch (Exception e) {
             throw new FileNotFoundException("No price files uploaded");
         }
@@ -135,6 +143,8 @@ public class PriceListController {
         PriceListEntity priceListForAll = priceListUploadService.getLastPriceListByForClients(markFileForAll);
         PriceListEntity priceListForClients = priceListUploadService
                 .getLastPriceListByForClients("+" + forClients.toLowerCase() + "+");
+        priceListForAll.setForClients(uploadFileService.transformForClientsOutput(priceListForAll.getForClients()));
+        priceListForClients.setForClients(uploadFileService.transformForClientsOutput(priceListForClients.getForClients()));
         if (priceListForAll == null) {
             return priceListForClients;
         } else if (priceListForClients == null) {

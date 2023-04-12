@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
@@ -58,5 +59,16 @@ public class UploadFileService {
             newForClients = newForClients + "+" + strElement + "+";
         }
         return newForClients;
+    }
+
+    public String transformForClientsOutput(String forClientsFromDb) {
+        String result = "";
+        Pattern pattern = Pattern.compile("[a-zA-Z]+");
+        Matcher matcher = pattern.matcher(forClientsFromDb);
+        while (matcher.find()) {
+            result += forClientsFromDb.substring(matcher.start(), matcher.end()) + ",";
+        }
+        result = result.substring(0, result.length() - 1);
+        return result;
     }
 }

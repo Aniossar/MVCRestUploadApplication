@@ -47,6 +47,9 @@ public class FileController {
     @GetMapping("/allFiles")
     public List<UploadedFile> getAllFiles() {
         List<UploadedFile> allFiles = uploadFileService.getAllFiles();
+        allFiles.forEach(file -> {
+            file.setForClients(uploadFileService.transformForClientsOutput(file.getForClients()));
+        });
         return allFiles;
     }
 
@@ -54,6 +57,7 @@ public class FileController {
     @GetMapping("/getFile/{id}")
     public UploadedFile getFileViaId(@PathVariable int id) {
         UploadedFile uploadedFile = uploadFileService.getFileViaId(id);
+        uploadedFile.setForClients(uploadFileService.transformForClientsOutput(uploadedFile.getForClients()));
         return uploadedFile;
     }
 
@@ -138,6 +142,7 @@ public class FileController {
     public UploadedFile getLastUploadedFile() {
         try {
             UploadedFile lastFile = uploadFileService.getLastFile();
+            lastFile.setForClients(uploadFileService.transformForClientsOutput(lastFile.getForClients()));
             return lastFile;
         } catch (Exception e) {
             throw new FileNotFoundException("No files uploaded");
@@ -150,6 +155,8 @@ public class FileController {
         UploadedFile lastFileForAll = uploadFileService.getLastFileByForClients(markFileForAll);
         UploadedFile lastFileForClients = uploadFileService
                 .getLastFileByForClients("+" + forClients.toLowerCase() + "+");
+        lastFileForAll.setForClients(uploadFileService.transformForClientsOutput(lastFileForAll.getForClients()));
+        lastFileForClients.setForClients(uploadFileService.transformForClientsOutput(lastFileForClients.getForClients()));
         if (lastFileForAll == null) {
             return lastFileForClients;
         } else if (lastFileForClients == null) {
