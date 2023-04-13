@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.HashMap;
@@ -117,7 +118,8 @@ public class AuthController {
         UserEntity userEntity = userService.findByEmail(usersMail);
         if (userEntity != null) {
             String restoringToken = authService.generateRestoringPasswordToken(userEntity.getId());
-            String contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+//            String contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+            String contextPath = servletRequest.getServerName();
             String restorePasswordUrl = contextPath + "/changePassword?token=" + restoringToken;
             try {
                 EmailContext emailContext = new EmailContext();
@@ -152,5 +154,13 @@ public class AuthController {
             } else throw new WrongPasswordUserMovesException("Wrong old password");
         }
         throw new BadAuthException("Need authorization");
+    }
+
+    @Autowired
+    ServletRequest servletRequest;
+
+    @GetMapping("/server")
+    public String getServer() {
+        return servletRequest.getServerName();
     }
 }
