@@ -155,8 +155,7 @@ public class AuthController {
                 userEntity.setPassword(request.getNewPassword());
                 userService.updateUserPassword(userEntity);
             } else throw new WrongPasswordUserMovesException("Wrong old password");
-        }
-        throw new BadAuthException("Need authorization");
+        } else throw new BadAuthException("Need authorization");
     }
 
 }
