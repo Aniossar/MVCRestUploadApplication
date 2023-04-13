@@ -20,6 +20,7 @@ import com.CalculatorMVCUpload.service.users.UserService;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -53,6 +54,9 @@ public class AuthController {
 
     @Autowired
     private JwtProvider jwtProvider;
+
+    @Value("${server.actual.address}")
+    private String productionContextPath;
 
     @CrossOrigin
     @PostMapping("/register")
@@ -119,8 +123,7 @@ public class AuthController {
         if (userEntity != null) {
             String restoringToken = authService.generateRestoringPasswordToken(userEntity.getId());
 //            String contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-            String contextPath = servletRequest.getServerName();
-            String restorePasswordUrl = contextPath + "/changePassword?token=" + restoringToken;
+            String restorePasswordUrl = productionContextPath + "/changePassword?token=" + restoringToken;
             try {
                 EmailContext emailContext = new EmailContext();
                 emailContext.setFrom("noreply@koreanika.ru");
@@ -156,11 +159,4 @@ public class AuthController {
         throw new BadAuthException("Need authorization");
     }
 
-    @Autowired
-    ServletRequest servletRequest;
-
-    @GetMapping("/server")
-    public String getServer() {
-        return servletRequest.getServerName();
-    }
 }
