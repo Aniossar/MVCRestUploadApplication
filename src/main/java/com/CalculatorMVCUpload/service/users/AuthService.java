@@ -2,6 +2,7 @@ package com.CalculatorMVCUpload.service.users;
 
 import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.PasswordResetToken;
+import com.CalculatorMVCUpload.entity.users.RefreshTokenEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.BadAuthException;
 import com.CalculatorMVCUpload.payload.request.users.AuthentificationRequest;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Log
@@ -27,6 +25,9 @@ public class AuthService {
 
     @Autowired
     private JwtProvider jwtProvider;
+
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     private final Map<String, ArrayList<String>> refreshStorage = new HashMap<>();
     private Map<String, PasswordResetToken> restoringPasswordTokensStorage = new HashMap<>();
@@ -42,20 +43,15 @@ public class AuthService {
                 String accessToken = jwtProvider.generateAccessToken
                         (userEntity.getLogin(), userEntity.getId(), userEntity.getRoleEntity());
                 String refreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin(), userEntity.getId());
-                ArrayList<String> refreshTokens = refreshStorage.get(userEntity.getLogin());
-
-                if (refreshTokens != null) {
-                    if (refreshTokens.size() < numberOfConcurrentSessions) {
-                        refreshTokens.add(refreshToken);
-                    } else {
-                        refreshTokens = new ArrayList<>();
-                        refreshTokens.add(refreshToken);
-                    }
-                } else {
-                    refreshTokens = new ArrayList<>();
-                    refreshTokens.add(refreshToken);
+                List<RefreshTokenEntity> allUserRefreshTokens = refreshTokenService.getAllUserRefreshTokens(userEntity.getId());
+                if (allUserRefreshTokens != null && allUserRefreshTokens.size() >= numberOfConcurrentSessions) {
+                    RefreshTokenEntity oldestToken = refreshTokenService.getOldestToken(allUserRefreshTokens);
+                    refreshTokenService.deleteRefreshToken(oldestToken);
                 }
-                refreshStorage.put(userEntity.getLogin(), refreshTokens);
+                RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity();
+                refreshTokenEntity.setRefreshToken(refreshToken);
+                refreshTokenEntity.setUserId(userEntity.getId());
+                refreshTokenService.saveRefreshToken(refreshTokenEntity);
                 return new AuthentificationResponse(accessToken, refreshToken);
             }
         } catch (NullPointerException nullPointerException) {
@@ -68,9 +64,8 @@ public class AuthService {
     public AuthentificationResponse getAccessToken(String refreshToken) {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             int idFromRefreshToken = jwtProvider.getIdFromRefreshToken(refreshToken);
-            String login = jwtProvider.getLoginFromRefreshToken(refreshToken);
-            ArrayList<String> savedRefreshTokens = refreshStorage.get(login);
-            if (savedRefreshTokens != null && savedRefreshTokens.contains(refreshToken)) {
+            List<RefreshTokenEntity> savedRefreshTokens = refreshTokenService.getAllUserRefreshTokens(idFromRefreshToken);
+            if (savedRefreshTokens != null && refreshTokenService.containsToken(savedRefreshTokens, refreshToken)) {
                 UserEntity userEntity = userService.findById(idFromRefreshToken);
                 if (userEntity.isEnabled()) {
                     String accessToken = jwtProvider.generateAccessToken
@@ -85,17 +80,18 @@ public class AuthService {
     public AuthentificationResponse getNewRefreshToken(String refreshToken) {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             int idFromRefreshToken = jwtProvider.getIdFromRefreshToken(refreshToken);
-            String login = jwtProvider.getLoginFromRefreshToken(refreshToken);
-            ArrayList<String> savedRefreshTokens = refreshStorage.get(login);
-            if (savedRefreshTokens != null && savedRefreshTokens.contains(refreshToken)) {
+            List<RefreshTokenEntity> savedRefreshTokens = refreshTokenService.getAllUserRefreshTokens(idFromRefreshToken);
+            if (savedRefreshTokens != null && refreshTokenService.containsToken(savedRefreshTokens, refreshToken)) {
                 UserEntity userEntity = userService.findById(idFromRefreshToken);
                 String accessToken = jwtProvider.generateAccessToken
                         (userEntity.getLogin(), userEntity.getId(), userEntity.getRoleEntity());
                 String newRefreshToken = jwtProvider.generateRefreshToken(userEntity.getLogin(), userEntity.getId());
-                ArrayList<String> newSavedRefreshTokens = savedRefreshTokens;
-                newSavedRefreshTokens.remove(savedRefreshTokens.indexOf(refreshToken));
-                newSavedRefreshTokens.add(newRefreshToken);
-                refreshStorage.put(userEntity.getLogin(), newSavedRefreshTokens);
+                RefreshTokenEntity tokenEntityViaToken = refreshTokenService.getTokenEntityViaToken(refreshToken);
+                refreshTokenService.deleteRefreshToken(tokenEntityViaToken);
+                RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity();
+                refreshTokenEntity.setRefreshToken(newRefreshToken);
+                refreshTokenEntity.setUserId(userEntity.getId());
+                refreshTokenService.saveRefreshToken(refreshTokenEntity);
                 return new AuthentificationResponse(accessToken, newRefreshToken);
             }
         }
@@ -138,4 +134,5 @@ public class AuthService {
         }
         return -1;
     }
+
 }

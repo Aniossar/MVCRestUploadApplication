@@ -1,13 +1,24 @@
 package com.CalculatorMVCUpload.entity.users;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "user_refresh_table")
+@Proxy(lazy = false)
+@Getter
+@Setter
+@NoArgsConstructor
 public class RefreshTokenEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @Column(name = "user_id")
     private int userId;
