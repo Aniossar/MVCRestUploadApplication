@@ -92,22 +92,24 @@ public class SystemStatisticsController {
         int newReceiptsCounter = 0;
         int usersOnlineCounter = 0;
         int newUsersCounter = 0;
+        int counterNotNull = 0;
         List<Integer> newReceiptsArray = new ArrayList<>();
         List<Integer> usersOnlineArray = new ArrayList<>();
         List<Integer> newUsersArray = new ArrayList<>();
 
         for (int i = 0; i < statisticsEntityList.size(); i++) {
-            if ((i + 1) % tPeriod != 0) {
-                newReceiptsCounter += statisticsEntityList.get(i).getNewReceipts();
-                usersOnlineCounter += statisticsEntityList.get(i).getUsersOnline();
-                newUsersCounter += statisticsEntityList.get(i).getNewUsers();
-            } else {
-                newReceiptsArray.add((int) Math.ceil((float) newReceiptsCounter / tPeriod));
-                usersOnlineArray.add((int) Math.ceil((float) usersOnlineCounter / tPeriod));
-                newUsersArray.add((int) Math.ceil((float) newUsersCounter / tPeriod));
+            newReceiptsCounter += statisticsEntityList.get(i).getNewReceipts();
+            usersOnlineCounter += statisticsEntityList.get(i).getUsersOnline();
+            if (statisticsEntityList.get(i).getUsersOnline() != 0) counterNotNull++;
+            newUsersCounter += statisticsEntityList.get(i).getNewUsers();
+            if ((i + 1) % tPeriod == 0) {
+                newReceiptsArray.add(newReceiptsCounter);
+                usersOnlineArray.add((int) Math.ceil((float) usersOnlineCounter / counterNotNull));
+                newUsersArray.add(newUsersCounter);
                 newReceiptsCounter = 0;
                 usersOnlineCounter = 0;
                 newUsersCounter = 0;
+                counterNotNull = 0;
             }
         }
 
