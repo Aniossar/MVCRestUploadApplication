@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/client")
+@RequestMapping("/client")
 public class ClientDownloadController {
 
     @Autowired
