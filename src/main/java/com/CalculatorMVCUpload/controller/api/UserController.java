@@ -174,8 +174,10 @@ public class UserController {
         int idFromAccessToken = jwtProvider.getIdFromAccessToken(token);
         List<UserListResponse> resultList = new ArrayList<>();
         List<ShopAndUsersEntity> shopViaUserId = shopUsersService.getShopLinesViaShopId(idFromAccessToken);
-        for (ShopAndUsersEntity entity : shopViaUserId) {
-            resultList.add(userManagementService.transferSingleUserEntityToUserResponse(entity.getUser()));
+        if (shopViaUserId.size() != 0) {
+            for (ShopAndUsersEntity entity : shopViaUserId) {
+                resultList.add(userManagementService.transferSingleUserEntityToUserResponse(entity.getUser()));
+            }
         }
         return resultList;
     }
