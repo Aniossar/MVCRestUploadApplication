@@ -56,15 +56,12 @@ public class UserManagementService {
         if (request.getEmail() != null) {
             if (userService.findByEmail(request.getEmail()) == null) {
                 userEntity.setEmail(request.getEmail());
-            } else throw new ExistingLoginEmailRegisterException("This email is already registered");
+            } else log.severe("Trying to use existing email");
         }
         if (request.getLogin() != null) {
             if (userService.findByLogin(request.getLogin()) == null) {
                 userEntity.setLogin(request.getLogin());
-            } else {
-                log.severe("Trying to use existing login " + request.getLogin() + " for another user");
-                throw new ExistingLoginEmailRegisterException("This login is already registered");
-            }
+            } else log.severe("Trying to use existing login " + request.getLogin() + " for another user");
         }
         if (request.getFullName() != null) {
             userEntity.setFullName(request.getFullName());
