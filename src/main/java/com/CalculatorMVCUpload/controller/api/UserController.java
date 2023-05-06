@@ -6,11 +6,9 @@ import com.CalculatorMVCUpload.entity.users.ShopAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
 import com.CalculatorMVCUpload.payload.request.SingleIdRequest;
-import com.CalculatorMVCUpload.payload.request.users.ConnectTwoUsersRequest;
 import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
 import com.CalculatorMVCUpload.payload.response.UserListResponse;
-import com.CalculatorMVCUpload.repository.RoleEntityRepository;
 import com.CalculatorMVCUpload.service.users.KeyManagerService;
 import com.CalculatorMVCUpload.service.users.ShopUsersService;
 import com.CalculatorMVCUpload.service.users.UserManagementService;
@@ -97,20 +95,34 @@ public class UserController {
             userManagementService.editUserFields(userToEdit, request);
 
             userService.updateUser(userToEdit);
+
+            if (request.getKeyManager() != null) {
+                connectUserWithManager(request.getKeyManager(), jwtProvider.getIdFromAccessToken(token));
+            }
+            if (request.getShopId() != null) {
+                connectUserWithShop(request.getShopId(), jwtProvider.getIdFromAccessToken(token));
+            }
         } else throw new IncorrectPayloadException("Bad user change request");
     }
 
-    @CrossOrigin
-    @PostMapping("/connectUserAndManager")
-    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public String connectUserWithManager(@RequestBody ConnectTwoUsersRequest request) {
-        UserEntity manager = userService.findById(request.getUserIdMain());
-        UserEntity user = userService.findById(request.getUserIdNonMain());
+    public void connectUserWithManager(int userIdMain, int userIdNonMain) {
+        UserEntity manager = userService.findById(userIdMain);
+        UserEntity user = userService.findById(userIdNonMain);
         if (manager.getRoleEntity().getName().contains("KEYMANAGER")) {
             keyManagerService.connectUserAndManager(manager, user);
-            return "OK";
+            return;
         }
-        return null;
+        log.warning("Failed to connect user " + userIdMain + " as manager and user " + userIdNonMain + " as employee");
+    }
+
+    public void connectUserWithShop(int userIdMain, int userIdNonMain) {
+        UserEntity shop = userService.findById(userIdMain);
+        UserEntity user = userService.findById(userIdNonMain);
+        if (shop.getRoleEntity().getName().contains("SHOP")) {
+            shopUsersService.connectShopAndUser(shop, user);
+            return;
+        }
+        log.warning("Failed to connect user " + userIdMain + " as shop and user " + userIdNonMain + " as employee");
     }
 
     @CrossOrigin
@@ -151,19 +163,6 @@ public class UserController {
             resultList.add(userManagementService.transferSingleUserEntityToUserResponse(entity.getUser()));
         }
         return resultList;
-    }
-
-    @CrossOrigin
-    @PostMapping("/connectUserAndShop")
-    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public String connectUserWithShop(@RequestBody ConnectTwoUsersRequest request) {
-        UserEntity shop = userService.findById(request.getUserIdMain());
-        UserEntity user = userService.findById(request.getUserIdNonMain());
-        if (shop.getRoleEntity().getName().contains("SHOP")) {
-            shopUsersService.connectShopAndUser(shop, user);
-            return "OK";
-        }
-        return "NOK";
     }
 
     @CrossOrigin

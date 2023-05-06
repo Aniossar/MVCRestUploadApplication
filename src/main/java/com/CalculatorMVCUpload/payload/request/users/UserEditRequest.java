@@ -39,4 +39,8 @@ public class UserEditRequest {
     private NewRole newRole;
 
     private Boolean enabled;
+
+    private Integer keyManager;
+
+    private Integer shopId;
 }

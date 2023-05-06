@@ -107,6 +107,7 @@ public class UserManagementService {
         userResponse.setFullName(userEntity.getFullName());
         userResponse.setCompanyName(userEntity.getCompanyName());
         userResponse.setCertainPlaceAddress(userEntity.getCertainPlaceAddress());
+        userResponse.setRoleEntity(userEntity.getRoleEntity());
         ManagerAndUsersEntity managerViaUserId = keyManagerService.getManagerViaUserId(userEntity.getId());
         if (managerViaUserId != null) {
             userResponse.setKeyManagerId(managerViaUserId.getKeyManager().getId());

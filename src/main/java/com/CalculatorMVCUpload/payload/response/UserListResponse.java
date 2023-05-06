@@ -27,4 +27,6 @@ public class UserListResponse {
     private String certainPlaceAddress;
 
     private int keyManagerId;
+
+    private RoleEntity roleEntity;
 }
