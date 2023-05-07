@@ -23,10 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
-import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.HashMap;
@@ -122,7 +120,6 @@ public class AuthController {
         UserEntity userEntity = userService.findByEmail(usersMail);
         if (userEntity != null) {
             String restoringToken = authService.generateRestoringPasswordToken(userEntity.getId());
-//            String contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
             String restorePasswordUrl = productionContextPath + "/changePassword?token=" + restoringToken;
             try {
                 EmailContext emailContext = new EmailContext();

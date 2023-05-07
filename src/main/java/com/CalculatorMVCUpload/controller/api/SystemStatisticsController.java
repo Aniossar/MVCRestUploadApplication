@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -88,7 +89,36 @@ public class SystemStatisticsController {
         List<StatisticsEntity> statisticsEntityList = statisticsEntityRepository
                 .selectByPeriodOfTime(startDateInstant, endDateInstant);
 
-        int tPeriod = statisticsEntityList.size() / statisticsRequest.getPrecession();
+        long milPeriod = Duration.between(startDateInstant, endDateInstant).toMillis() / statisticsRequest.getPrecession();
+
+        int newReceiptsCounter = 0;
+        int usersOnlineCounter = 0;
+        int newUsersCounter = 0;
+        int counterNotNull = 0;
+        int periodCounter = 1;
+        List<Integer> newReceiptsArray = new ArrayList<>();
+        List<Integer> usersOnlineArray = new ArrayList<>();
+        List<Integer> newUsersArray = new ArrayList<>();
+
+        for (StatisticsEntity entity : statisticsEntityList) {
+            if (entity.getTimeSlice().isAfter(startDateInstant.plusMillis(milPeriod * periodCounter))) {
+                newReceiptsArray.add(newReceiptsCounter);
+                usersOnlineArray.add((int) Math.ceil((float) usersOnlineCounter / counterNotNull));
+                newUsersArray.add(newUsersCounter);
+                newReceiptsCounter = 0;
+                usersOnlineCounter = 0;
+                newUsersCounter = 0;
+                counterNotNull = 0;
+                periodCounter++;
+            }
+            if (entity.getTimeSlice().isBefore(startDateInstant.plusMillis(milPeriod * periodCounter))) {
+                newReceiptsCounter += entity.getNewReceipts();
+                usersOnlineCounter += entity.getUsersOnline();
+                if (entity.getUsersOnline() != 0) counterNotNull++;
+                newUsersCounter += entity.getNewUsers();
+            }
+        }
+        /*int tPeriod = statisticsEntityList.size() / statisticsRequest.getPrecession();
         int newReceiptsCounter = 0;
         int usersOnlineCounter = 0;
         int newUsersCounter = 0;
@@ -111,7 +141,7 @@ public class SystemStatisticsController {
                 newUsersCounter = 0;
                 counterNotNull = 0;
             }
-        }
+        }*/
 
         Pattern pattern = Pattern.compile(",");
         String typeStrings[] = pattern.split(statisticsRequest.getType());
