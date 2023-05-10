@@ -76,7 +76,6 @@ public class UserService {
         return userEntityRepository.findByEmail(email);
     }
 
-    @Transactional
     public UserEntity findById(int id) {
         Optional<UserEntity> optionalUserEntity = userEntityRepository.findById(id);
         UserEntity userEntity = null;

@@ -97,10 +97,10 @@ public class UserController {
             userService.updateUser(userToEdit);
 
             if (request.getKeyManager() != null) {
-                connectUserWithManager(request.getKeyManager(), jwtProvider.getIdFromAccessToken(token));
+                connectUserWithManager(request.getKeyManager(), userIdToEdit);
             }
             if (request.getShopId() != null) {
-                connectUserWithShop(request.getShopId(), jwtProvider.getIdFromAccessToken(token));
+                connectUserWithShop(request.getShopId(), userIdToEdit);
             }
         } else throw new IncorrectPayloadException("Bad user change request");
     }
