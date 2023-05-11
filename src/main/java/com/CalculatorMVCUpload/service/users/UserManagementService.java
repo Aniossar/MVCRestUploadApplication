@@ -116,6 +116,10 @@ public class UserManagementService {
         if (managerViaUserId != null) {
             userResponse.setKeyManagerId(managerViaUserId.getKeyManager().getId());
         }
+        ShopAndUsersEntity shopAndUsersEntity = shopUsersService.getShopViaUserId(userEntity.getId());
+        if (shopAndUsersEntity != null) {
+            userResponse.setShopId(shopAndUsersEntity.getShop().getId());
+        }
         return userResponse;
     }
 

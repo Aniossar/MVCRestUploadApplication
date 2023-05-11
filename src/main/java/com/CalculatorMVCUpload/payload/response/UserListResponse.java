@@ -28,5 +28,7 @@ public class UserListResponse {
 
     private int keyManagerId;
 
+    private int shopId;
+
     private RoleEntity roleEntity;
 }
