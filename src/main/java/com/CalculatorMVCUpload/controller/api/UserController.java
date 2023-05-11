@@ -135,8 +135,8 @@ public class UserController {
         UserEntity mainUser = userService.findById(jwtProvider.getIdFromAccessToken(token));
         UserEntity userEntity = userService.formNewUser(registrationRequest);
         userEntity.setCompanyName(mainUser.getCompanyName());
-        shopUsersService.connectShopAndUser(mainUser, userEntity);
         userService.saveUser(userEntity, registrationRequest.getDesiredRole());
+        shopUsersService.connectShopAndUser(mainUser, userService.findByLogin(userEntity.getLogin()));
         return "OK";
     }
 
