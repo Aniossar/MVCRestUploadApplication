@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +58,6 @@ public class AuthController {
     @CrossOrigin
     @PostMapping("/register")
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        UserEntity userEntity = new UserEntity();
         if (userService.findByLogin(registrationRequest.getLogin()) != null
                 || userService.findByEmail(registrationRequest.getEmail()) != null
                 || userService.findByLogin(registrationRequest.getEmail()) != null
@@ -67,17 +65,7 @@ public class AuthController {
             log.warning("Trying to register user with existing email or login");
             throw new ExistingLoginEmailRegisterException("This login or email is already registered");
         }
-        userEntity.setPassword(registrationRequest.getPassword());
-        userEntity.setLogin(registrationRequest.getLogin());
-        userEntity.setEmail(registrationRequest.getEmail());
-        userEntity.setFullName(registrationRequest.getFullName());
-        userEntity.setCompanyName(registrationRequest.getCompanyName());
-        userEntity.setPhoneNumber(registrationRequest.getPhoneNumber());
-        userEntity.setAddress(registrationRequest.getAddress());
-        userEntity.setCertainPlaceAddress(registrationRequest.getCertainPlaceAddress());
-        userEntity.setAppAccess(registrationRequest.getAppAccess());
-        userEntity.setRegistrationTime(Instant.now());
-        userEntity.setEnabled(true);
+        UserEntity userEntity = userService.formNewUser(registrationRequest);
         userService.saveUser(userEntity, registrationRequest.getDesiredRole());
         return "OK";
     }

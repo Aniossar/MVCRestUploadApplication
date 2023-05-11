@@ -4,8 +4,10 @@ import com.CalculatorMVCUpload.configuration.jwt.JwtProvider;
 import com.CalculatorMVCUpload.entity.users.ManagerAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.ShopAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
+import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.exception.IncorrectPayloadException;
 import com.CalculatorMVCUpload.payload.request.SingleIdRequest;
+import com.CalculatorMVCUpload.payload.request.users.RegistrationRequest;
 import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
 import com.CalculatorMVCUpload.payload.response.UserInfoResponse;
 import com.CalculatorMVCUpload.payload.response.UserListResponse;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,7 +99,6 @@ public class UserController {
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public void editUser(@RequestHeader(name = "Authorization") String bearer,
                          @RequestBody UserEditRequest request) {
-
         String token = jwtProvider.getTokenFromBearer(bearer);
         String roleFromToken = jwtProvider.getRoleFromAccessToken(token);
         int userIdToEdit = request.getUserId();
@@ -117,6 +119,27 @@ public class UserController {
         } else throw new IncorrectPayloadException("Bad user change request");
     }
 
+    @CrossOrigin
+    @PutMapping("/register")
+    @RolesAllowed({"ROLE_SHOP"})
+    public String registerNewUser(@RequestHeader(name = "Authorization") String bearer,
+                                  @RequestBody @Valid RegistrationRequest registrationRequest) {
+        String token = jwtProvider.getTokenFromBearer(bearer);
+        if (userService.findByLogin(registrationRequest.getLogin()) != null
+                || userService.findByEmail(registrationRequest.getEmail()) != null
+                || userService.findByLogin(registrationRequest.getEmail()) != null
+                || userService.findByEmail(registrationRequest.getLogin()) != null) {
+            log.warning("Trying to register user with existing email or login");
+            throw new ExistingLoginEmailRegisterException("This login or email is already registered");
+        }
+        UserEntity mainUser = userService.findById(jwtProvider.getIdFromAccessToken(token));
+        UserEntity userEntity = userService.formNewUser(registrationRequest);
+        userEntity.setCompanyName(mainUser.getCompanyName());
+        shopUsersService.connectShopAndUser(mainUser, userEntity);
+        userService.saveUser(userEntity, registrationRequest.getDesiredRole());
+        return "OK";
+    }
+
     public void connectUserWithManager(int userIdMain, int userIdNonMain) {
         UserEntity manager = userService.findById(userIdMain);
         UserEntity user = userService.findById(userIdNonMain);
@@ -132,6 +155,8 @@ public class UserController {
         UserEntity user = userService.findById(userIdNonMain);
         if (shop.getRoleEntity().getName().contains("SHOP")) {
             shopUsersService.connectShopAndUser(shop, user);
+            user.setCompanyName(shop.getCompanyName());
+            userService.updateUser(user);
             return;
         }
         log.warning("Failed to connect user " + userIdMain + " as shop and user " + userIdNonMain + " as employee");

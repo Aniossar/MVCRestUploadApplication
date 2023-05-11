@@ -117,4 +117,20 @@ public class UserService {
         }
         return null;
     }
+
+    public UserEntity formNewUser(RegistrationRequest request) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setPassword(request.getPassword());
+        userEntity.setLogin(request.getLogin());
+        userEntity.setEmail(request.getEmail());
+        userEntity.setFullName(request.getFullName());
+        userEntity.setCompanyName(request.getCompanyName());
+        userEntity.setPhoneNumber(request.getPhoneNumber());
+        userEntity.setAddress(request.getAddress());
+        userEntity.setCertainPlaceAddress(request.getCertainPlaceAddress());
+        userEntity.setAppAccess(request.getAppAccess());
+        userEntity.setRegistrationTime(Instant.now());
+        userEntity.setEnabled(true);
+        return userEntity;
+    }
 }
