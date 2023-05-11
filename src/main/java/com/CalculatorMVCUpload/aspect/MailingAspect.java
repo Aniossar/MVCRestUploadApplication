@@ -25,7 +25,7 @@ public class MailingAspect {
 
     @AfterReturning("execution(* com.CalculatorMVCUpload.controller.AuthController.registerUser(..))"
             + "&&args(registrationRequest)")
-    public void loginUserAdvice(JoinPoint joinPoint, RegistrationRequest registrationRequest) {
+    public void registerUserAdvice(JoinPoint joinPoint, RegistrationRequest registrationRequest) {
         try {
             EmailContext emailContext = new EmailContext();
             emailContext.setFrom("noreply@koreanika.ru");
@@ -37,7 +37,7 @@ public class MailingAspect {
             emailContext.setContext(context);
             emailService.sendMail(emailContext);
             log.info("Sent welcome letter to email " + registrationRequest.getEmail());
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.severe("Error while sending out email — " + e.getLocalizedMessage());
         }
     }
@@ -53,7 +53,7 @@ public class MailingAspect {
             emailContext.setTemplateLocation("notificationUserLetter");
             emailService.sendMail(emailContext);
             log.info("Sent notification user letter to email " + userEntity.getEmail());
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.severe("Error while sending out email — " + e.getLocalizedMessage());
         }
     }
