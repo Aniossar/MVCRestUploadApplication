@@ -35,4 +35,6 @@ public class UserInfoResponse {
     private int keyManagerId;
 
     private boolean enabled;
+
+    private int shopId;
 }

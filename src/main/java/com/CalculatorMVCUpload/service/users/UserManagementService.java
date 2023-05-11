@@ -2,6 +2,7 @@ package com.CalculatorMVCUpload.service.users;
 
 import com.CalculatorMVCUpload.entity.users.ManagerAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.RoleEntity;
+import com.CalculatorMVCUpload.entity.users.ShopAndUsersEntity;
 import com.CalculatorMVCUpload.entity.users.UserEntity;
 import com.CalculatorMVCUpload.exception.ExistingLoginEmailRegisterException;
 import com.CalculatorMVCUpload.payload.request.users.UserEditRequest;
@@ -31,6 +32,9 @@ public class UserManagementService {
 
     @Autowired
     private KeyManagerService keyManagerService;
+
+    @Autowired
+    private ShopUsersService shopUsersService;
 
     @Autowired
     private UserService userService;
@@ -131,6 +135,10 @@ public class UserManagementService {
         ManagerAndUsersEntity managerViaUserId = keyManagerService.getManagerViaUserId(userEntity.getId());
         if (managerViaUserId != null) {
             userInfoResponse.setKeyManagerId(managerViaUserId.getKeyManager().getId());
+        }
+        ShopAndUsersEntity shopAndUsersEntity = shopUsersService.getShopViaUserId(userEntity.getId());
+        if (shopAndUsersEntity != null) {
+            userInfoResponse.setShopId(shopAndUsersEntity.getShop().getId());
         }
         return userInfoResponse;
     }
