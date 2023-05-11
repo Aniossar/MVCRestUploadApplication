@@ -60,10 +60,22 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/getUser/{id}")
-    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public UserInfoResponse getUser(@PathVariable int id) {
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR", "ROLE_SHOP", "ROLE_KEYMANAGER"})
+    public UserInfoResponse getUser(@PathVariable int id,
+                                    @RequestHeader(name = "Authorization") String bearer) {
+        String token = jwtProvider.getTokenFromBearer(bearer);
         UserEntity userEntity = userService.findById(id);
         UserInfoResponse userInfoResponse = null;
+        if (jwtProvider.getRoleFromAccessToken(token).contains("SHOP")) {
+            if (shopUsersService.getShopViaUserId(id).getShop().getId() != jwtProvider.getIdFromAccessToken(token)) {
+                return null;
+            }
+        }
+        if (jwtProvider.getRoleFromAccessToken(token).contains("KEYMANAGER")) {
+            if (keyManagerService.getManagerViaUserId(id).getKeyManager().getId() != jwtProvider.getIdFromAccessToken(token)) {
+                return null;
+            }
+        }
         if (userEntity != null) {
             userInfoResponse = userManagementService.transferUserEntityToUserInfoResponse(userEntity);
         }
