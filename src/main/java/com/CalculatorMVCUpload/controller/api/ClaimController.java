@@ -5,6 +5,7 @@ import com.CalculatorMVCUpload.entity.ClaimEntity;
 import com.CalculatorMVCUpload.exception.FileNotFoundException;
 import com.CalculatorMVCUpload.payload.request.ClaimRequest;
 import com.CalculatorMVCUpload.payload.request.SingleIdRequest;
+import com.CalculatorMVCUpload.payload.response.ClaimResponse;
 import com.CalculatorMVCUpload.payload.response.UploadFileResponse;
 import com.CalculatorMVCUpload.service.ClaimService;
 import com.CalculatorMVCUpload.service.files.TxtWriterService;
@@ -42,25 +43,29 @@ public class ClaimController {
     @CrossOrigin
     @GetMapping("/allClaims")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public List<ClaimEntity> getAllClaims() {
+    public List<ClaimResponse> getAllClaims() {
         List<ClaimEntity> allClaims = claimService.getAllClaims();
-        return allClaims;
+        List<ClaimResponse> claimResponses = claimService.transferClaimEntitiesToClaimResponse(allClaims);
+        return claimResponses;
     }
 
     @CrossOrigin
     @GetMapping("/allNotSolvedClaims")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public List<ClaimEntity> getAllNotSolvedClaims() {
-        List<ClaimEntity> claims = claimService.getAllNotSolvedClaims();
-        return claims;
+    public List<ClaimResponse> getAllNotSolvedClaims() {
+        List<ClaimEntity> notSolvedClaims = claimService.getAllNotSolvedClaims();
+        List<ClaimResponse> claimResponses = claimService.transferClaimEntitiesToClaimResponse(notSolvedClaims);
+        return claimResponses;
     }
 
     @CrossOrigin
     @GetMapping("/getClaim/{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public ClaimEntity getClaimViaId(@PathVariable int id) {
+    public ClaimResponse getClaimViaId(@PathVariable int id) {
         ClaimEntity claim = claimService.getClaimViaId(id);
-        return claim;
+        ClaimResponse claimResponse = claimService.transferSingleClaimEntityToClaimResponse(claim);
+        claimResponse.setClaimText(claimService.getClaimText(claim));
+        return claimResponse;
     }
 
     @CrossOrigin

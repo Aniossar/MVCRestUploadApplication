@@ -62,9 +62,9 @@ public class TxtWriterService {
         String dateTimeStr = formatter.format(localDateTime);
 
         String stringToFile = resultString.toString();
-        String fileName = claimType + "_" + userLogin + "_" + dateTimeStr + "UTC";
+        String fileName = claimType + "_" + userLogin + "_" + dateTimeStr + "UTC" + ".txt";
         try {
-            Files.write(Path.of(getFileStorageLocation().toString() + "/" + fileName + ".txt"),
+            Files.write(Path.of(getFileStorageLocation().toString() + "/" + fileName),
                     stringToFile.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
