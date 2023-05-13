@@ -70,6 +70,7 @@ public class ClaimService {
 
     public ClaimResponse transferSingleClaimEntityToClaimResponse(ClaimEntity claimEntity) {
         ClaimResponse claimResponse = new ClaimResponse();
+        claimResponse.setId(claimEntity.getId());
         claimResponse.setTimeDate(claimEntity.getTimeDate());
         claimResponse.setUserId(claimEntity.getUserId());
         claimResponse.setUserName(userService.findById(claimResponse.getUserId()).getFullName());

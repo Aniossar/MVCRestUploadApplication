@@ -11,6 +11,8 @@ import java.time.Instant;
 @NoArgsConstructor
 public class ClaimResponse {
 
+    private int id;
+
     private Instant timeDate;
 
     private int userId;
