@@ -57,7 +57,9 @@ public interface CalculatorActivityEntityRepository extends JpaRepository<Calcul
                                                              @Param("allPriceTo") Double allPriceTo);
 
     @Query(value = "SELECT * FROM users_receipt_summary a " +
-            "WHERE a.materials LIKE :materials AND a.all_price = :allPrice", nativeQuery = true)
-    List<CalculatorActivityEntity> selectByMaterialsAndAllPrice(@Param("materials") String materials,
-                                                                @Param("allPrice") Double allPrice);
+            "WHERE a.materials LIKE :materials AND a.all_price = :allPrice " +
+            "AND a.type LIKE :type", nativeQuery = true)
+    List<CalculatorActivityEntity> selectByMaterialsAllPriceAndType(@Param("materials") String materials,
+                                                                    @Param("allPrice") Double allPrice,
+                                                                    @Param("type") String type);
 }

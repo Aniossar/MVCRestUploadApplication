@@ -81,7 +81,8 @@ public class AppActivityController {
             activityEntity.setProductSquare(request.getProductSquare());
 
             List<CalculatorActivityEntity> existingList = calculatorActivityService
-                    .checkExistingActivitiesByMaterialAndPrice(activityEntity.getMaterials(), activityEntity.getAllPrice());
+                    .checkExistingActivitiesByMaterialsAllPriceAndType(
+                            activityEntity.getMaterials(), activityEntity.getAllPrice(), activityEntity.getType());
             int counterNotLastDay = 0;
             if (existingList.size() != 0) {
                 for (CalculatorActivityEntity existingEntity : existingList) {

@@ -124,8 +124,8 @@ public class CalculatorActivityService {
     }
 
     @Transactional
-    public List<CalculatorActivityEntity> checkExistingActivitiesByMaterialAndPrice(String materials, Double allPrice) {
-        return calculatorActivityEntityRepository.selectByMaterialsAndAllPrice(materials, allPrice);
+    public List<CalculatorActivityEntity> checkExistingActivitiesByMaterialsAllPriceAndType(String materials, Double allPrice, String type) {
+        return calculatorActivityEntityRepository.selectByMaterialsAllPriceAndType(materials, allPrice, type);
     }
 
     public CalculatorActivityResponse transformEntityToResponse(CalculatorActivityEntity activityEntity) {
