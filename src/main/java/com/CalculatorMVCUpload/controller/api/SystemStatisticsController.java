@@ -5,6 +5,7 @@ import com.CalculatorMVCUpload.entity.StatisticsEntity;
 import com.CalculatorMVCUpload.payload.request.StatisticsRequest;
 import com.CalculatorMVCUpload.payload.response.StatisticsResponse;
 import com.CalculatorMVCUpload.repository.StatisticsEntityRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +17,12 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
 @RestController
+@Log
 @RequestMapping("/api")
 public class SystemStatisticsController {
 
@@ -89,6 +92,8 @@ public class SystemStatisticsController {
         List<StatisticsEntity> statisticsEntityList = statisticsEntityRepository
                 .selectByPeriodOfTime(startDateInstant, endDateInstant);
 
+        statisticsEntityList.sort(Comparator.comparing(StatisticsEntity::getTimeSlice));
+
         long milPeriod = Duration.between(startDateInstant, endDateInstant).toMillis() / statisticsRequest.getPrecession();
 
         int newReceiptsCounter = 0;
@@ -101,7 +106,12 @@ public class SystemStatisticsController {
         List<Integer> newUsersArray = new ArrayList<>();
 
         for (StatisticsEntity entity : statisticsEntityList) {
-            if (entity.getTimeSlice().isAfter(startDateInstant.plusMillis(milPeriod * periodCounter))) {
+            if (entity.getTimeSlice().isBefore(startDateInstant.plusMillis(milPeriod * periodCounter))) {
+                newReceiptsCounter += entity.getNewReceipts();
+                usersOnlineCounter += entity.getUsersOnline();
+                if (entity.getUsersOnline() != 0) counterNotNull++;
+                newUsersCounter += entity.getNewUsers();
+            } else {
                 newReceiptsArray.add(newReceiptsCounter);
                 usersOnlineArray.add((int) Math.ceil((float) usersOnlineCounter / counterNotNull));
                 newUsersArray.add(newUsersCounter);
@@ -111,37 +121,11 @@ public class SystemStatisticsController {
                 counterNotNull = 0;
                 periodCounter++;
             }
-            if (entity.getTimeSlice().isBefore(startDateInstant.plusMillis(milPeriod * periodCounter))) {
-                newReceiptsCounter += entity.getNewReceipts();
-                usersOnlineCounter += entity.getUsersOnline();
-                if (entity.getUsersOnline() != 0) counterNotNull++;
-                newUsersCounter += entity.getNewUsers();
-            }
         }
-        /*int tPeriod = statisticsEntityList.size() / statisticsRequest.getPrecession();
-        int newReceiptsCounter = 0;
-        int usersOnlineCounter = 0;
-        int newUsersCounter = 0;
-        int counterNotNull = 0;
-        List<Integer> newReceiptsArray = new ArrayList<>();
-        List<Integer> usersOnlineArray = new ArrayList<>();
-        List<Integer> newUsersArray = new ArrayList<>();
 
-        for (int i = 0; i < statisticsEntityList.size(); i++) {
-            newReceiptsCounter += statisticsEntityList.get(i).getNewReceipts();
-            usersOnlineCounter += statisticsEntityList.get(i).getUsersOnline();
-            if (statisticsEntityList.get(i).getUsersOnline() != 0) counterNotNull++;
-            newUsersCounter += statisticsEntityList.get(i).getNewUsers();
-            if ((i + 1) % tPeriod == 0) {
-                newReceiptsArray.add(newReceiptsCounter);
-                usersOnlineArray.add((int) Math.ceil((float) usersOnlineCounter / counterNotNull));
-                newUsersArray.add(newUsersCounter);
-                newReceiptsCounter = 0;
-                usersOnlineCounter = 0;
-                newUsersCounter = 0;
-                counterNotNull = 0;
-            }
-        }*/
+        newReceiptsArray.add(newReceiptsCounter);
+        usersOnlineArray.add((int) Math.ceil((float) usersOnlineCounter / counterNotNull));
+        newUsersArray.add(newUsersCounter);
 
         Pattern pattern = Pattern.compile(",");
         String typeStrings[] = pattern.split(statisticsRequest.getType());
