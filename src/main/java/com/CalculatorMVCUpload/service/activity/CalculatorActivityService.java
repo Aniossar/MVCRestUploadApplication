@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -36,11 +38,11 @@ public class CalculatorActivityService {
         calculatorActivityEntityRepository.saveAndFlush(calculatorActivityEntity);
     }
 
-    public String addPluses(String originalString) {
-        if (!originalString.contains(",")) {
+    public String addPluses(String originalString, CharSequence delimiter) {
+        if (!originalString.contains(delimiter)) {
             return "+" + originalString + "+";
         }
-        Pattern pattern = Pattern.compile(",");
+        Pattern pattern = Pattern.compile(delimiter.toString());
         String[] str = pattern.split(originalString);
         String resultString = "";
         for (String strElement : str) {
@@ -62,10 +64,10 @@ public class CalculatorActivityService {
         }
         if (request.getCompanyName() == null) {
             request.setCompanyName("%%");
-        } else request.setCompanyName("%" + request.getCompanyName() + "%");
+        } //else request.setCompanyName(quotesEscaping(request.getCompanyName()));
         if (request.getCertainPlaceAddress() == null) {
             request.setCertainPlaceAddress("%%");
-        } else request.setCertainPlaceAddress("%" + request.getCertainPlaceAddress() + "%");
+        } //else request.setCertainPlaceAddress(quotesEscaping(request.getCertainPlaceAddress()));
         if (request.getMaterialPriceFrom() == -1) {
             request.setMaterialPriceFrom(0);
         }
@@ -86,31 +88,56 @@ public class CalculatorActivityService {
         }
         if (request.getMaterials() == null) {
             request.setMaterials("%%");
-        } else request.setMaterials("%" + request.getMaterials() + "%");
+        } //else request.setMaterials(quotesEscaping(request.getMaterials()));
 
         if (request.getType() == null) {
             request.setType("%%");
-        } else request.setType("%" + request.getType() + "%");
+        } //else request.setType("%" + request.getType() + "%");
 
         return request;
     }
 
     @Transactional
     public List<CalculatorActivityEntity> getActivitiesByFilter(CalcActivityFilterRequest request) {
-        return calculatorActivityEntityRepository.selectByFilterFields(request.getDateFrom(), request.getDateTo(),
+        List<Object[]> objects = calculatorActivityEntityRepository.selectByFilterFields(request.getDateFrom(), request.getDateTo(),
                 request.getCompanyName(), request.getCertainPlaceAddress(),
                 request.getMaterialPriceFrom(), request.getMaterialPriceTo(),
                 request.getAddPriceFrom(), request.getAddPriceTo(),
                 request.getAllPriceFrom(), request.getAllPriceTo(),
                 request.getMaterials(), request.getType());
+        return transformObjectListToCAE(objects);
     }
 
     @Transactional
     public List<CalculatorActivityEntity> getActivitiesByPreliminaryFilter(CalcActivityFilterRequest request) {
-        return calculatorActivityEntityRepository.selectByPreliminaryFilter(request.getDateFrom(), request.getDateTo(),
+        List<Object[]> objects = calculatorActivityEntityRepository.selectByPreliminaryFilter(request.getDateFrom(), request.getDateTo(),
                 request.getMaterialPriceFrom(), request.getMaterialPriceTo(),
                 request.getAddPriceFrom(), request.getAddPriceTo(),
                 request.getAllPriceFrom(), request.getAllPriceTo());
+
+        return transformObjectListToCAE(objects);
+    }
+
+    public List<CalculatorActivityEntity> transformObjectListToCAE(List<Object[]> objects) {
+        ArrayList<CalculatorActivityEntity> result = new ArrayList<>();
+        objects.forEach(object -> {
+            CalculatorActivityEntity entity = new CalculatorActivityEntity();
+            entity.setActivityTime(((Timestamp) object[0]).toInstant());
+            entity.setUserId((Integer) object[1]);
+            entity.setType((String) object[2]);
+            entity.setMaterials((String) object[3]);
+            entity.setMaterialPrice((Double) object[4]);
+            entity.setAddPrice((Double) object[5]);
+            entity.setAllPrice((Double) object[6]);
+            entity.setMainCoeff((Double) object[7]);
+            entity.setMaterialCoeff((Double) object[8]);
+            entity.setSlabs((Double) object[9]);
+            entity.setProductSquare((Double) object[10]);
+            entity.setCompanyName((String) object[12]);
+            entity.setCertainPlaceAddress((String) object[13]);
+            result.add(entity);
+        });
+        return result;
     }
 
     @Transactional

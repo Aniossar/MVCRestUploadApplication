@@ -67,8 +67,8 @@ public class AppActivityController {
 
             UserEntity userEntity = userService.findByLogin(loginName);
             activityEntity.setUserId(userEntity.getId());
-            activityEntity.setCompanyName(userEntity.getCompanyName());
-            activityEntity.setCertainPlaceAddress(userEntity.getCertainPlaceAddress());
+            /*activityEntity.setCompanyName(userEntity.getCompanyName());
+            activityEntity.setCertainPlaceAddress(userEntity.getCertainPlaceAddress());*/
 
             activityEntity.setType(request.getType());
             activityEntity.setMaterials(request.getMaterials());
@@ -107,20 +107,23 @@ public class AppActivityController {
     @PostMapping("/calcActivityFilter")
     public List<CalculatorActivityResponse> getActivitiesByFilter(@RequestBody CalcActivityFilterRequest request) {
         CalcActivityFilterRequest filterRequest = calculatorActivityService.manageRequestForFilter(request);
-        if (filterRequest.getCompanyName().contains(",") || filterRequest.getCertainPlaceAddress().contains(",")
+        if (filterRequest.getCompanyName().contains(",") || filterRequest.getCertainPlaceAddress().contains("#")
                 || filterRequest.getMaterials().contains(",") || filterRequest.getType().contains(",")) {
             List<CalculatorActivityEntity> activitiesByPreliminaryFilter = calculatorActivityService
                     .getActivitiesByPreliminaryFilter(filterRequest);
             List<CalculatorActivityResponse> resultActivitiesList = new ArrayList<>();
             for (CalculatorActivityEntity entity : activitiesByPreliminaryFilter) {
-                if (calculatorActivityService.addPluses(filterRequest.getCompanyName())
-                        .contains(calculatorActivityService.addPluses(entity.getCompanyName())) &&
-                        calculatorActivityService.addPluses(filterRequest.getCertainPlaceAddress())
-                                .contains(calculatorActivityService.addPluses(entity.getCertainPlaceAddress())) &&
-                        calculatorActivityService.addPluses(filterRequest.getMaterials())
-                                .contains(calculatorActivityService.addPluses(entity.getMaterials())) &&
-                        calculatorActivityService.addPluses(filterRequest.getType())
-                                .contains(calculatorActivityService.addPluses(entity.getType()))) {
+                if (checkIsEntityFieldEqualsRequest(calculatorActivityService.addPluses(filterRequest.getCompanyName(), ","),
+                        calculatorActivityService.addPluses(entity.getCompanyName(), ","))
+                        &&
+                        checkIsEntityFieldEqualsRequest(calculatorActivityService.addPluses(filterRequest.getCertainPlaceAddress(), "#"),
+                                calculatorActivityService.addPluses(entity.getCertainPlaceAddress(), "#"))
+                        &&
+                        checkIsEntityFieldEqualsRequest(calculatorActivityService.addPluses(filterRequest.getMaterials(), ","),
+                                calculatorActivityService.addPluses(entity.getMaterials(), ","))
+                        &&
+                        checkIsEntityFieldEqualsRequest(calculatorActivityService.addPluses(filterRequest.getType(), ","),
+                                calculatorActivityService.addPluses(entity.getType(), ","))) {
                     resultActivitiesList.add(calculatorActivityService.transformEntityToResponse(entity));
                 }
             }
@@ -128,10 +131,17 @@ public class AppActivityController {
         }
         List<CalculatorActivityResponse> activityResponses = new ArrayList<>();
         List<CalculatorActivityEntity> activitiesByFilter = calculatorActivityService.getActivitiesByFilter(filterRequest);
-        activitiesByFilter.forEach(activityEntity -> {
-            activityResponses.add(calculatorActivityService.transformEntityToResponse(activityEntity));
-        });
+        if (activitiesByFilter.size() > 0) {
+            activitiesByFilter.forEach(activityEntity -> {
+                activityResponses.add(calculatorActivityService.transformEntityToResponse(activityEntity));
+            });
+        }
         return activityResponses;
+    }
+
+    public boolean checkIsEntityFieldEqualsRequest(String requestField, String entityField) {
+        if ("+%%+".equals(requestField)) return true;
+        return requestField.contains(entityField);
     }
 
     @CrossOrigin
@@ -159,6 +169,4 @@ public class AppActivityController {
         Resource resource = excelWriterService.loadFileAsResource(fileName);
         return fileController.downloadFile(resource, request);
     }
-
-
 }
