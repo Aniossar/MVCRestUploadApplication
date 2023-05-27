@@ -67,9 +67,6 @@ public class AppActivityController {
 
             UserEntity userEntity = userService.findByLogin(loginName);
             activityEntity.setUserId(userEntity.getId());
-            /*activityEntity.setCompanyName(userEntity.getCompanyName());
-            activityEntity.setCertainPlaceAddress(userEntity.getCertainPlaceAddress());*/
-
             activityEntity.setType(request.getType());
             activityEntity.setMaterials(request.getMaterials());
             activityEntity.setMaterialPrice(request.getMaterialPrice());

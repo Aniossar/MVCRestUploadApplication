@@ -6,7 +6,6 @@ import com.CalculatorMVCUpload.exception.FileStorageException;
 import com.CalculatorMVCUpload.payload.response.CalculatorActivityResponse;
 import com.CalculatorMVCUpload.property.FileStorageProperties;
 import lombok.extern.java.Log;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -30,6 +29,23 @@ import java.util.List;
 public class ExcelWriterService {
 
     private Path fileStorageLocation;
+
+    public static final class FilteredCalculatorTitles{
+        public static final String ACTIVITY_TIME="Дата";
+        public static final String USER_ID="ID пользователя";
+        public static final String USER_LOGIN="Пользователь";
+        public static final String COMPANY_NAME="Салон";
+        public static final String CERTAIN_PLACE_ADDRESS="Адрес салона продаж";
+        public static final String TYPE="Тип события";
+        public static final String MATERIALS="Материал";
+        public static final String MATERIAL_PRICE="Цена материала (₽)";
+        public static final String ADD_PRICE="Цена доп. работ (₽)";
+        public static final String ALL_PRICE="Цена счета (₽)";
+        public static final String MAIN_COEFF="Основной коэффициент";
+        public static final String MATERIAL_COEFF="Коэффициент материала";
+        public static final String SLABS="Кол-во слэбов";
+        public static final String PRODUCT_SQUARE="Площадь изделия (м2)";
+    }
 
     public Path getFileStorageLocation() {
         return fileStorageLocation;
@@ -77,11 +93,21 @@ public class ExcelWriterService {
 
         int column = 0;
         XSSFRow titleRow = sheet.createRow(0);
-        for (String x : classFieldsName) {
-            XSSFCell cell = titleRow.createCell(column);
-            cell.setCellValue(x);
-            column++;
-        }
+        titleRow.createCell(0).setCellValue(FilteredCalculatorTitles.ACTIVITY_TIME);
+        titleRow.createCell(1).setCellValue(FilteredCalculatorTitles.USER_ID);
+        titleRow.createCell(2).setCellValue(FilteredCalculatorTitles.USER_LOGIN);
+        titleRow.createCell(3).setCellValue(FilteredCalculatorTitles.COMPANY_NAME);
+        titleRow.createCell(4).setCellValue(FilteredCalculatorTitles.CERTAIN_PLACE_ADDRESS);
+        titleRow.createCell(5).setCellValue(FilteredCalculatorTitles.TYPE);
+        titleRow.createCell(6).setCellValue(FilteredCalculatorTitles.MATERIALS);
+        titleRow.createCell(7).setCellValue(FilteredCalculatorTitles.MATERIAL_PRICE);
+        titleRow.createCell(8).setCellValue(FilteredCalculatorTitles.ADD_PRICE);
+        titleRow.createCell(9).setCellValue(FilteredCalculatorTitles.ALL_PRICE);
+        titleRow.createCell(10).setCellValue(FilteredCalculatorTitles.MAIN_COEFF);
+        titleRow.createCell(11).setCellValue(FilteredCalculatorTitles.MATERIAL_COEFF);
+        titleRow.createCell(12).setCellValue(FilteredCalculatorTitles.SLABS);
+        titleRow.createCell(13).setCellValue(FilteredCalculatorTitles.PRODUCT_SQUARE);
+
         int rowNum = 1;
         for (CalculatorActivityResponse activity : list) {
             XSSFRow row = sheet.createRow(rowNum);
